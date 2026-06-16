@@ -456,6 +456,7 @@
         <option value="">Tutti gli stati</option>
         <option value="proposto">Proposto</option>
         <option value="firmato">Firmato</option>
+        <option value="lavorazione">In lavorazione</option>
         <option value="presentato">Presentato</option>
         <option value="istruttoria">In istruttoria</option>
         <option value="concesso">Concesso</option>
@@ -508,6 +509,7 @@
         <select id="m-stato">
           <option value="proposto">Proposto</option>
           <option value="firmato">Firmato</option>
+          <option value="lavorazione">In lavorazione</option>
           <option value="presentato">Presentato</option>
           <option value="istruttoria">In istruttoria</option>
           <option value="concesso">Concesso</option>
@@ -1135,6 +1137,7 @@ function savePipeline(pl) { localStorage.setItem('n4_pipeline', JSON.stringify(p
 const PIPELINE_STATO_CFG = {
   proposto:    { label:'Proposto',        bg:'#f1f5f9', color:'#64748b' },
   firmato:     { label:'Firmato',         bg:'#dbeafe', color:'#1d4ed8' },
+  lavorazione: { label:'In lavorazione',  bg:'#e0e7ff', color:'#4338ca' },
   presentato:  { label:'Presentato',      bg:'#ccfbf1', color:'#0f766e' },
   istruttoria: { label:'In istruttoria',  bg:'#fef3c7', color:'#92400e' },
   concesso:    { label:'Concesso',        bg:'#dcfce7', color:'#15803d' },
