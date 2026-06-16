@@ -285,12 +285,85 @@
   .scad-data { font-size:11px; color:#555; }
   .scad-data.urg { color:#dc2626; font-weight:700; }
 
+  /* ── COUNTDOWN DAYS ── */
+  .scad-gg { display:inline-block; font-size:11px; font-weight:800; padding:3px 8px; border-radius:20px; margin-top:4px; }
+  .scad-gg-urg    { background:#fee2e2; color:#dc2626; }
+  .scad-gg-warn   { background:#fef9c3; color:#a16207; }
+  .scad-gg-ok     { background:#dcfce7; color:#16a34a; }
+
+  /* ── DE MINIMIS CHIP WARNING ── */
+  .ct-dm-warn { display:inline-block; background:#fff3e0; color:#b45309; border-radius:4px; padding:2px 6px; font-size:10.5px; font-weight:700; white-space:nowrap; border:1px solid #fcd34d; }
+  .ct-dm-danger { display:inline-block; background:#fee2e2; color:#dc2626; border-radius:4px; padding:2px 6px; font-size:10.5px; font-weight:700; white-space:nowrap; border:1px solid #fca5a5; }
+
+  /* ── PIPELINE TAB ── */
+  .pipeline-wrap { padding:14px 32px 56px; }
+  .pipeline-kpi { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-bottom:20px; }
+  .pkpi { background:white; border-radius:12px; padding:16px 18px; box-shadow:0 1px 4px rgba(0,0,0,0.07); border-top:3px solid #e2e8f0; }
+  .pkpi-icon { font-size:20px; margin-bottom:6px; }
+  .pkpi-val { font-size:24px; font-weight:800; line-height:1; color:#1B3A6B; }
+  .pkpi-val.green { color:#16a34a; }
+  .pkpi-val.teal  { color:#0f766e; }
+  .pkpi-val.orange{ color:#d97706; }
+  .pkpi-val.gold  { color:#92400e; }
+  .pkpi-lbl { font-size:11px; color:#94a3b8; margin-top:4px; font-weight:500; }
+  .pkpi-sub { font-size:10px; color:#cbd5e1; margin-top:2px; }
+  .pkpi.p-blue   { border-top-color:#2563eb; }
+  .pkpi.p-teal   { border-top-color:#0f766e; }
+  .pkpi.p-green  { border-top-color:#16a34a; }
+  .pkpi.p-gold   { border-top-color:#d97706; }
+
+  .pipeline-toolbar { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .pipeline-toolbar select { border:1.5px solid #e2e8f0; border-radius:8px; padding:7px 12px; font-size:12px; background:#f8fafc; color:#1a1a2e; outline:none; font-family:inherit; }
+  .pipeline-toolbar select:focus { border-color:#1B3A6B; }
+  .btn-add-p { background:#1B3A6B; color:white; border:none; border-radius:8px; padding:8px 16px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .btn-add-p:hover { background:#0d1f40; }
+  .btn-export-p { background:#f1f5f9; border:1.5px solid #e2e8f0; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:600; cursor:pointer; color:#64748b; font-family:inherit; }
+  .btn-export-p:hover { border-color:#1B3A6B; color:#1B3A6B; }
+
+  .p-table { width:100%; border-collapse:collapse; background:white; border-radius:12px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.07); }
+  .p-table th { background:#0d1f40; color:white; padding:10px 14px; text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+  .p-table td { padding:11px 14px; border-bottom:1px solid #f1f5f9; font-size:12px; vertical-align:middle; }
+  .p-table tr:last-child td { border-bottom:none; }
+  .p-table tr:hover td { background:#f8fafc; }
+  .p-table .td-cliente { font-weight:700; color:#1B3A6B; }
+  .p-table .td-bando { color:#475569; max-width:260px; }
+  .p-table .td-bando span { display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.35; }
+  .p-table .td-euro { font-weight:700; font-family:'Courier New',monospace; font-size:11.5px; white-space:nowrap; }
+  .p-table .td-euro.green { color:#16a34a; }
+  .p-table .td-euro.blue  { color:#1d4ed8; }
+  .p-table .td-euro.gold  { color:#92400e; }
+  .p-table .td-euro.gray  { color:#94a3b8; }
+  .p-tag-ret { display:inline-block; font-size:10px; padding:1px 6px; border-radius:10px; font-weight:700; }
+  .p-ret-ok  { background:#dcfce7; color:#16a34a; }
+  .p-ret-no  { background:#fee2e2; color:#dc2626; }
+  .p-stato-sel { border:1.5px solid #e2e8f0; border-radius:6px; padding:4px 8px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; background:white; outline:none; }
+  .empty-pipeline { text-align:center; padding:60px 20px; color:#94a3b8; font-size:14px; }
+
+  /* modal aggiungi voce */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:700; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal-box { background:white; border-radius:16px; padding:28px 28px 24px; width:520px; max-width:95vw; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.2); }
+  .modal-title { font-size:16px; font-weight:800; color:#1B3A6B; margin-bottom:18px; }
+  .modal-field { margin-bottom:14px; }
+  .modal-field label { font-size:10px; font-weight:700; color:#94a3b8; display:block; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px; }
+  .modal-field input, .modal-field select, .modal-field textarea { width:100%; border:1.5px solid #e2e8f0; border-radius:8px; padding:9px 12px; font-size:13px; font-family:inherit; outline:none; background:#f8fafc; }
+  .modal-field input:focus, .modal-field select:focus { border-color:#1B3A6B; background:white; }
+  .modal-row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .modal-actions { display:flex; gap:10px; margin-top:20px; justify-content:flex-end; }
+  .btn-modal-save { background:#1B3A6B; color:white; border:none; border-radius:8px; padding:10px 22px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .btn-modal-cancel { background:#f1f5f9; color:#64748b; border:1.5px solid #e2e8f0; border-radius:8px; padding:9px 18px; font-size:13px; cursor:pointer; font-family:inherit; }
+
+  /* stampa cliente */
+  .btn-print-cliente { background:#f1f5f9; border:1.5px solid #e2e8f0; border-radius:6px; padding:4px 10px; font-size:10px; font-weight:700; cursor:pointer; color:#64748b; font-family:inherit; margin-left:auto; }
+  .btn-print-cliente:hover { border-color:#1B3A6B; color:#1B3A6B; }
+
   @media (max-width: 768px) {
     .header { padding: 0 16px; }
     .stats, .tabs, .ris-info, .legend, .cards-wrap { padding-left: 16px; padding-right: 16px; }
     .filtri-wrap { margin-left: 16px; margin-right: 16px; }
     .cards-grid { grid-template-columns: 1fr; }
-    .clienti-grid, .scad-wrap { padding-left: 16px; padding-right: 16px; }
+    .clienti-grid, .scad-wrap, .pipeline-wrap { padding-left: 16px; padding-right: 16px; }
+    .p-table { font-size:11px; }
   }
   @media print { .header { position: static; } .filtri-wrap, .urgenza-bar, .apertura-bar, .tabs { display: none; } }
 </style>
@@ -322,6 +395,7 @@
   <button class="tab active" onclick="switchTab('bandi')">📋 Bandi</button>
   <button class="tab" onclick="switchTab('clienti')">🏢 Vista Clienti</button>
   <button class="tab" onclick="switchTab('scadenzario')">📅 Scadenzario</button>
+  <button class="tab" onclick="switchTab('pipeline')">💼 Pipeline</button>
 </div>
 
 <div id="view-bandi">
@@ -357,6 +431,112 @@
 
 <div id="view-scadenzario" style="display:none;">
   <div class="scad-wrap" id="scad-wrap"></div>
+</div>
+
+<div id="view-pipeline" style="display:none;">
+  <div class="pipeline-wrap">
+    <div class="pipeline-kpi" id="pipeline-kpi"></div>
+    <div class="pipeline-toolbar">
+      <select id="pf-stato" onchange="renderPipeline()">
+        <option value="">Tutti gli stati</option>
+        <option value="proposto">Proposto</option>
+        <option value="firmato">Firmato</option>
+        <option value="presentato">Presentato</option>
+        <option value="istruttoria">In istruttoria</option>
+        <option value="concesso">Concesso</option>
+        <option value="incassato">Incassato</option>
+        <option value="perso">Perso</option>
+      </select>
+      <select id="pf-cliente" onchange="renderPipeline()"><option value="">Tutti i clienti</option></select>
+      <button class="btn-add-p" onclick="openModalPipeline()">+ Aggiungi voce</button>
+      <button class="btn-export-p" onclick="exportPipeline()">↓ Esporta JS</button>
+    </div>
+    <table class="p-table" id="p-table">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Bando</th>
+          <th>Stato</th>
+          <th>Retainer</th>
+          <th>Success fee attesa</th>
+          <th>Importo concesso</th>
+          <th>Fee su concesso</th>
+          <th>Contratto</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="p-tbody"></tbody>
+    </table>
+    <div class="empty-pipeline" id="p-empty" style="display:none">
+      Nessuna voce in pipeline.<br><span style="font-size:12px">Clicca <strong>+ Aggiungi voce</strong> per iniziare a tracciare i tuoi incarichi.</span>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AGGIUNGI PIPELINE -->
+<div class="modal-overlay" id="modal-pipeline">
+  <div class="modal-box">
+    <div class="modal-title">📋 Aggiungi / Modifica voce pipeline</div>
+    <input type="hidden" id="m-edit-id">
+    <div class="modal-field">
+      <label>Cliente</label>
+      <select id="m-cliente"></select>
+    </div>
+    <div class="modal-field">
+      <label>Bando</label>
+      <select id="m-bando"></select>
+    </div>
+    <div class="modal-row2">
+      <div class="modal-field">
+        <label>Stato</label>
+        <select id="m-stato">
+          <option value="proposto">Proposto</option>
+          <option value="firmato">Firmato</option>
+          <option value="presentato">Presentato</option>
+          <option value="istruttoria">In istruttoria</option>
+          <option value="concesso">Concesso</option>
+          <option value="incassato">Incassato</option>
+          <option value="perso">Perso</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Data contratto</label>
+        <input type="text" id="m-data" placeholder="es. 15/01/2026">
+      </div>
+    </div>
+    <div class="modal-row2">
+      <div class="modal-field">
+        <label>Retainer (€)</label>
+        <input type="number" id="m-retainer" placeholder="1500" min="0">
+      </div>
+      <div class="modal-field">
+        <label>Retainer pagato?</label>
+        <select id="m-ret-pagato"><option value="true">✓ Sì, pagato</option><option value="false">✗ Non ancora</option></select>
+      </div>
+    </div>
+    <div class="modal-row2">
+      <div class="modal-field">
+        <label>Success fee %</label>
+        <input type="number" id="m-sf-perc" placeholder="6" min="0" max="100" step="0.5">
+      </div>
+      <div class="modal-field">
+        <label>Contributo max bando (€)</label>
+        <input type="number" id="m-contrib-max" placeholder="200000" min="0">
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>Importo concesso (€) — compilare solo se concesso/incassato</label>
+      <input type="number" id="m-contrib-conc" placeholder="0" min="0">
+    </div>
+    <div class="modal-field">
+      <label>Note</label>
+      <textarea id="m-note" rows="2" placeholder="Note libere..." style="resize:vertical"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeModalPipeline()">Annulla</button>
+      <button class="btn-modal-save" onclick="saveModalPipeline()">Salva voce</button>
+    </div>
+  </div>
 </div>
 
 <!-- SIDE PANEL -->
@@ -894,6 +1074,247 @@ const CLIENTI = {
   "Yourease":              { piva: "04239661202",  aiutiRicevuti: 153197,    dataVerifica: "15/06/2026" },
 };
 
+// ─── PIPELINE ────────────────────────────────────────────────────────────
+// stati: proposto | firmato | presentato | istruttoria | concesso | incassato | perso
+// Modifica qui per aggiungere/rimuovere incarichi. Gli stati si possono anche cambiare
+// dal browser (salvati in localStorage) — usa "Esporta JS" per rendere le modifiche permanenti.
+const PIPELINE_DEFAULT = [
+  // Esempio struttura — decommentare e compilare:
+  // { id:"p1", bando:"Collabora & Innova 2 – Lombardia", cliente:"Destino Italia",
+  //   stato:"presentato", retainer:1500, retainerPagato:true, successFeePerc:8,
+  //   contributoMax:300000, contributoConc:0, dataContratto:"15/01/2026", note:"" },
+];
+
+function getPipeline() {
+  const raw = localStorage.getItem('n4_pipeline');
+  if (raw) {
+    try {
+      const saved = JSON.parse(raw);
+      // merge: partenza da DEFAULT, override con localStorage
+      const merged = PIPELINE_DEFAULT.map(d => ({ ...d, ...(saved.find(s => s.id === d.id) || {}) }));
+      // aggiunte solo in localStorage (id non presente in DEFAULT)
+      saved.filter(s => !PIPELINE_DEFAULT.find(d => d.id === s.id)).forEach(s => merged.push(s));
+      return merged;
+    } catch { return [...PIPELINE_DEFAULT]; }
+  }
+  return [...PIPELINE_DEFAULT];
+}
+function savePipeline(pl) { localStorage.setItem('n4_pipeline', JSON.stringify(pl)); }
+
+const PIPELINE_STATO_CFG = {
+  proposto:    { label:'Proposto',        bg:'#f1f5f9', color:'#64748b' },
+  firmato:     { label:'Firmato',         bg:'#dbeafe', color:'#1d4ed8' },
+  presentato:  { label:'Presentato',      bg:'#ccfbf1', color:'#0f766e' },
+  istruttoria: { label:'In istruttoria',  bg:'#fef3c7', color:'#92400e' },
+  concesso:    { label:'Concesso',        bg:'#dcfce7', color:'#15803d' },
+  incassato:   { label:'Incassato',       bg:'#14532d', color:'white'   },
+  perso:       { label:'Perso',           bg:'#fee2e2', color:'#dc2626' },
+};
+
+function fmtEurK(n) {
+  if (!n) return '—';
+  return n >= 1000 ? '€' + (n/1000).toLocaleString('it-IT',{maximumFractionDigits:1}) + 'k' : '€' + Math.round(n).toLocaleString('it-IT');
+}
+function fmtEurFull(n) { return '€' + (n||0).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+function renderPipeline() {
+  const pl = getPipeline();
+  const fs = document.getElementById('pf-stato').value;
+  const fc = document.getElementById('pf-cliente').value;
+
+  // Popola filtro clienti
+  const clientiPL = [...new Set(pl.map(p => p.cliente))].sort();
+  const sel = document.getElementById('pf-cliente');
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">Tutti i clienti</option>' +
+    clientiPL.map(c => `<option value="${c}"${c===prev?' selected':''}>${c}</option>`).join('');
+
+  const filt = pl.filter(p => (!fs || p.stato === fs) && (!fc || p.cliente === fc));
+
+  // KPI
+  const attivi = pl.filter(p => p.stato !== 'perso');
+  const firmati = attivi.filter(p => ['firmato','presentato','istruttoria','concesso','incassato'].includes(p.stato));
+  const totalRetainer = firmati.reduce((s,p) => s + (p.retainer||0), 0);
+  const retainerPagati = firmati.filter(p => p.retainerPagato).reduce((s,p) => s + (p.retainer||0), 0);
+  const sfAttesa = attivi.filter(p => ['presentato','istruttoria'].includes(p.stato))
+    .reduce((s,p) => s + (p.contributoMax||0) * (p.successFeePerc||0) / 100, 0);
+  const concessi = attivi.filter(p => ['concesso','incassato'].includes(p.stato));
+  const totConcessi = concessi.reduce((s,p) => s + (p.contributoConc||0), 0);
+  const feeConc = concessi.reduce((s,p) => s + (p.contributoConc||0) * (p.successFeePerc||0) / 100, 0);
+
+  document.getElementById('pipeline-kpi').innerHTML = `
+    <div class="pkpi p-blue">
+      <div class="pkpi-icon">📝</div>
+      <div class="pkpi-val">${firmati.length}</div>
+      <div class="pkpi-lbl">Contratti firmati</div>
+      <div class="pkpi-sub">Retainer: ${fmtEurFull(totalRetainer)} · Incassato: ${fmtEurFull(retainerPagati)}</div>
+    </div>
+    <div class="pkpi p-teal">
+      <div class="pkpi-icon">📤</div>
+      <div class="pkpi-val">${attivi.filter(p=>['presentato','istruttoria'].includes(p.stato)).length}</div>
+      <div class="pkpi-lbl">Domande in corso</div>
+      <div class="pkpi-sub">Success fee attesa: ${fmtEurFull(sfAttesa)}</div>
+    </div>
+    <div class="pkpi p-green">
+      <div class="pkpi-icon">🏆</div>
+      <div class="pkpi-val teal">${fmtEurK(totConcessi)}</div>
+      <div class="pkpi-lbl">Contributi concessi</div>
+      <div class="pkpi-sub">Success fee maturata: ${fmtEurFull(feeConc)}</div>
+    </div>
+    <div class="pkpi p-gold">
+      <div class="pkpi-icon">💰</div>
+      <div class="pkpi-val gold">${fmtEurFull(retainerPagati + feeConc)}</div>
+      <div class="pkpi-lbl">Fee incassate totali</div>
+      <div class="pkpi-sub">Retainer + success fee su concessi</div>
+    </div>
+  `;
+
+  const tbody = document.getElementById('p-tbody');
+  tbody.innerHTML = '';
+  document.getElementById('p-empty').style.display = filt.length ? 'none' : 'block';
+  document.getElementById('p-table').style.display = filt.length ? '' : 'none';
+
+  filt.forEach(p => {
+    const sc = PIPELINE_STATO_CFG[p.stato] || { label:p.stato, bg:'#f1f5f9', color:'#64748b' };
+    const sfAtt = (p.contributoMax||0) * (p.successFeePerc||0) / 100;
+    const sfConc = (p.contributoConc||0) * (p.successFeePerc||0) / 100;
+    const statoSel = Object.keys(PIPELINE_STATO_CFG).map(s => {
+      const c = PIPELINE_STATO_CFG[s];
+      return `<option value="${s}"${p.stato===s?' selected':''}>${c.label}</option>`;
+    }).join('');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="td-cliente">${p.cliente}</td>
+      <td class="td-bando"><span title="${p.bando}">${p.bando}</span></td>
+      <td>
+        <select class="p-stato-sel" style="background:${sc.bg};color:${sc.color};border-color:${sc.bg}"
+          onchange="updatePipelineStato('${p.id}', this)">
+          ${statoSel}
+        </select>
+      </td>
+      <td>
+        <span class="td-euro ${p.retainerPagato?'green':'gray'}">${fmtEurFull(p.retainer||0)}</span>
+        <span class="p-tag-ret ${p.retainerPagato?'p-ret-ok':'p-ret-no'}" style="margin-left:4px">
+          ${p.retainerPagato?'✓ pagato':'✗ non pagato'}
+        </span>
+      </td>
+      <td class="td-euro blue">${['presentato','istruttoria'].includes(p.stato) ? fmtEurFull(sfAtt) : '—'}</td>
+      <td>
+        <input type="number" value="${p.contributoConc||0}" min="0"
+          style="width:110px;border:1.5px solid #e2e8f0;border-radius:6px;padding:4px 8px;font-size:11px;font-family:inherit"
+          onchange="updatePipelineConc('${p.id}', this.value)"
+          ${!['concesso','incassato'].includes(p.stato)?'disabled style="opacity:0.4;width:110px"':''}>
+      </td>
+      <td class="td-euro gold">${['concesso','incassato'].includes(p.stato) && p.contributoConc ? fmtEurFull(sfConc) : '—'}</td>
+      <td style="font-size:11px;color:#94a3b8">${p.dataContratto||'—'}</td>
+      <td>
+        <button onclick="editPipeline('${p.id}')" style="background:none;border:none;cursor:pointer;font-size:13px;padding:4px" title="Modifica">✏️</button>
+        <button onclick="deletePipeline('${p.id}')" style="background:none;border:none;cursor:pointer;font-size:13px;padding:4px" title="Elimina">🗑️</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function updatePipelineStato(id, sel) {
+  const pl = getPipeline();
+  const entry = pl.find(p => p.id === id);
+  if (!entry) return;
+  const oldStato = entry.stato;
+  entry.stato = sel.value;
+  const sc = PIPELINE_STATO_CFG[sel.value] || { bg:'#f1f5f9', color:'#64748b' };
+  sel.style.background = sc.bg;
+  sel.style.color = sc.color;
+  sel.style.borderColor = sc.bg;
+  savePipeline(pl);
+  // Ri-render solo i KPI
+  renderPipeline();
+}
+
+function updatePipelineConc(id, val) {
+  const pl = getPipeline();
+  const entry = pl.find(p => p.id === id);
+  if (entry) { entry.contributoConc = parseFloat(val) || 0; savePipeline(pl); renderPipeline(); }
+}
+
+function deletePipeline(id) {
+  if (!confirm('Eliminare questa voce dalla pipeline?')) return;
+  const pl = getPipeline().filter(p => p.id !== id);
+  savePipeline(pl);
+  renderPipeline();
+}
+
+function openModalPipeline(editId) {
+  const modal = document.getElementById('modal-pipeline');
+  // Popola select clienti
+  const clientiList = [...new Set(Object.keys(CLIENTI).concat(BANDI.flatMap(b=>b.clienti.map(c=>c.replace(' *','')))))]
+    .sort().filter(Boolean);
+  document.getElementById('m-cliente').innerHTML = clientiList.map(c=>`<option value="${c}">${c}</option>`).join('');
+  // Popola select bandi
+  document.getElementById('m-bando').innerHTML = BANDI.map(b=>`<option value="${b.nome}">${b.nome}</option>`).join('');
+
+  if (editId) {
+    const p = getPipeline().find(x => x.id === editId);
+    if (p) {
+      document.getElementById('m-edit-id').value = p.id;
+      document.getElementById('m-cliente').value = p.cliente;
+      document.getElementById('m-bando').value = p.bando;
+      document.getElementById('m-stato').value = p.stato;
+      document.getElementById('m-data').value = p.dataContratto || '';
+      document.getElementById('m-retainer').value = p.retainer || '';
+      document.getElementById('m-ret-pagato').value = String(p.retainerPagato);
+      document.getElementById('m-sf-perc').value = p.successFeePerc || '';
+      document.getElementById('m-contrib-max').value = p.contributoMax || '';
+      document.getElementById('m-contrib-conc').value = p.contributoConc || '';
+      document.getElementById('m-note').value = p.note || '';
+    }
+  } else {
+    document.getElementById('m-edit-id').value = '';
+    ['m-data','m-retainer','m-sf-perc','m-contrib-max','m-contrib-conc','m-note'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('m-stato').value = 'proposto';
+    document.getElementById('m-ret-pagato').value = 'false';
+  }
+  modal.classList.add('open');
+}
+function editPipeline(id) { openModalPipeline(id); }
+function closeModalPipeline() { document.getElementById('modal-pipeline').classList.remove('open'); }
+
+function saveModalPipeline() {
+  const editId = document.getElementById('m-edit-id').value;
+  const entry = {
+    id: editId || 'p' + Date.now(),
+    bando: document.getElementById('m-bando').value,
+    cliente: document.getElementById('m-cliente').value,
+    stato: document.getElementById('m-stato').value,
+    retainer: parseFloat(document.getElementById('m-retainer').value) || 0,
+    retainerPagato: document.getElementById('m-ret-pagato').value === 'true',
+    successFeePerc: parseFloat(document.getElementById('m-sf-perc').value) || 6,
+    contributoMax: parseFloat(document.getElementById('m-contrib-max').value) || 0,
+    contributoConc: parseFloat(document.getElementById('m-contrib-conc').value) || 0,
+    dataContratto: document.getElementById('m-data').value,
+    note: document.getElementById('m-note').value,
+  };
+  const pl = getPipeline();
+  if (editId) {
+    const idx = pl.findIndex(p => p.id === editId);
+    if (idx >= 0) pl[idx] = entry; else pl.push(entry);
+  } else {
+    pl.push(entry);
+  }
+  savePipeline(pl);
+  closeModalPipeline();
+  renderPipeline();
+}
+
+function exportPipeline() {
+  const pl = getPipeline();
+  const js = 'const PIPELINE_DEFAULT = ' + JSON.stringify(pl, null, 2) + ';';
+  const ta = Object.assign(document.createElement('textarea'), {value: js, style:'position:fixed;opacity:0'});
+  document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  alert('✓ JS copiato negli appunti!\nIncolla nel file dashboard_bandi.html, sostituendo PIPELINE_DEFAULT.\nOra puoi fare push per rendere le modifiche visibili a tutti.');
+}
+
 // ─── CONFIG ──────────────────────────────────────────────────────────────
 const STATO_CFG = {
   aperto:      { label:"Aperto",        cls:"b-aperto" },
@@ -1044,6 +1465,9 @@ function render() {
     const chip = c => {
       const n = c.replace(' *','');
       if (doms.includes(n)) return `<span class="ct-dom" title="Domanda già presentata">✓ ${n}</span>`;
+      const alert = dmChipAlert(n);
+      if (alert === 'danger') return `<span class="ct-dm-danger" title="De minimis quasi esaurito (>90%)">⚠ ${n}</span>`;
+      if (alert === 'warn')   return `<span class="ct-dm-warn"   title="De minimis elevato (>75%)">⚠ ${n}</span>`;
       if (c.endsWith(' *')) return `<span class="ct-potential">${c}</span>`;
       return `<span class="ct">${c}</span>`;
     };
@@ -1103,13 +1527,17 @@ function render() {
 // ─── TAB SWITCHING ───────────────────────────────────────────────────────
 function switchTab(tab) {
   closePanel();
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => { if (t.textContent.toLowerCase().includes(tab === 'bandi' ? 'bandi' : tab === 'clienti' ? 'clienti' : 'scadenzario')) t.classList.add('active'); });
-  document.getElementById('view-bandi').style.display      = tab === 'bandi'      ? '' : 'none';
-  document.getElementById('view-clienti').style.display    = tab === 'clienti'    ? '' : 'none';
-  document.getElementById('view-scadenzario').style.display= tab === 'scadenzario'? '' : 'none';
-  if (tab === 'clienti')    renderClienti();
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const tabs = ['bandi','clienti','scadenzario','pipeline'];
+    t.classList.toggle('active', tabs[i] === tab);
+  });
+  document.getElementById('view-bandi').style.display       = tab === 'bandi'       ? '' : 'none';
+  document.getElementById('view-clienti').style.display     = tab === 'clienti'     ? '' : 'none';
+  document.getElementById('view-scadenzario').style.display = tab === 'scadenzario' ? '' : 'none';
+  document.getElementById('view-pipeline').style.display    = tab === 'pipeline'    ? '' : 'none';
+  if (tab === 'clienti')     renderClienti();
   if (tab === 'scadenzario') renderScadenzario();
+  if (tab === 'pipeline')    renderPipeline();
 }
 
 // ─── SIDE PANEL ──────────────────────────────────────────────────────────
@@ -1150,7 +1578,8 @@ function closePanel() {
   document.getElementById('side-panel').classList.remove('open');
   document.getElementById('panel-overlay').classList.remove('open');
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closePanel(); closeModalPipeline(); } });
+document.getElementById('modal-pipeline').addEventListener('click', e => { if (e.target === e.currentTarget) closeModalPipeline(); });
 
 // ─── DE MINIMIS SECTION ──────────────────────────────────────────────────
 function dmSection(name) {
@@ -1229,12 +1658,47 @@ function renderClienti() {
           ${urgenti.length ? `<span class="cs cs-u">${urgenti.length} urgenti</span>` : ''}
           ${inAp.length ? `<span class="cs cs-i">${inAp.length} in apertura</span>` : ''}
         </span>
+        <button class="btn-print-cliente" onclick="event.stopPropagation();printCliente('${name.replace(/'/g,"\\'")}')">🖨 Stampa</button>
         <span class="client-chevron">▾</span>
       </div>
       ${dm}
       <div class="client-bandi">${rows || '<div style="padding:10px 14px;font-size:11px;color:#aaa">Nessun bando attivo</div>'}</div>
     </div>`;
   }).join('');
+}
+
+// ─── COUNTDOWN HELPER ────────────────────────────────────────────────────
+function parseScadenzaDate(str) {
+  if (!str) return null;
+  // formato dd/mm/yyyy
+  const m1 = str.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m1) return new Date(+m1[3], +m1[2]-1, +m1[1]);
+  // formato "30 giugno 2026" / "31 luglio 2026"
+  const mesi = {gennaio:0,febbraio:1,marzo:2,aprile:3,maggio:4,giugno:5,luglio:6,agosto:7,settembre:8,ottobre:9,novembre:10,dicembre:11};
+  const m2 = str.toLowerCase().match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/);
+  if (m2 && mesi[m2[2]] !== undefined) return new Date(+m2[3], mesi[m2[2]], +m2[1]);
+  return null;
+}
+function countdownBadge(scadenza, urgente) {
+  const d = parseScadenzaDate(scadenza);
+  if (!d) return '';
+  const oggi = new Date(); oggi.setHours(0,0,0,0);
+  const gg = Math.round((d - oggi) / 86400000);
+  if (gg < 0) return `<span class="scad-gg scad-gg-urg">scaduto</span>`;
+  if (gg <= 14) return `<span class="scad-gg scad-gg-urg">⚠ ${gg} giorni</span>`;
+  if (gg <= 45) return `<span class="scad-gg scad-gg-warn">${gg} giorni</span>`;
+  return `<span class="scad-gg scad-gg-ok">${gg} giorni</span>`;
+}
+
+// ─── DE MINIMIS ALERT CHIP ───────────────────────────────────────────────
+function dmChipAlert(clienteName) {
+  const d = CLIENTI[clienteName];
+  if (!d || !d.dataVerifica) return null;
+  const residuo = DEMINIMIS_MAX - (d.aiutiRicevuti || 0);
+  const perc = (d.aiutiRicevuti || 0) / DEMINIMIS_MAX;
+  if (perc >= 0.90) return 'danger';
+  if (perc >= 0.75) return 'warn';
+  return null;
 }
 
 // ─── SCADENZARIO ─────────────────────────────────────────────────────────
@@ -1249,6 +1713,7 @@ function renderScadenzario() {
       bandi.map(b => {
         const idx = BANDI.indexOf(b);
         const cls = b.urgente ? 's-urg' : b.aperturaImminente ? 's-apt' : '';
+        const cdwn = countdownBadge(b.scadenza, b.urgente);
         return `<div class="scad-row ${cls}" onclick="openPanel(BANDI[${idx}])">
           <div class="scad-left">
             <div class="scad-nome">${b.nome}
@@ -1258,13 +1723,20 @@ function renderScadenzario() {
             </div>
             <div class="scad-ente">${b.ente} · ${b.regione}</div>
             <div style="margin-top:6px">
-              ${b.clienti.slice(0,6).map(c => c.endsWith(' *') ? `<span class="ct-potential">${c}</span>` : `<span class="ct">${c}</span>`).join('')}
+              ${b.clienti.slice(0,6).map(c => {
+                const n = c.replace(' *','');
+                const alert = dmChipAlert(n);
+                if (alert === 'danger') return `<span class="ct-dm-danger" title="De minimis quasi esaurito">⚠ ${n}</span>`;
+                if (alert === 'warn')   return `<span class="ct-dm-warn"   title="De minimis elevato">⚠ ${n}</span>`;
+                return c.endsWith(' *') ? `<span class="ct-potential">${c}</span>` : `<span class="ct">${c}</span>`;
+              }).join('')}
               ${b.clienti.length > 6 ? `<span style="font-size:10px;color:#aaa"> +${b.clienti.length-6}</span>` : ''}
             </div>
           </div>
           <div class="scad-right">
             <div class="scad-contributo">${b.contributo}</div>
             <div class="scad-data${b.urgente?' urg':''}">${b.scadenza}</div>
+            ${cdwn}
           </div>
         </div>`;
       }).join('');
@@ -1273,6 +1745,67 @@ function renderScadenzario() {
   document.getElementById('scad-wrap').innerHTML =
     renderGroup('🟢 Bandi Aperti', aperti) +
     renderGroup('🔵 In Apertura', inApertura);
+}
+
+// ─── STAMPA SCHEDA CLIENTE ────────────────────────────────────────────────
+function printCliente(name) {
+  const d = CLIENTI[name] || {};
+  const bMap = {};
+  BANDI.forEach(b => {
+    b.clienti.forEach(c => {
+      if (c.replace(' *','') === name) {
+        if (!bMap[b.stato]) bMap[b.stato] = [];
+        bMap[b.stato].push(b);
+      }
+    });
+  });
+  const fmtEur = n => '€' + Math.round(n).toLocaleString('it-IT');
+  const residuo = DEMINIMIS_MAX - (d.aiutiRicevuti || 0);
+  const perc = Math.min((d.aiutiRicevuti||0) / DEMINIMIS_MAX * 100, 100);
+  const gruppi = [
+    { label:'Bandi Aperti', stato:'aperto' }, { label:'In Apertura', stato:'inapertura' },
+    { label:'In Lavorazione', stato:'lavorazione' }, { label:'Da Monitorare', stato:'monitorare' },
+  ];
+  const righe = gruppi.filter(g => bMap[g.stato]?.length).map(g =>
+    `<h3 style="margin:14px 0 6px;font-size:12pt;color:#1B3A6B">${g.label}</h3>` +
+    (bMap[g.stato]||[]).map(b =>
+      `<div style="border-left:3px solid #1B3A6B;padding:6px 10px;margin-bottom:6px;background:#f8fafc">
+        <strong>${b.nome}</strong><br>
+        <span style="font-size:10pt;color:#555">${b.ente} · ${b.regione} · Scadenza: ${b.scadenza}</span><br>
+        <span style="font-size:10pt;color:#1B3A6B;font-weight:700">${b.contributo}</span>
+      </div>`
+    ).join('')
+  ).join('');
+
+  const win = window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>Scheda ${name} – Next4 International</title>
+    <style>
+      body{font-family:Calibri,Arial,sans-serif;margin:20mm 22mm;font-size:11pt;color:#1a1a2e}
+      h1{font-size:18pt;color:#1B3A6B;margin-bottom:2px}
+      h2{font-size:12pt;color:#1B3A6B;margin:16px 0 6px;border-bottom:1px solid #e2e8f0;padding-bottom:4px}
+      .meta{font-size:10pt;color:#555;margin-bottom:16px}
+      .dm-bar{background:#e2e8f0;border-radius:4px;height:10px;width:100%;margin:6px 0}
+      .dm-fill{height:100%;border-radius:4px;background:${perc>=90?'#ef4444':perc>=75?'#f97316':perc>=50?'#fbbf24':'#4ade80'}}
+      .footer{margin-top:30px;font-size:9pt;color:#888;border-top:1px solid #e2e8f0;padding-top:8px}
+      @media print{@page{margin:15mm 20mm}}
+    </style></head><body>
+    <h1>${name}</h1>
+    <div class="meta">P.IVA: ${d.piva||'—'} &nbsp;·&nbsp; Scheda generata il ${new Date().toLocaleDateString('it-IT')}</div>
+    <h2>De Minimis</h2>
+    <table style="width:100%;font-size:10.5pt"><tr>
+      <td>Aiuti ricevuti: <strong>${fmtEur(d.aiutiRicevuti||0)}</strong></td>
+      <td>Residuo disponibile: <strong style="color:${perc>=90?'#dc2626':perc>=75?'#ea580c':'#16a34a'}">${fmtEur(residuo)}</strong></td>
+      <td>Massimale: <strong>${fmtEur(DEMINIMIS_MAX)}</strong></td>
+      <td>Verificato al: ${d.dataVerifica||'—'}</td>
+    </tr></table>
+    <div class="dm-bar"><div class="dm-fill" style="width:${perc.toFixed(1)}%"></div></div>
+    <h2>Bandi Abbinati</h2>
+    ${righe || '<p style="color:#888;font-size:10pt">Nessun bando attivo abbinato.</p>'}
+    <div class="footer">Next4 International S.R.L. · next4international.com · P.IVA 17058401005</div>
+    <script>window.print()<\/script>
+  </body></html>`);
+  win.document.close();
 }
 </script>
 </body>
