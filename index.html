@@ -371,6 +371,16 @@
   /* stampa cliente */
   .btn-print-cliente { background:#f1f5f9; border:1.5px solid #e2e8f0; border-radius:6px; padding:4px 10px; font-size:10px; font-weight:700; cursor:pointer; color:#64748b; font-family:inherit; margin-left:auto; }
   .btn-print-cliente:hover { border-color:#1B3A6B; color:#1B3A6B; }
+  .btn-ap { background:#94a3b8; color:white; border:none; border-radius:6px; padding:4px 10px; font-size:10px; font-weight:700; cursor:pointer; font-family:inherit; transition:background 0.15s; white-space:nowrap; }
+  .btn-ap.ap-active { background:#1B3A6B; }
+  .btn-ap.ap-active:hover { background:#002266; }
+  .btn-ap:disabled { opacity:0.55; cursor:default; }
+  .bando-chk { width:14px; height:14px; cursor:pointer; accent-color:#1B3A6B; flex-shrink:0; margin-right:2px; }
+  /* AP Modal */
+  .ap-bando-sf-row { display:grid; grid-template-columns:1fr 90px; gap:10px; align-items:center; background:#f8fafc; border-radius:6px; padding:8px 12px; margin-bottom:6px; }
+  .ap-bando-sf-row .ap-bando-label { font-size:12px; font-weight:600; color:#1B3A6B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ap-sf-input { border:1.5px solid #e2e8f0; border-radius:6px; padding:6px 8px; font-size:12px; font-family:inherit; width:100%; text-align:center; outline:none; }
+  .ap-sf-input:focus { border-color:#1B3A6B; }
 
   @media (max-width: 768px) {
     .header { padding: 0 16px; }
@@ -559,6 +569,41 @@
     <div class="modal-actions">
       <button class="btn-modal-cancel" onclick="closeModalPipeline()">Annulla</button>
       <button class="btn-modal-save" onclick="saveModalPipeline()">Salva voce</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ACTION PLAN -->
+<div class="modal-overlay" id="modal-ap">
+  <div class="modal-box" style="width:580px">
+    <div class="modal-title" id="ap-modal-title">📄 Genera Action Plan</div>
+    <div style="background:#f0f4ff;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#1B3A6B">
+      <strong id="ap-client-name-display"></strong> &nbsp;·&nbsp; P.IVA: <span id="ap-piva-display"></span>
+    </div>
+    <div class="modal-row2">
+      <div class="modal-field">
+        <label>Forma Giuridica</label>
+        <input type="text" id="ap-forma" value="S.R.L.">
+      </div>
+      <div class="modal-field">
+        <label>Indirizzo sede legale</label>
+        <input type="text" id="ap-indirizzo" placeholder="es. Via Roma 10">
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>CAP &amp; Città (sede legale)</label>
+      <input type="text" id="ap-citta" placeholder="es. 00100 – Roma (RM)">
+    </div>
+    <div style="border-top:1.5px solid #e2e8f0;margin:14px 0 10px"></div>
+    <div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Bandi selezionati · Success Fee</div>
+    <div id="ap-sf-rows"></div>
+    <div style="background:#eff6ff;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12px">
+      <strong>Retainer Fee totale:</strong> &euro; <span id="ap-retainer-tot" style="font-size:13px;font-weight:800"></span>,00 &nbsp;
+      (<span id="ap-num-bandi"></span> bandi × €1.500) · oltre IVA e oneri di legge
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeApModal()">Annulla</button>
+      <button class="btn-modal-save" onclick="generaActionPlanHTML()" style="background:#1B3A6B">📄 Genera Anteprima + JSON</button>
     </div>
   </div>
 </div>
@@ -1718,6 +1763,287 @@ function dmSection(name) {
   </div>`;
 }
 
+// ─── ACTION PLAN ─────────────────────────────────────────────────────────
+const selectedBandiPerCliente = {};
+let _apCurrentCliente = null;
+
+function toggleBandoSel(clienteName, bandoIdx) {
+  if (!selectedBandiPerCliente[clienteName]) selectedBandiPerCliente[clienteName] = new Set();
+  const s = selectedBandiPerCliente[clienteName];
+  if (s.has(bandoIdx)) s.delete(bandoIdx); else s.add(bandoIdx);
+  const safeId = clienteName.replace(/[^a-zA-Z0-9]/g,'_');
+  const btn = document.getElementById('btn-ap-' + safeId);
+  if (!btn) return;
+  const count = s.size;
+  if (count > 0) {
+    btn.disabled = false;
+    btn.textContent = '📄 Action Plan (' + count + ')';
+    btn.classList.add('ap-active');
+  } else {
+    btn.disabled = true;
+    btn.textContent = '📄 Action Plan';
+    btn.classList.remove('ap-active');
+  }
+}
+
+function openApModal(clienteName) {
+  const sel = selectedBandiPerCliente[clienteName];
+  if (!sel || sel.size === 0) return;
+  _apCurrentCliente = clienteName;
+  const d = CLIENTI[clienteName] || {};
+  const bandiSel = Array.from(sel).map(idx => ({idx, b: BANDI[idx]})).filter(x => x.b);
+  document.getElementById('ap-modal-title').textContent = '📄 Action Plan – ' + clienteName;
+  document.getElementById('ap-client-name-display').textContent = clienteName;
+  document.getElementById('ap-piva-display').textContent = d.piva || '—';
+  document.getElementById('ap-num-bandi').textContent = bandiSel.length;
+  document.getElementById('ap-retainer-tot').textContent = (bandiSel.length * 1500).toLocaleString('it-IT');
+  document.getElementById('ap-sf-rows').innerHTML = bandiSel.map(({idx, b}) => {
+    const defSF = b.nome.toLowerCase().includes('voucher') ? 3 : 6;
+    return `<div class="ap-bando-sf-row">
+      <div class="ap-bando-label" title="${b.nome}">${b.nome}</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <input class="ap-sf-input" type="number" id="ap-sf-${idx}" value="${defSF}" min="0" max="100" step="0.5">
+        <span style="font-size:11px;color:#94a3b8">%</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('modal-ap').classList.add('open');
+}
+
+function closeApModal() {
+  document.getElementById('modal-ap').classList.remove('open');
+  _apCurrentCliente = null;
+}
+
+function generaActionPlanHTML() {
+  const clienteName = _apCurrentCliente;
+  if (!clienteName) return;
+  const sel = selectedBandiPerCliente[clienteName];
+  if (!sel || sel.size === 0) return;
+  const d = CLIENTI[clienteName] || {};
+  const bandiSel = Array.from(sel).map(idx => ({idx, b: BANDI[idx]})).filter(x => x.b);
+  const formaGiur = document.getElementById('ap-forma').value.trim() || 'S.R.L.';
+  const indirizzo = document.getElementById('ap-indirizzo').value.trim();
+  const citta    = document.getElementById('ap-citta').value.trim();
+  const piva     = d.piva || '';
+  const n = bandiSel.length;
+  const sfData = bandiSel.map(({idx, b}) => ({
+    nome: b.nome, ente: b.ente, contributo: b.contributo,
+    sfPerc: parseFloat(document.getElementById('ap-sf-' + idx).value) || 6
+  }));
+
+  // ── numeri in lettere per retainer ──
+  const numLettera = ['zero','uno','due','tre','quattro','cinque','sei','sette','otto','nove','dieci'];
+  const retainerStr = ['',
+    'millecinquecento', 'tremila', 'quattromilacinquecento', 'seimila',
+    'settemilacinquecento', 'novemila', 'diecimilacinquecento', 'dodicimila'
+  ];
+  const fmtRetainer = k => {
+    const v = k * 1500;
+    const lit = k <= 8 ? retainerStr[k] : '';
+    return `<strong>Euro ${v.toLocaleString('it-IT')},00</strong>${lit ? ` (${lit} virgola zero zero)` : ''} oltre IVA e oneri di legge`;
+  };
+  const ordLettera = ['','primo','secondo','terzo','quarto','quinto','sesto','settimo','ottavo','nono','decimo'];
+  const lettereBando = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  // ── service blocks (Allegato A) ──
+  const serviceBlocks = sfData.map((bd, i) => `
+    <div class="service-block">
+      <div class="service-title">${i+1}. Presentazione domanda di contributo su ${bd.nome}.</div>
+      <ul>
+        <li>Studio preliminare di fattibilità con la Direzione tecnica e finanziaria della possibilità di accedere alle agevolazioni</li>
+      </ul>
+      <p class="sub-label">Per il progetto avviato:</p>
+      <ul>
+        <li>Acquisizione ed analisi della documentazione economico-finanziaria a corredo del programma</li>
+        <li>Preparazione, redazione e presentazione delle domande di agevolazione</li>
+        <li>Assistenza presso gli organi competenti, per qualsiasi necessità occorrente in fase istruttoria</li>
+      </ul>
+      <p class="sub-label">In caso di aggiudicazione:</p>
+      <ul>
+        <li>Assistenza per la raccolta della documentazione di spesa e rendicontazione</li>
+        <li>Assistenza per la preparazione della documentazione tecnica e amministrativa necessaria per le richieste di erogazione, su base intermedia e finale</li>
+      </ul>
+    </div>`).join('');
+
+  // ── retainer rows ──
+  let retainerRows = '';
+  if (n === 1) {
+    retainerRows = `<tr>
+      <td>Supporto per la predisposizione e presentazione del bando.</td>
+      <td>${fmtRetainer(1)}</td>
+    </tr>`;
+  } else {
+    for (let k = 1; k <= n; k++) {
+      const desc = k === 1
+        ? `Supporto per la predisposizione e presentazione di <strong>1 bando</strong>.`
+        : `Supporto per la predisposizione e presentazione di <strong>${k} bandi</strong>.`;
+      retainerRows += `<tr><td>${desc}</td><td>${fmtRetainer(k)}</td></tr>`;
+    }
+  }
+
+  // ── success fee blocks (Allegato B) ──
+  const sfBlocks = sfData.map((bd, i) => `
+    <p class="sf-section-title">${lettereBando[i]}. Success Fee – ${bd.nome}</p>
+    <table class="fee-table">
+      <tr>
+        <th>Commesse e/o Contributi</th>
+        <th>Success Fee (%)</th>
+      </tr>
+      <tr>
+        <td>La Success Fee è dovuta per ciascun strumento agevolativo oggetto di incarico ed è calcolata sull'importo del contributo effettivamente concesso e/o erogato, al netto di IVA e di eventuali riduzioni, revoche o rimodulazioni.</td>
+        <td style="text-align:center;font-weight:700;vertical-align:middle">${bd.sfPerc}%</td>
+      </tr>
+    </table>`).join('');
+
+  const recipientLines = [clienteName + ' ' + formaGiur, indirizzo, citta, piva ? 'P.I. ' + piva : ''].filter(Boolean).join('<br>');
+  const footer = `<div class="page-footer">
+    <strong>NEXT4INTERNATIONAL S.R.L.</strong>
+    Via Sicilia n. 125 - 00187 Roma (RM)<br>
+    P.IVA 17058401005 - PEC: next4international@legalmail.it<br>
+    Mail: info@next4international.com - Tel. 06 59878962 - next4international.com
+    <span class="page-num">{PAGENUM}</span>
+  </div>`;
+  const pageHeader = `<div class="page-header">
+    <span class="brand"><strong>INTERNATIONAL</strong> - Next4 Group | <em>Investment</em></span>
+    <span class="doc-ref">Action Plan – ${clienteName}</span>
+  </div>`;
+
+  const html = `<!DOCTYPE html><html lang="it"><head>
+  <meta charset="UTF-8">
+  <title>Action Plan – ${clienteName}</title>
+  <style>
+    @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Calibri', 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #1a1a1a; background: #fff; }
+    .page { width: 210mm; min-height: 297mm; padding: 18mm 20mm 28mm 20mm; position: relative; page-break-after: always; }
+    .page:last-child { page-break-after: avoid; }
+    .page-header { display:flex; justify-content:space-between; align-items:baseline; padding-bottom:6px; margin-bottom:20px; border-bottom:1px solid #ccc; }
+    .page-header .brand { font-size:10pt; color:#1a1a1a; }
+    .page-header .brand strong { color:#003087; }
+    .page-header .brand em { color:#555; font-style:italic; }
+    .page-header .doc-ref { font-size:10pt; color:#003087; text-decoration:underline; }
+    .page-footer { position:absolute; bottom:10mm; left:20mm; right:20mm; border-top:1px solid #ccc; padding-top:5px; font-size:8pt; color:#003087; line-height:1.5; }
+    .page-footer strong { color:#1a1a1a; font-size:8.5pt; display:block; margin-bottom:1px; }
+    .page-num { position:absolute; right:0; bottom:0; color:#555; font-size:8pt; }
+    .cover-logo { text-align:center; margin-top:10mm; margin-bottom:18mm; }
+    .logo-text { font-size:32pt; font-weight:300; color:#003087; letter-spacing:-1px; line-height:1; }
+    .logo-text .arrow { color:#00b8d4; font-weight:700; }
+    .logo-sub { font-size:11pt; color:#555; margin-top:4px; letter-spacing:1px; }
+    .cover-recipient { text-align:right; margin-bottom:30mm; font-size:11pt; line-height:1.9; }
+    .cover-subject { text-align:center; margin-bottom:10mm; }
+    .cover-subject .oggetto { font-size:20pt; font-weight:400; color:#1a1a1a; margin-bottom:6px; }
+    .cover-subject .titolo { font-size:22pt; font-weight:400; color:#1a1a1a; }
+    h2.allegato { font-size:13pt; font-weight:700; text-align:center; margin-bottom:4px; }
+    h3.allegato-sub { font-size:11pt; font-weight:700; font-style:italic; text-align:center; margin-bottom:14px; }
+    .intro-text { font-size:10.5pt; margin-bottom:14px; }
+    .service-block { border:1px solid #1a1a1a; padding:10px 14px; margin-bottom:12px; }
+    .service-block .service-title { font-weight:700; font-size:10.5pt; margin-bottom:8px; }
+    .service-block ul { margin-left:18px; margin-bottom:6px; }
+    .service-block ul li { font-size:10.5pt; margin-bottom:3px; }
+    .sub-label { font-weight:700; font-size:10.5pt; margin-top:8px; margin-bottom:4px; }
+    .retainer-intro { font-size:10.5pt; margin-bottom:10px; }
+    table.fee-table { width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10.5pt; }
+    table.fee-table th { font-weight:700; border:1px solid #1a1a1a; padding:7px 10px; text-align:left; background:#fff; }
+    table.fee-table td { border:1px solid #1a1a1a; padding:8px 10px; vertical-align:top; }
+    table.fee-table td strong { font-weight:700; }
+    .fee-note { font-size:10.5pt; margin-bottom:14px; line-height:1.5; }
+    .sf-intro { font-size:10.5pt; margin-bottom:12px; line-height:1.5; }
+    .sf-section-title { font-size:10.5pt; font-weight:700; margin-bottom:8px; margin-top:14px; }
+    .signatures { margin-top:18mm; font-size:10.5pt; }
+    .signatures .date-line { margin-bottom:14mm; }
+    .sig-row { display:flex; justify-content:space-between; }
+    .sig-col { width:45%; text-align:center; }
+    .sig-line { border-bottom:1px solid #1a1a1a; margin-bottom:6px; height:25px; }
+    .sig-role { font-style:italic; font-size:10pt; }
+    .print-btn { position:fixed; top:18px; right:18px; background:#003087; color:#fff; border:none; padding:8px 18px; font-size:10pt; border-radius:5px; cursor:pointer; z-index:999; }
+    .print-btn:hover { background:#00409c; }
+    @media print { .print-btn { display:none; } .page { width:auto; } }
+  </style>
+</head><body>
+<button class="print-btn" onclick="window.print()">Salva / Stampa PDF</button>
+
+<!-- COPERTINA -->
+<div class="page">
+  <div class="cover-logo">
+    <div class="logo-text"><span class="arrow">i</span>nternational</div>
+    <div class="logo-sub">Next4 Group</div>
+  </div>
+  <div class="cover-recipient">${recipientLines}</div>
+  <div class="cover-subject">
+    <div class="oggetto">OGGETTO:</div>
+    <div class="titolo">Action Plan – ${clienteName}</div>
+  </div>
+  ${footer.replace('{PAGENUM}','1')}
+</div>
+
+<!-- ALLEGATO A -->
+<div class="page">
+  ${pageHeader}
+  <h2 class="allegato">ALLEGATO A</h2>
+  <h3 class="allegato-sub">Retainer Fee - Servizi di consulenza ed assistenza aziendale</h3>
+  <p class="intro-text">di seguito sono elencati i servizi forniti con il presente Contratto e indicati nell'articolo 3.1 lett. A.</p>
+  ${serviceBlocks}
+  <p class="retainer-intro">La Retainer Fee indicata nell'articolo 3.1 lettera a) del presente Contratto, è quantificabile come segue:</p>
+  <table class="fee-table">
+    <tr><th>Total Retainer fee</th><th></th></tr>
+    ${retainerRows}
+  </table>
+  <p class="fee-note">La Retainer Fee è dovuta indipendentemente dall'esito delle domande presentate, trattandosi di compenso per attività professionale di consulenza e assistenza. In caso di attivazione di più strumenti agevolativi, le attività preliminari (analisi economico finanziaria, raccolta documentale, verifica requisiti soggettivi) saranno svolte in modo unitario e coordinato, evitando duplicazioni e garantendo coerenza strategica tra le diverse misure agevolative.</p>
+  ${footer.replace('{PAGENUM}','2')}
+</div>
+
+<!-- ALLEGATO B -->
+<div class="page">
+  ${pageHeader}
+  <h2 class="allegato">ALLEGATO B</h2>
+  <h3 class="allegato-sub">Success Fee</h3>
+  <p class="sf-intro">La Success Fee matura al momento del provvedimento di concessione, ed è esigibile pro-quota in caso di erogazioni intermedie.<br><br>La struttura della Success Fee, indicata nell'art 3.1 lettera b) del presente Contratto, è quantificabile come segue:</p>
+  ${sfBlocks}
+  <p class="fee-note">Le parti concordano sin da ora che il compenso variabile (<strong>Success Fee</strong>) relativo al riconoscimento del finanziamento e/o dei contributi di cui sopra, verrà riconosciuto all'ottenimento dei fondi.<br>Gli importi citati nel presente Allegato B sono da ritenersi al netto dell'IVA e degli oneri previdenziali.</p>
+  <div class="signatures">
+    <div class="date-line">Roma, &nbsp;&nbsp; __ / __ / 2026</div>
+    <div class="sig-row">
+      <div class="sig-col">
+        <div style="margin-bottom:4px">Next4 International S.R.L</div>
+        <div class="sig-line"></div>
+        <div>Gabriele Italiano</div>
+        <div class="sig-role">Amministratore Delegato</div>
+      </div>
+      <div class="sig-col">
+        <div style="margin-bottom:4px">${clienteName}</div>
+        <div class="sig-line"></div>
+        <div>……………………………….</div>
+        <div class="sig-role">Amministratore Delegato</div>
+      </div>
+    </div>
+  </div>
+  ${footer.replace('{PAGENUM}','3')}
+</div>
+</body></html>`;
+
+  // apri anteprima
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+
+  // scarica JSON per script Python
+  const jsonData = {
+    clienteName, formaGiur, indirizzo, citta, piva,
+    bandi: sfData,
+    retainerPerBando: 1500,
+    retainerTotale: n * 1500,
+    data: new Date().toLocaleDateString('it-IT')
+  };
+  const blob = new Blob([JSON.stringify(jsonData, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'action_plan_' + clienteName.replace(/\s+/g,'_').toLowerCase() + '.json';
+  a.click();
+
+  closeApModal();
+}
+
 // ─── VISTA CLIENTI ───────────────────────────────────────────────────────
 function renderClienti() {
   const map = {};
@@ -1738,12 +2064,22 @@ function renderClienti() {
     const urgenti  = aperti.filter(x => x.b.urgente);
     const inAp     = entries.filter(x => x.b.stato==='inapertura');
     const attivi   = entries.filter(x => x.b.stato !== 'chiuso' && x.b.stato !== 'monitorare');
+    const safeId = name.replace(/[^a-zA-Z0-9]/g,'_');
+    const safeName = name.replace(/'/g,"\\'");
+    const selSet = selectedBandiPerCliente[name] || new Set();
+    const selCount = selSet.size;
     const rows = attivi
       .sort((a,b) => ORDINE[a.b.stato]-ORDINE[b.b.stato] || (b.b.urgente?1:0)-(a.b.urgente?1:0))
       .map(({b, star}) => {
         const sc = STATO_CFG[b.stato]||{label:b.stato,cls:''};
         const idx = BANDI.indexOf(b);
+        const selectable = b.stato === 'aperto' || b.stato === 'inapertura';
+        const checked = selectable && selSet.has(idx) ? 'checked' : '';
+        const chk = selectable
+          ? `<input type="checkbox" class="bando-chk" ${checked} onclick="event.stopPropagation();toggleBandoSel('${safeName}',${idx})" title="Seleziona per Action Plan">`
+          : `<span style="display:inline-block;width:14px;flex-shrink:0"></span>`;
         return `<div class="client-bando-row" onclick="openPanel(BANDI[${idx}])">
+          ${chk}
           <span class="badge ${sc.cls}" style="font-size:9px;padding:2px 6px;white-space:nowrap">${sc.label}</span>
           ${b.urgente ? '<span class="flg flg-urgente" style="font-size:8px">URG</span>' : ''}
           <span class="client-bando-nome" title="${b.nome}">${b.nome}${star?' *':''}</span>
@@ -1759,7 +2095,8 @@ function renderClienti() {
           ${urgenti.length ? `<span class="cs cs-u">${urgenti.length} urgenti</span>` : ''}
           ${inAp.length ? `<span class="cs cs-i">${inAp.length} in apertura</span>` : ''}
         </span>
-        <button class="btn-print-cliente" onclick="event.stopPropagation();printCliente('${name.replace(/'/g,"\\'")}')">🖨 Stampa</button>
+        <button class="btn-print-cliente" onclick="event.stopPropagation();printCliente('${safeName}')">🖨 Stampa</button>
+        <button class="btn-ap${selCount>0?' ap-active':''}" id="btn-ap-${safeId}" ${selCount===0?'disabled':''} onclick="event.stopPropagation();openApModal('${safeName}')">${selCount>0?'📄 Action Plan ('+selCount+')':'📄 Action Plan'}</button>
         <span class="client-chevron">▾</span>
       </div>
       ${dm}
