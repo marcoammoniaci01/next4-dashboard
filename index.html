@@ -2809,8 +2809,11 @@ function renderPipeline() {
 
   document.getElementById('p-empty').style.display = filt.length ? 'none' : 'block';
 
-  // ── LISTA TABELLARE ──
-  if (_pipelineView === 'lista') {
+  // normalizza stati mancanti
+  filt.forEach(p => { if (!p.stato || !KANBAN_STATI.find(s => s.id === p.stato)) p.stato = 'proposto'; });
+
+  // ── LISTA TABELLARE ── (sempre renderizzata, CSS la mostra/nasconde)
+  {
     const tbody = document.getElementById('p-tbody');
     tbody.innerHTML = '';
     filt.forEach(p => {
@@ -2863,10 +2866,10 @@ function renderPipeline() {
         </td>`;
       tbody.appendChild(tr);
     });
-    return;
   }
 
-  // ── KANBAN BOARD ──
+  // ── KANBAN BOARD ── (sempre renderizzato, CSS lo mostra/nasconde)
+
   const board = document.getElementById('pipeline-kanban');
   board.innerHTML = KANBAN_STATI.map(s => {
     const cards   = filt.filter(p => p.stato === s.id);
