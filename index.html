@@ -2869,48 +2869,45 @@ function renderPipeline() {
   }
 
   // ── KANBAN BOARD ── (sempre renderizzato, CSS lo mostra/nasconde)
-
   const board = document.getElementById('pipeline-kanban');
-  board.innerHTML = KANBAN_STATI.map(s => {
+  try { board.innerHTML = KANBAN_STATI.map(s => {
     const cards   = filt.filter(p => p.stato === s.id);
     const isPerso = s.id === 'perso';
     const colCls  = 'k-col' + (isPerso ? ' k-col-perso' : '');
 
     const cardHtml = cards.map(p => {
+      const nomeCliente = p.cliente || '?';
       const bObj    = BANDI.find(b => b.nome === p.bando);
-      const ico     = bObj ? getBandoIco(bObj) : '📄';
-      const avColor = clientAvatarColor(p.cliente);
-      const avInit  = clientInitials(p.cliente);
+      const ico     = bObj ? (getBandoIco(bObj) || '📄') : '📄';
+      const avColor = AVATAR_COLORS[nomeCliente.split('').reduce((h,c) => (h*31+c.charCodeAt(0))>>>0, 0) % AVATAR_COLORS.length];
+      const avInit  = (() => { const w = nomeCliente.trim().split(/\s+/); return w.length >= 2 ? (w[0][0]+w[1][0]).toUpperCase() : nomeCliente.substring(0,2).toUpperCase(); })();
       const sfAtt   = (p.contributoMax||0) * (p.successFeePerc||0) / 100;
       const sfConc  = (p.contributoConc||0) * (p.successFeePerc||0) / 100;
       const statoAvanzato = ['presentato','istruttoria','concesso','incassato'].includes(p.stato);
       const statoConc     = ['concesso','incassato'].includes(p.stato);
       const sa = p.serviziAccessori || [];
-      const totSA = sa.reduce((s,x) => s + (x.importo||0), 0);
-
-      const row = (lbl, val, extra='') => val
-        ? `<div class="k-card-row"><span class="k-card-rlbl">${lbl}</span><span class="k-card-rval">${val} ${extra}</span></div>`
-        : '';
+      const totSA = sa.reduce((acc,x) => acc + (x.importo||0), 0);
       const tag = (cls, txt) => `<span class="k-tag ${cls}">${txt}</span>`;
+      const kRow = (lbl, val, extra='') => val ? `<div class="k-card-row"><span class="k-card-rlbl">${lbl}</span><span class="k-card-rval">${val}${extra?' '+extra:''}</span></div>` : '';
 
       const rows = [
-        row('Contributo max', p.contributoMax ? fmtEurFull(p.contributoMax) : ''),
-        p.retainer ? `<div class="k-card-row"><span class="k-card-rlbl">Retainer</span><span class="k-card-rval">${fmtEurFull(p.retainer)} ${tag(p.retainerPagato?'k-tag-ok':'k-tag-warn', p.retainerPagato?'✓ pagato':'⏳ non pagato')}</span></div>` : '',
-        totSA ? `<div class="k-card-row"><span class="k-card-rlbl">Servizi acc.</span><span class="k-card-rval">${fmtEurFull(totSA)} ${sa.some(x=>!x.pagato)?tag('k-tag-warn','⏳'):tag('k-tag-ok','✓')}</span></div>` : '',
-        statoAvanzato && sfAtt ? `<div class="k-card-row"><span class="k-card-rlbl">Fee attesa</span><span class="k-card-rval">${tag('k-tag-blue', fmtEurFull(sfAtt))} ${p.successFeePagata?tag('k-tag-ok','✓ pagata'):''}</span></div>` : '',
-        statoConc && p.contributoConc ? row('Concesso', fmtEurFull(p.contributoConc)) : '',
-        statoConc && sfConc ? `<div class="k-card-row"><span class="k-card-rlbl">Fee concessa</span><span class="k-card-rval">${tag('k-tag-gold', fmtEurFull(sfConc))}</span></div>` : '',
+        kRow('Contributo max', p.contributoMax ? fmtEurFull(p.contributoMax) : ''),
+        p.retainer ? kRow('Retainer', fmtEurFull(p.retainer), tag(p.retainerPagato?'k-tag-ok':'k-tag-warn', p.retainerPagato?'✓ pagato':'⏳ non pagato')) : '',
+        totSA      ? kRow('Servizi acc.', fmtEurFull(totSA), sa.some(x=>!x.pagato)?tag('k-tag-warn','⏳'):tag('k-tag-ok','✓')) : '',
+        statoAvanzato && sfAtt       ? kRow('Fee attesa',  tag('k-tag-blue', fmtEurFull(sfAtt)) + (p.successFeePagata ? ' '+tag('k-tag-ok','✓ pagata') : '')) : '',
+        statoConc && p.contributoConc? kRow('Concesso',    fmtEurFull(p.contributoConc)) : '',
+        statoConc && sfConc          ? kRow('Fee concessa', tag('k-tag-gold', fmtEurFull(sfConc))) : '',
         p.note ? `<div style="font-size:9px;color:#94a3b8;font-style:italic;margin-top:2px;line-height:1.4">${p.note}</div>` : '',
       ].filter(Boolean).join('');
 
       return `<div class="k-card" draggable="true" data-kid="${p.id}">
         <div class="k-card-top">
           <div class="k-card-ico">${ico}</div>
-          <div class="k-card-bando">${p.bando}</div>
+          <div class="k-card-bando">${p.bando||'—'}</div>
         </div>
         <div class="k-card-client">
           <div class="k-card-avatar" style="background:${avColor}">${avInit}</div>
-          <div class="k-card-nome">${p.cliente}</div>
+          <div class="k-card-nome">${nomeCliente}</div>
         </div>
         ${rows ? `<div class="k-card-sep"></div>${rows}` : ''}
         <div class="k-card-footer" style="margin-top:8px;">
@@ -2935,7 +2932,7 @@ function renderPipeline() {
       ${cardHtml}
       <div class="k-col-drop-hint">Rilascia qui</div>
     </div>`;
-  }).join('');
+  }).join(''); } catch(e) { board.innerHTML = `<div style="padding:24px;color:#dc2626;font-size:12px;font-weight:600">⚠ Errore rendering Kanban: ${e.message}</div>`; return; }
 
   // drag & drop
   board.querySelectorAll('.k-card').forEach(card => {
