@@ -1602,8 +1602,6 @@
   <div class="stat-card stat-total"   onclick="quickFilter('')">            <div class="stat-dot"></div><div class="stat-num" id="c-totale">0</div><div class="stat-bar"><div class="stat-bar-fill" id="bar-c-totale" style="width:0%"></div></div><div class="stat-label">Totale</div></div>
 </div>
 
-<div id="urgenza-bar"  class="urgenza-bar"  style="display:none;" data-section="finanza"></div>
-<div id="apertura-bar" class="apertura-bar" style="display:none;" data-section="finanza"></div>
 
 <div class="tabs" id="tabs-finanza" style="display:none;">
   <button class="tab active" onclick="switchTab('bandi')">📋 Bandi</button>
@@ -3853,23 +3851,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const fmt = d => d.toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'});
   document.getElementById('header-date').innerHTML = `Aggiornata: ${fmt(oggi)}<br>Fonti: next4consulting.it · Invitalia · SIMEST · EIC · europainnovazione.com`;
   document.getElementById('footer-date').textContent = fmt(oggi);
-
-  // Banner urgenza
-  const urgenti = BANDI.filter(b => b.urgente && b.stato !== 'chiuso');
-  if (urgenti.length) {
-    const el = document.getElementById('urgenza-bar');
-    el.style.display = 'block';
-    el.innerHTML = '⚠️ <strong>Scadenza entro 30 giorni:</strong> ' +
-      urgenti.map(b => `<span class="u-item">📌 <strong>${b.nome}</strong> — ${b.scadenza}</span>`).join('');
-  }
-  // Banner apertura imminente
-  const imminenti = BANDI.filter(b => b.aperturaImminente);
-  if (imminenti.length) {
-    const el = document.getElementById('apertura-bar');
-    el.style.display = 'block';
-    el.innerHTML = '🟢 <strong>In apertura imminente:</strong> ' +
-      imminenti.map(b => `<span class="u-item">📅 <strong>${b.nome}</strong> — ${b.scadenza}</span>`).join('');
-  }
 
   // Popola select
   const stati = ['','aperto','inapertura','monitorare','lavorazione','chiuso'];
