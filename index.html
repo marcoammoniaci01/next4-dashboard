@@ -1646,6 +1646,8 @@
         <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
           <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="mc-startup"> Startup Innovativa</label>
           <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="mc-pmi-inn"> PMI Innovativa</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="mc-femminile"> Impresa Femminile</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="mc-giovanile"> Impresa Giovanile</label>
         </div>
       </div>
     </div>
@@ -4406,11 +4408,15 @@ function openEditBandoModal(idx) {
 // Estrae requisiti di ammissibilità da testo libero (campo note/descrizione del bando).
 function parseRequisitiFromNote(testo) {
   if (!testo) return {};
-  const req = { dimensioni: [], startupInnovativa: false, pmiInnovativa: false, atecoInclude: [], atecoExclude: [], etaMinAnni: null, etaMaxAnni: null };
+  const req = { dimensioni: [], startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false, atecoInclude: [], atecoExclude: [], etaMinAnni: null, etaMaxAnni: null };
 
   // Startup / PMI Innovativa
   if (/startup\s*innovat/i.test(testo)) req.startupInnovativa = true;
   if (/pmi\s*innovat/i.test(testo))     req.pmiInnovativa     = true;
+
+  // Impresa femminile / giovanile
+  if (/impres[ae]\s*femminil/i.test(testo) || /a\s*conduzione\s*femminil/i.test(testo)) req.impresaFemminile = true;
+  if (/impres[ae]\s*giovanil/i.test(testo) || /a\s*conduzione\s*giovanil/i.test(testo) || /gestit[ae]\s*da\s*giovani/i.test(testo)) req.impresaGiovanile = true;
 
   // Dimensioni
   const addDim = d => { if (!req.dimensioni.includes(d)) req.dimensioni.push(d); };
@@ -4468,6 +4474,12 @@ function matchClienteBando(nomeCliente, bando) {
 
   if (req.pmiInnovativa && !d.pmiInnovativa)
     reasons.push('Richiede iscrizione come PMI Innovativa');
+
+  if (req.impresaFemminile && !d.impresaFemminile)
+    reasons.push('Richiede requisito di impresa femminile');
+
+  if (req.impresaGiovanile && !d.impresaGiovanile)
+    reasons.push('Richiede requisito di impresa giovanile');
 
   if (req.atecoInclude && req.atecoInclude.length > 0 && d.ateco)
     if (!req.atecoInclude.some(p => d.ateco.startsWith(p)))
@@ -4610,6 +4622,8 @@ function openAddClienteModal() {
   document.getElementById('mc-ateco').value         = '';
   document.getElementById('mc-startup').checked     = false;
   document.getElementById('mc-pmi-inn').checked     = false;
+  document.getElementById('mc-femminile').checked   = false;
+  document.getElementById('mc-giovanile').checked   = false;
   document.getElementById('modal-cliente').classList.add('open');
 }
 
@@ -4630,6 +4644,8 @@ function openEditClienteModal(nome) {
   document.getElementById('mc-ateco').value         = d.ateco              || '';
   document.getElementById('mc-startup').checked     = !!d.startupInnovativa;
   document.getElementById('mc-pmi-inn').checked     = !!d.pmiInnovativa;
+  document.getElementById('mc-femminile').checked   = !!d.impresaFemminile;
+  document.getElementById('mc-giovanile').checked   = !!d.impresaGiovanile;
   document.getElementById('modal-cliente').classList.add('open');
 }
 
@@ -4654,6 +4670,8 @@ function saveCliente() {
     ateco:             document.getElementById('mc-ateco').value.trim(),
     startupInnovativa: document.getElementById('mc-startup').checked,
     pmiInnovativa:     document.getElementById('mc-pmi-inn').checked,
+    impresaFemminile:  document.getElementById('mc-femminile').checked,
+    impresaGiovanile:  document.getElementById('mc-giovanile').checked,
   };
   _saveClienti();
   closeClienteModal();
