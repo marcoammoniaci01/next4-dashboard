@@ -2718,6 +2718,22 @@ function allertaAction(idx) {
   if (window._alerteActions && window._alerteActions[idx]) window._alerteActions[idx]();
 }
 
+const TIPO_ICO = {
+  rs:'🔬', startup:'💡', step:'🔧', digitale:'💻',
+  internazionalizzazione:'🌍', ambiente:'♻️', cultura:'🎭',
+  lavoro:'👥', impresa:'🏗', fiscale:'🧾', innovazione:'🚀',
+};
+const TIPO_PRIO = ['rs','startup','step','digitale','internazionalizzazione','ambiente','cultura','lavoro','impresa','fiscale','innovazione'];
+function getBandoIco(b) {
+  if (b.ente?.includes('SIMEST'))                                        return '🌐';
+  if (b.ente?.includes('EIC') || b.ente?.includes('Horizon Europe'))     return '🇪🇺';
+  if (b.nome?.includes('Credito d\'Imposta'))                            return '🧾';
+  if (b.nome?.toLowerCase().includes('agrisolare') || b.nome?.toLowerCase().includes('solare')) return '☀️';
+  const tipi = b.tipo || [];
+  const best = TIPO_PRIO.find(t => tipi.includes(t)) || tipi[0];
+  return TIPO_ICO[best] || '📄';
+}
+
 let _pipelineView = 'kanban';
 
 function setPipelineView(v) {
@@ -3372,30 +3388,7 @@ function render() {
     return 0;
   });
 
-  const TIPO_ICO = {
-    rs:                     '🔬',
-    startup:                '💡',
-    step:                   '🔧',
-    digitale:               '💻',
-    internazionalizzazione: '🌍',
-    ambiente:               '♻️',
-    cultura:                '🎭',
-    lavoro:                 '👥',
-    impresa:                '🏗',
-    fiscale:                '🧾',
-    innovazione:            '🚀',
-  };
-  // Priorità: tipi più specifici vincono sui generici
-  const TIPO_PRIO = ['rs','startup','step','digitale','internazionalizzazione','ambiente','cultura','lavoro','impresa','fiscale','innovazione'];
-  const getBandoIco = b => {
-    if (b.ente?.includes('SIMEST'))                         return '🌐';
-    if (b.ente?.includes('EIC') || b.ente?.includes('Horizon Europe')) return '🇪🇺';
-    if (b.nome?.includes('Credito d\'Imposta'))             return '🧾';
-    if (b.nome?.toLowerCase().includes('agrisolare') || b.nome?.toLowerCase().includes('solare')) return '☀️';
-    const tipi = b.tipo || [];
-    const best = TIPO_PRIO.find(t => tipi.includes(t)) || tipi[0];
-    return TIPO_ICO[best] || '📄';
-  };
+  // TIPO_ICO, TIPO_PRIO, getBandoIco sono definiti globalmente sopra
 
   const grid = document.getElementById('cards-grid');
   grid.innerHTML = '';
