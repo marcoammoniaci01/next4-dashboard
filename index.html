@@ -2346,7 +2346,7 @@ const CLIENTI = {
   "Messagenius":           { piva: "12973601003",  aiutiRicevuti: 55520,     dataVerifica: "15/06/2026", formaGiur: "S.R.L.S.", indirizzo: "Via Doberdo' 12",     citta: "00054 – Fiumicino (RM)",   annoFondazione: 2014, ateco: "61.90.90", dimensione: "micro", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "Next4Production":       { piva: "02953440597",  aiutiRicevuti: 2002,      dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via Sicilia 125",                    citta: "00187 – Roma (RM)",             annoFondazione: 2017, ateco: "64.21.00", dimensione: "micro", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "OralTec":               { piva: "07305330487",  aiutiRicevuti: 3000,      dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
-  "ProGen SRL":            { piva: "04753140872",  aiutiRicevuti: 64009,     dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "", citta: "", annoFondazione: 2010 },
+  "ProGen SRL":            { piva: "02369500802",  aiutiRicevuti: 64009,     dataVerifica: "15/06/2026", formaGiur: "Soc. Coop.", indirizzo: "Via Colonna 2",               citta: "89042 – Gioiosa Ionica (RC)",  annoFondazione: 2006, ateco: "71.11.00", dimensione: "micro", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "Spartan Tech":          { piva: "11044930961",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Piazza Giuseppe Grandi 11",           citta: "20129 – Milano (MI)",            annoFondazione: 2019, ateco: "62.10.00", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "Speri":                 { piva: "01980341000",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
   "TLC Telecomunicazioni": { piva: "02268530595",  aiutiRicevuti: 8535,      dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2005 },
@@ -2374,7 +2374,7 @@ function isBandoSIMEST(bando) {
 // ─── PROFILI CLIENTI DA VISURE CAMERALI ──────────────────────────────────
 // Dati estratti dalle visure. Migrazione one-shot: la versione cresce ad ogni
 // nuovo batch di visure lette. Sovrascrive i campi profilo nel localStorage.
-const CLIENTI_VISURE_VER = 2;
+const CLIENTI_VISURE_VER = 3;
 const CLIENTI_VISURE = {
   // Batch 1 (giugno 2026)
   "BrainoAI":            { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2023, citta:"20151 – Milano (MI)",              indirizzo:"Via Ippodromo 56",                    formaGiur:"S.R.L. Società Benefit", piva:"13049530960" },
@@ -2400,6 +2400,8 @@ const CLIENTI_VISURE = {
   "Tod Systems":         { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:true,  impresaFemminile:false, impresaGiovanile:false, annoFondazione:2018, citta:"88060 – Davoli (CZ)",             indirizzo:"I Traversa Viale Cassiodoro 6",       formaGiur:"S.R.L.",                  piva:"03665340794" },
   "WDA":                 { ateco:"62.20.10", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2019, citta:"00187 – Roma (RM)",               indirizzo:"Via Sicilia 125",                     formaGiur:"S.R.L.",                  piva:"15274611001" },
   "Yourease":            { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2024, citta:"40126 – Bologna (BO)",            indirizzo:"Via Antonio Zanolini 15/2",           formaGiur:"S.R.L.",                  piva:"04239661202" },
+  // Batch 3 (correzione PIVA ProGen)
+  "ProGen SRL":          { ateco:"71.11.00", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2006, citta:"89042 – Gioiosa Ionica (RC)",     indirizzo:"Via Colonna 2",                       formaGiur:"Soc. Coop.",              piva:"02369500802" },
 };
 
 // ─── DATI DINAMICI (localStorage) ────────────────────────────────────────
