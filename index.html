@@ -1605,6 +1605,16 @@
           min <input type="number" id="nb-req-eta-min" min="0" max="100" placeholder="—"> anni &nbsp;
           max <input type="number" id="nb-req-eta-max" min="0" max="100" placeholder="—"> anni
         </div>
+        <div class="nb-req-row">
+          <span class="nb-req-label">N° addetti</span>
+          min <input type="number" id="nb-req-add-min" min="0" placeholder="—"> &nbsp;
+          max <input type="number" id="nb-req-add-max" min="0" placeholder="—">
+        </div>
+        <div class="nb-req-row">
+          <span class="nb-req-label">Fatturato (€)</span>
+          min <input type="number" id="nb-req-fatt-min" min="0" placeholder="—"> &nbsp;
+          max <input type="number" id="nb-req-fatt-max" min="0" placeholder="—">
+        </div>
       </div>
     </div>
     <div class="modal-field">
@@ -1691,6 +1701,20 @@
           <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="mc-giovanile"> Impresa Giovanile</label>
         </div>
       </div>
+    </div>
+    <div class="modal-row2">
+      <div class="modal-field">
+        <label>Addetti (n° dipendenti)</label>
+        <input type="number" id="mc-addetti" placeholder="es. 8" min="0">
+      </div>
+      <div class="modal-field">
+        <label>Fatturato ultimo esercizio (€)</label>
+        <input type="number" id="mc-fatturato" placeholder="es. 500000" min="0">
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>Regioni operative <span style="font-weight:400;color:#64748b">(oltre alla sede legale, separate da virgola)</span></label>
+      <input type="text" id="mc-regioni-op" placeholder="es. Calabria, Sicilia">
     </div>
     <div class="modal-actions">
       <button class="btn-modal-cancel" onclick="closeClienteModal()">Annulla</button>
@@ -4456,6 +4480,10 @@ function _resetBandoForm() {
   document.getElementById('nb-req-ateco-exc').value = '';
   document.getElementById('nb-req-eta-min').value   = '';
   document.getElementById('nb-req-eta-max').value   = '';
+  document.getElementById('nb-req-add-min').value   = '';
+  document.getElementById('nb-req-add-max').value   = '';
+  document.getElementById('nb-req-fatt-min').value  = '';
+  document.getElementById('nb-req-fatt-max').value  = '';
 }
 
 function openAddBandoModal() {
@@ -4500,8 +4528,12 @@ function openEditBandoModal(idx) {
   document.getElementById('nb-req-giovanile').checked = !!req.impresaGiovanile;
   document.getElementById('nb-req-ateco-inc').value   = (req.atecoInclude||[]).join(', ');
   document.getElementById('nb-req-ateco-exc').value   = (req.atecoExclude||[]).join(', ');
-  document.getElementById('nb-req-eta-min').value     = req.etaMinAnni != null ? req.etaMinAnni : '';
-  document.getElementById('nb-req-eta-max').value     = req.etaMaxAnni != null ? req.etaMaxAnni : '';
+  document.getElementById('nb-req-eta-min').value     = req.etaMinAnni  != null ? req.etaMinAnni  : '';
+  document.getElementById('nb-req-eta-max').value     = req.etaMaxAnni  != null ? req.etaMaxAnni  : '';
+  document.getElementById('nb-req-add-min').value     = req.addettiMin  != null ? req.addettiMin  : '';
+  document.getElementById('nb-req-add-max').value     = req.addettiMax  != null ? req.addettiMax  : '';
+  document.getElementById('nb-req-fatt-min').value    = req.fatturatoMin != null ? req.fatturatoMin : '';
+  document.getElementById('nb-req-fatt-max').value    = req.fatturatoMax != null ? req.fatturatoMax : '';
   document.getElementById('modal-new-bando').classList.add('open');
   closePanel();
 }
@@ -4623,6 +4655,14 @@ function matchClienteBando(nomeCliente, bando) {
     const eta = annoOggi - d.annoFondazione;
     if (eta > req.etaMaxAnni) reasons.push(`Impresa troppo anziana: ${eta} anni (max ${req.etaMaxAnni})`);
   }
+  if (req.addettiMin != null && d.addetti != null && d.addetti < req.addettiMin)
+    reasons.push(`Troppo pochi addetti: ${d.addetti} (min ${req.addettiMin})`);
+  if (req.addettiMax != null && d.addetti != null && d.addetti > req.addettiMax)
+    reasons.push(`Troppi addetti: ${d.addetti} (max ${req.addettiMax})`);
+  if (req.fatturatoMin != null && d.fatturatoUltimo != null && d.fatturatoUltimo < req.fatturatoMin)
+    reasons.push(`Fatturato insufficiente: €${d.fatturatoUltimo.toLocaleString('it-IT')} (min €${req.fatturatoMin.toLocaleString('it-IT')})`);
+  if (req.fatturatoMax != null && d.fatturatoUltimo != null && d.fatturatoUltimo > req.fatturatoMax)
+    reasons.push(`Fatturato troppo alto: €${d.fatturatoUltimo.toLocaleString('it-IT')} (max €${req.fatturatoMax.toLocaleString('it-IT')})`);
   return { ok: reasons.length === 0, reasons };
 }
 
@@ -4672,7 +4712,9 @@ function autoMatchClienti(regione) {
       out.push(nome);
     } else {
       const cittaLC = (dati.citta || '').toLowerCase();
-      const inRegione = keywords.some(k => cittaLC.includes(k));
+      const sediExtra = (dati.regioniOperative || []).map(r => r.toLowerCase());
+      const inRegione = keywords.some(k => cittaLC.includes(k))
+                     || sediExtra.some(r => keywords.some(k => r.includes(k)));
       out.push(inRegione ? nome : nome + ' *');
     }
   }
@@ -4698,8 +4740,12 @@ function saveNewBando() {
     impresaGiovanile:  document.getElementById('nb-req-giovanile').checked,
     atecoInclude:      _splitAteco(document.getElementById('nb-req-ateco-inc').value),
     atecoExclude:      _splitAteco(document.getElementById('nb-req-ateco-exc').value),
-    etaMinAnni:        parseInt(document.getElementById('nb-req-eta-min').value) || null,
-    etaMaxAnni:        parseInt(document.getElementById('nb-req-eta-max').value) || null,
+    etaMinAnni:        parseInt(document.getElementById('nb-req-eta-min').value)   || null,
+    etaMaxAnni:        parseInt(document.getElementById('nb-req-eta-max').value)   || null,
+    addettiMin:        parseInt(document.getElementById('nb-req-add-min').value)   || null,
+    addettiMax:        parseInt(document.getElementById('nb-req-add-max').value)   || null,
+    fatturatoMin:      parseFloat(document.getElementById('nb-req-fatt-min').value) || null,
+    fatturatoMax:      parseFloat(document.getElementById('nb-req-fatt-max').value) || null,
   };
 
   const dati = {
@@ -4761,6 +4807,9 @@ function openAddClienteModal() {
   document.getElementById('mc-pmi-inn').checked     = false;
   document.getElementById('mc-femminile').checked   = false;
   document.getElementById('mc-giovanile').checked   = false;
+  document.getElementById('mc-addetti').value       = '';
+  document.getElementById('mc-fatturato').value     = '';
+  document.getElementById('mc-regioni-op').value    = '';
   document.getElementById('modal-cliente').classList.add('open');
 }
 
@@ -4783,6 +4832,9 @@ function openEditClienteModal(nome) {
   document.getElementById('mc-pmi-inn').checked     = !!d.pmiInnovativa;
   document.getElementById('mc-femminile').checked   = !!d.impresaFemminile;
   document.getElementById('mc-giovanile').checked   = !!d.impresaGiovanile;
+  document.getElementById('mc-addetti').value       = d.addetti       != null ? d.addetti : '';
+  document.getElementById('mc-fatturato').value     = d.fatturatoUltimo != null ? d.fatturatoUltimo : '';
+  document.getElementById('mc-regioni-op').value    = (d.regioniOperative || []).join(', ');
   document.getElementById('modal-cliente').classList.add('open');
 }
 
@@ -4809,6 +4861,9 @@ function saveCliente() {
     pmiInnovativa:     document.getElementById('mc-pmi-inn').checked,
     impresaFemminile:  document.getElementById('mc-femminile').checked,
     impresaGiovanile:  document.getElementById('mc-giovanile').checked,
+    addetti:           parseInt(document.getElementById('mc-addetti').value)   || null,
+    fatturatoUltimo:   parseFloat(document.getElementById('mc-fatturato').value) || null,
+    regioniOperative:  document.getElementById('mc-regioni-op').value.split(',').map(r => r.trim()).filter(Boolean),
   };
   _saveClienti();
   closeClienteModal();
