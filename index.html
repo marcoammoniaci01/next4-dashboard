@@ -6194,13 +6194,13 @@ function saveInterazione() {
     if (el) { el.style.borderColor = '#dc2626'; setTimeout(() => el.style.borderColor = '', 1200); el.focus(); }
     return;
   }
-  const tipo       = document.querySelector('.int-type-btn.sel')?.dataset.tipo || 'nota';
-  const dataISO    = document.getElementById('int-data')?.value || new Date().toISOString().slice(0,10);
-  const data       = new Date(dataISO).toLocaleDateString('it-IT');
-  const bando      = document.getElementById('int-bando')?.value || '';
+  const tipo         = document.querySelector('.int-type-btn.sel')?.dataset.tipo || 'nota';
+  const dataISO      = document.getElementById('int-data')?.value || new Date().toISOString().slice(0,10);
+  const data         = new Date(dataISO).toLocaleDateString('it-IT');
+  const bando        = document.getElementById('int-bando')?.value || '';
   const prossimoStep = (document.getElementById('int-step')?.value || '').trim();
   const scadenzaStep = document.getElementById('int-scadenza')?.value || '';
-  const editId     = document.getElementById('int-editing-id')?.value || '';
+  const editId       = document.getElementById('int-editing-id')?.value || '';
 
   const all = getInterazioni();
   if (!all[nome]) all[nome] = [];
@@ -6208,27 +6208,47 @@ function saveInterazione() {
   if (editId) {
     const idx = all[nome].findIndex(i => String(i.id) === String(editId));
     if (idx !== -1) {
-      all[nome][idx] = { ...all[nome][idx], tipo, dataISO, data, testo, bando, prossimoStep, scadenzaStep };
+      const existing = all[nome][idx];
+      let tasks = getTasks();
+      let taskId = existing.taskId;
+
+      if (prossimoStep) {
+        if (taskId) {
+          // aggiorna il task collegato
+          const ti = tasks.findIndex(t => t.id === taskId);
+          if (ti !== -1) {
+            tasks[ti].note      = prossimoStep;
+            tasks[ti].strumento = bando || tasks[ti].strumento;
+            tasks[ti].scadenza  = scadenzaStep || '';
+          }
+        } else {
+          // crea un nuovo task e collegalo
+          taskId = Date.now() + 1;
+          tasks.push({ id: taskId, cliente: nome, strumento: bando || '', note: prossimoStep, scadenza: scadenzaStep || '', fatto: false, created: data });
+        }
+      } else if (taskId) {
+        // prossimo step rimosso → elimina il task collegato
+        tasks = tasks.filter(t => t.id !== taskId);
+        taskId = undefined;
+      }
+
+      saveTasks(tasks);
+      all[nome][idx] = { ...existing, tipo, dataISO, data, testo, bando, prossimoStep, scadenzaStep, taskId };
     }
   } else {
-    all[nome].push({ id: Date.now(), tipo, dataISO, data, testo, bando, prossimoStep, scadenzaStep });
+    const intId = Date.now();
+    let taskId;
     if (prossimoStep) {
+      taskId = intId + 1;
       const tasks = getTasks();
-      tasks.push({
-        id: Date.now() + 1,
-        cliente: nome,
-        strumento: bando || '',
-        note: prossimoStep,
-        scadenza: scadenzaStep || '',
-        fatto: false,
-        created: data
-      });
+      tasks.push({ id: taskId, cliente: nome, strumento: bando || '', note: prossimoStep, scadenza: scadenzaStep || '', fatto: false, created: data });
       saveTasks(tasks);
-      if (document.getElementById('view-task')?.style.display !== 'none') renderTask();
     }
+    all[nome].push({ id: intId, tipo, dataISO, data, testo, bando, prossimoStep, scadenzaStep, ...(taskId ? { taskId } : {}) });
   }
 
   saveInterazioni(all);
+  if (document.getElementById('view-task')?.style.display !== 'none') renderTask();
   _renderIntPanel();
   renderClienti();
 }
@@ -6244,6 +6264,12 @@ function deleteInterazione(id) {
   if (!confirm('Eliminare questa interazione?')) return;
   const nome = _intCurrentCliente;
   const all = getInterazioni();
+  const it = (all[nome] || []).find(i => i.id === id);
+  // elimina il task collegato se esiste
+  if (it?.taskId) {
+    saveTasks(getTasks().filter(t => t.id !== it.taskId));
+    if (document.getElementById('view-task')?.style.display !== 'none') renderTask();
+  }
   all[nome] = (all[nome] || []).filter(i => i.id !== id);
   saveInterazioni(all);
   _renderIntPanel();
