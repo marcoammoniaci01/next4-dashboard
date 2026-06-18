@@ -1806,6 +1806,13 @@
         <input type="number" id="mc-fatturato" placeholder="es. 500000" min="0">
       </div>
     </div>
+    <div class="modal-row2">
+      <div class="modal-field">
+        <label>Bilanci approvati depositati <span style="font-weight:400;color:#64748b">(SIMEST)</span></label>
+        <input type="number" id="mc-bilanci" placeholder="es. 2" min="0" max="50">
+      </div>
+      <div class="modal-field"></div>
+    </div>
     <div class="modal-field">
       <label>Regioni operative <span style="font-weight:400;color:#64748b">(oltre alla sede legale, separate da virgola)</span></label>
       <input type="text" id="mc-regioni-op" placeholder="es. Calabria, Sicilia">
@@ -4758,6 +4765,17 @@ function matchClienteBando(nomeCliente, bando) {
     reasons.push(`Fatturato insufficiente: €${d.fatturatoUltimo.toLocaleString('it-IT')} (min €${req.fatturatoMin.toLocaleString('it-IT')})`);
   if (req.fatturatoMax != null && d.fatturatoUltimo != null && d.fatturatoUltimo > req.fatturatoMax)
     reasons.push(`Fatturato troppo alto: €${d.fatturatoUltimo.toLocaleString('it-IT')} (max €${req.fatturatoMax.toLocaleString('it-IT')})`);
+
+  // SIMEST: almeno 2 bilanci approvati e fatturato > 0
+  if (bando && /^SIMEST/i.test(bando.nome)) {
+    if (d.bilanciApprovati != null && d.bilanciApprovati < 2)
+      reasons.push(`SIMEST richiede almeno 2 bilanci approvati (${d.bilanciApprovati} depositati)`);
+    else if (d.bilanciApprovati == null && d.annoFondazione != null && (annoOggi - d.annoFondazione) < 2)
+      reasons.push('SIMEST richiede almeno 2 bilanci approvati (impresa troppo giovane)');
+    if (d.fatturatoUltimo != null && d.fatturatoUltimo === 0)
+      reasons.push('SIMEST non ammissibile: fatturato zero');
+  }
+
   return { ok: reasons.length === 0, reasons };
 }
 
@@ -4904,6 +4922,7 @@ function openAddClienteModal() {
   document.getElementById('mc-giovanile').checked   = false;
   document.getElementById('mc-addetti').value       = '';
   document.getElementById('mc-fatturato').value     = '';
+  document.getElementById('mc-bilanci').value       = '';
   document.getElementById('mc-regioni-op').value    = '';
   document.getElementById('modal-cliente').classList.add('open');
 }
@@ -4927,8 +4946,9 @@ function openEditClienteModal(nome) {
   document.getElementById('mc-pmi-inn').checked     = !!d.pmiInnovativa;
   document.getElementById('mc-femminile').checked   = !!d.impresaFemminile;
   document.getElementById('mc-giovanile').checked   = !!d.impresaGiovanile;
-  document.getElementById('mc-addetti').value       = d.addetti       != null ? d.addetti : '';
-  document.getElementById('mc-fatturato').value     = d.fatturatoUltimo != null ? d.fatturatoUltimo : '';
+  document.getElementById('mc-addetti').value       = d.addetti           != null ? d.addetti : '';
+  document.getElementById('mc-fatturato').value     = d.fatturatoUltimo   != null ? d.fatturatoUltimo : '';
+  document.getElementById('mc-bilanci').value       = d.bilanciApprovati  != null ? d.bilanciApprovati : '';
   document.getElementById('mc-regioni-op').value    = (d.regioniOperative || []).join(', ');
   document.getElementById('modal-cliente').classList.add('open');
 }
@@ -4956,8 +4976,9 @@ function saveCliente() {
     pmiInnovativa:     document.getElementById('mc-pmi-inn').checked,
     impresaFemminile:  document.getElementById('mc-femminile').checked,
     impresaGiovanile:  document.getElementById('mc-giovanile').checked,
-    addetti:           parseInt(document.getElementById('mc-addetti').value)   || null,
+    addetti:           parseInt(document.getElementById('mc-addetti').value)    || null,
     fatturatoUltimo:   parseFloat(document.getElementById('mc-fatturato').value) || null,
+    bilanciApprovati:  parseInt(document.getElementById('mc-bilanci').value)    ?? null,
     regioniOperative:  document.getElementById('mc-regioni-op').value.split(',').map(r => r.trim()).filter(Boolean),
   };
   _saveClienti();
@@ -5396,6 +5417,8 @@ const RQ_STEPS = [
   { id:'dimensione',  q:"Qual è la dimensione dell'impresa?",             sub:null,                                        type:'buttons',  field:'dimensione',   required:true, autoAdvance:true,
     opts:[{v:'micro',label:'Micro',sub:'< 10 dip. · ≤ €2M'},{v:'piccola',label:'Piccola',sub:'< 50 dip. · ≤ €10M'},{v:'media',label:'Media',sub:'< 250 dip. · ≤ €50M'},{v:'grande',label:'Grande',sub:'≥ 250 dip.'}] },
   { id:'anno',        q:"In che anno è stata fondata?",                   sub:'Serve per verificare i vincoli di età',     type:'number',   field:'anno',         placeholder:'es. 2019',                        required:false, optional:true },
+  { id:'bilanci',     q:"Quanti bilanci approvati ha depositato?",         sub:'Necessario per valutare SIMEST (min. 2)',    type:'buttons',  field:'bilanci',      required:false, optional:true, autoAdvance:true,
+    opts:[{v:'0',label:'Nessuno',sub:'Impresa nuova'},{v:'1',label:'1 bilancio',sub:'< 2 anni'},{v:'2',label:'2 bilanci',sub:'Ammissibile SIMEST'},{v:'3+',label:'3 o più',sub:'Ammissibile SIMEST'}] },
   { id:'ateco',       q:"Qual è il codice ATECO principale?",             sub:'Es. 62.10.00 = Software, 28.42 = Macchine', type:'text',     field:'ateco',        placeholder:'es. 62.10.00',                    required:false, optional:true },
   { id:'status',      q:"L'impresa ha status speciali?",                  sub:'Seleziona tutti quelli applicabili',        type:'checkbox', field:'status',       required:false, optional:true,
     opts:[{v:'startup',label:'Startup Innovativa',sub:'Iscritta sezione speciale RI'},{v:'pmi',label:'PMI Innovativa',sub:'Iscritta sezione speciale RI'},{v:'femminile',label:'Impresa Femminile',sub:'> 50% quote / soci donne'},{v:'giovanile',label:'Impresa Giovanile',sub:'> 50% under 36'}] },
@@ -5586,6 +5609,7 @@ function _rqShowResults() {
     impresaGiovanile: status.includes('giovanile'),
     addetti: ans.addetti||null,
     fatturatoUltimo: ans.fatturato||null,
+    bilanciApprovati: ans.bilanci != null ? (ans.bilanci === '3+' ? 3 : parseInt(ans.bilanci)||null) : null,
     piva: 'RICERCA',
   };
   const TMP = '__RQ__';
