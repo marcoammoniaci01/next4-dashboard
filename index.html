@@ -3463,6 +3463,26 @@ const STATO_CFG = {
   lavorazione: { label:"In lavorazione",cls:"b-lavorazione" },
   chiuso:      { label:"Chiuso",        cls:"b-chiuso" }
 };
+
+// Estrae l'ultima data DD/MM/YYYY dalla stringa scadenza (per range prende la data finale)
+function _parseScadenza(str) {
+  if (!str) return null;
+  const matches = (str.match(/\d{2}\/\d{2}\/\d{4}/g) || []);
+  if (!matches.length) return null;
+  const last = matches[matches.length - 1].split('/');
+  return new Date(parseInt(last[2]), parseInt(last[1]) - 1, parseInt(last[0]));
+}
+
+// Restituisce stato effettivo da mostrare: se "lavorazione" ma scaduto → trattato come chiuso
+function _statoCalcolato(b) {
+  if (b.stato === 'lavorazione') {
+    const scad = _parseScadenza(b.scadenza);
+    if (scad && scad < new Date()) {
+      return { stato:'chiuso', label:'Scaduto', cls:'b-chiuso' };
+    }
+  }
+  return { stato: b.stato, ...(STATO_CFG[b.stato] || { label: b.stato, cls: '' }) };
+}
 const TIPO_CFG = {
   innovazione:            { label:"Innovazione",        cls:"t-innovazione" },
   rs:                     { label:"R&S",                cls:"t-rs" },
@@ -3668,9 +3688,9 @@ function render() {
   document.getElementById('no-res').style.display = filt.length ? 'none' : 'block';
 
   filt.forEach(b => {
-    const sc = STATO_CFG[b.stato]||{label:b.stato,cls:''};
+    const sc = _statoCalcolato(b);
     const card = document.createElement('div');
-    card.className = 'card card-' + b.stato;
+    card.className = 'card card-' + sc.stato;
     card.addEventListener('click', e => { if (!e.target.closest('a')) openPanel(b); });
 
     const doms = b.domande || [];
@@ -3808,10 +3828,10 @@ function switchTab(tab) {
 // ─── SIDE PANEL ──────────────────────────────────────────────────────────
 function openPanel(b) {
   const bandoIdx = BANDI.indexOf(b);
-  const sc = STATO_CFG[b.stato] || {label:b.stato, cls:''};
+  const sc = _statoCalcolato(b);
   const pRow = (lbl, val) => `<div class="panel-row"><span class="panel-lbl">${lbl}</span><span class="panel-val">${val}</span></div>`;
   document.getElementById('panel-content').innerHTML = `
-    <div class="panel-hero panel-hero-${b.stato}"></div>
+    <div class="panel-hero panel-hero-${sc.stato}"></div>
     <div class="panel-nome">${b.nome}</div>
     <div class="panel-ente">${b.ente}</div>
     <span class="badge ${sc.cls}">${sc.label}</span>
@@ -5619,7 +5639,7 @@ function _rqShowResults() {
   const contributo   = ans.contributo||[];
 
   const risultati = BANDI
-    .filter(b => b.stato !== 'chiuso')
+    .filter(b => _statoCalcolato(b).stato !== 'chiuso')
     .map(b => {
       const m   = matchClienteBando(TMP, b);
       const geo = _rqGeoOk(b.regione, userRegioni);
