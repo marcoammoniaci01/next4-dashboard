@@ -1569,6 +1569,44 @@
       <label>Link ufficiale</label>
       <input type="url" id="nb-link" placeholder="https://...">
     </div>
+    <div class="modal-field">
+      <label>Requisiti ammissibilità <span style="font-size:10px;color:#94a3b8;font-weight:400">— lascia vuoto = nessun vincolo</span></label>
+      <div style="display:flex;flex-direction:column;gap:10px;background:#f8fafc;border-radius:8px;padding:12px;border:1.5px solid #e2e8f0;margin-top:4px">
+        <div>
+          <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:6px">Dimensione aziendale ammessa</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <label class="nb-tipo-label"><input type="checkbox" name="nb-dim" value="micro"> Micro</label>
+            <label class="nb-tipo-label"><input type="checkbox" name="nb-dim" value="piccola"> Piccola</label>
+            <label class="nb-tipo-label"><input type="checkbox" name="nb-dim" value="media"> Media</label>
+            <label class="nb-tipo-label"><input type="checkbox" name="nb-dim" value="grande"> Grande</label>
+          </div>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="nb-req-startup"> Solo Startup Innovative</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="nb-req-pmi-inn"> Solo PMI Innovative</label>
+        </div>
+        <div class="modal-row2" style="margin:0">
+          <div class="modal-field" style="margin:0">
+            <label style="font-size:11px">ATECO ammessi <span style="color:#94a3b8">(prefissi separati da virgola)</span></label>
+            <input type="text" id="nb-ateco-inc" placeholder="es. 62,63,72 — vuoto = tutti">
+          </div>
+          <div class="modal-field" style="margin:0">
+            <label style="font-size:11px">ATECO esclusi</label>
+            <input type="text" id="nb-ateco-exc" placeholder="es. 01,02,03">
+          </div>
+        </div>
+        <div class="modal-row2" style="margin:0">
+          <div class="modal-field" style="margin:0">
+            <label style="font-size:11px">Età minima impresa (anni)</label>
+            <input type="number" id="nb-eta-min" placeholder="es. 2 — vuoto = nessun limite" min="0">
+          </div>
+          <div class="modal-field" style="margin:0">
+            <label style="font-size:11px">Età massima impresa (anni)</label>
+            <input type="number" id="nb-eta-max" placeholder="es. 7 — vuoto = nessun limite" min="0">
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="modal-actions">
       <button class="btn-modal-cancel" onclick="document.getElementById('modal-new-bando').classList.remove('open')">Annulla</button>
       <button class="btn-modal-save" onclick="saveNewBando()">💾 Salva bando</button>
@@ -1613,6 +1651,35 @@
       <div class="modal-field">
         <label>Data verifica de minimis</label>
         <input type="text" id="mc-data-verifica" placeholder="es. 15/06/2026">
+      </div>
+    </div>
+    <div class="modal-row2">
+      <div class="modal-field">
+        <label>Anno fondazione</label>
+        <input type="number" id="mc-anno-fond" placeholder="es. 2021" min="1900" max="2030">
+      </div>
+      <div class="modal-field">
+        <label>Dimensione aziendale</label>
+        <select id="mc-dimensione">
+          <option value="">Non specificata</option>
+          <option value="micro">Micro (&lt;10 dip., fatturato ≤2M)</option>
+          <option value="piccola">Piccola (&lt;50 dip., fatturato ≤10M)</option>
+          <option value="media">Media (&lt;250 dip., fatturato ≤50M)</option>
+          <option value="grande">Grande (≥250 dip.)</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-row2">
+      <div class="modal-field">
+        <label>Codice ATECO principale</label>
+        <input type="text" id="mc-ateco" placeholder="es. 62.01">
+      </div>
+      <div class="modal-field">
+        <label>Status speciale</label>
+        <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="mc-startup"> Startup Innovativa</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="mc-pmi-inn"> PMI Innovativa</label>
+        </div>
       </div>
     </div>
     <div class="modal-actions">
@@ -2357,8 +2424,8 @@ const BANDI_BASE_LEN = BANDI.length;   // lunghezza array prima di aggiungere ex
       const saved = JSON.parse(raw);
       Object.keys(CLIENTI).forEach(k => delete CLIENTI[k]);
       Object.assign(CLIENTI, saved);
-      // Ri-applica annoFondazione dai default (campo di sistema, non editabile dall'utente)
-      Object.keys(defaults).forEach(k => { if (CLIENTI[k]) CLIENTI[k].annoFondazione = defaults[k]; });
+      // Ri-applica annoFondazione dai default solo se l'utente non ha impostato un valore nel modale
+      Object.keys(defaults).forEach(k => { if (CLIENTI[k] && CLIENTI[k].annoFondazione == null) CLIENTI[k].annoFondazione = defaults[k]; });
     } else {
       // Prima visita: persisti i clienti di default
       localStorage.setItem('n4_clienti_data', JSON.stringify(CLIENTI));
@@ -3419,6 +3486,9 @@ function render() {
       if (alert === 'warn')   return `<span class="ct-dm-warn"   title="De minimis elevato (>75%)">⚠ ${n}</span>`;
       if (isBandoSIMEST(b) && hasDueBilanci(n) === false)
         return `<span class="ct-incompat" title="Non idoneo SIMEST: meno di 2 bilanci approvati (fondata ${CLIENTI[n]?.annoFondazione})">✗ ${n}</span>`;
+      const reqM = matchClienteBando(n, b);
+      if (!reqM.ok)
+        return `<span class="ct-incompat" title="Non idoneo: ${reqM.reasons.join('; ')}">✗ ${n}</span>`;
       if (c.endsWith(' *')) return `<span class="ct-potential">${c}</span>`;
       return `<span class="ct">${c}</span>`;
     };
@@ -3570,6 +3640,8 @@ function openPanel(b) {
            if((b.domande||[]).includes(n)) return '<span class="ct-dom" title="Domanda già presentata">✓ ' + n + '</span>';
            if(isBandoSIMEST(b) && hasDueBilanci(n) === false)
              return '<span class="ct-incompat" title="Non idoneo SIMEST: meno di 2 bilanci approvati (fondata ' + (CLIENTI[n]?.annoFondazione||'?') + ')">✗ ' + n + '</span>';
+           const rM = matchClienteBando(n, b);
+           if(!rM.ok) return '<span class="ct-incompat" title="Non idoneo: ' + rM.reasons.join('; ') + '">✗ ' + n + '</span>';
            if(c.endsWith(' *')) return '<span class="ct-potential">' + c + '</span>';
            return '<span class="ct">' + c + '</span>';
          }).join('') : '<span style="color:#aaa;font-size:11px">Nessuno</span>'}</div>`
@@ -4080,12 +4152,18 @@ function renderClienti() {
             ? `<input type="checkbox" class="bando-chk" ${checked} onclick="event.stopPropagation();toggleBandoSel('${safeName}',${idx})" title="Seleziona per Action Plan">`
             : `<span style="display:inline-block;width:14px;flex-shrink:0"></span>`;
         const simestIncompat = isBandoSIMEST(b) && hasDueBilanci(name) === false;
-        return `<div class="client-bando-row${simestIncompat?' incompat-row':''}" onclick="openPanel(BANDI[${idx}])" ${simestIncompat?`title="Non idoneo: servono almeno 2 bilanci approvati (fondata ${CLIENTI[name]?.annoFondazione})"`:''}>
+        const reqM = matchClienteBando(name, b);
+        const isIncompat = simestIncompat || !reqM.ok;
+        const incompatTitle = simestIncompat
+          ? `Non idoneo SIMEST: servono almeno 2 bilanci approvati (fondata ${CLIENTI[name]?.annoFondazione})`
+          : reqM.reasons.join('; ');
+        const incompatLabel = simestIncompat ? '✗ bilanci' : (reqM.reasons.length ? '✗ requisiti' : '');
+        return `<div class="client-bando-row${isIncompat?' incompat-row':''}" onclick="openPanel(BANDI[${idx}])" ${isIncompat?`title="${incompatTitle}"`:''}>
           ${chk}
           <span class="badge ${sc.cls}" style="font-size:9px;padding:2px 6px;white-space:nowrap">${sc.label}</span>
           ${b.urgente ? '<span class="flg flg-urgente" style="font-size:8px">URG</span>' : ''}
-          ${simestIncompat ? '<span style="font-size:9px;color:#9ca3af;font-weight:600">✗ bilanci</span>' : ''}
-          <span class="client-bando-nome" title="${b.nome}" style="${simestIncompat?'text-decoration:line-through;color:#9ca3af':''}">${b.nome}${star?' *':''}</span>
+          ${isIncompat ? `<span style="font-size:9px;color:#9ca3af;font-weight:600">${incompatLabel}</span>` : ''}
+          <span class="client-bando-nome" title="${b.nome}" style="${isIncompat?'text-decoration:line-through;color:#9ca3af':''}">${b.nome}${star?' *':''}</span>
           <span class="client-bando-contributo">${b.contributo.length > 22 ? b.contributo.substring(0,22)+'…' : b.contributo}</span>
         </div>`;
       }).join('');
@@ -4187,6 +4265,8 @@ function renderScadenzario() {
                 if (alert === 'warn')   return `<span class="ct-dm-warn"   title="De minimis elevato">⚠ ${n}</span>`;
                 if (isBandoSIMEST(b) && hasDueBilanci(n) === false)
                   return `<span class="ct-incompat" title="Non idoneo SIMEST: meno di 2 bilanci approvati (fondata ${CLIENTI[n]?.annoFondazione})">✗ ${n}</span>`;
+                const rM2 = matchClienteBando(n, b);
+                if (!rM2.ok) return `<span class="ct-incompat" title="Non idoneo: ${rM2.reasons.join('; ')}">✗ ${n}</span>`;
                 return c.endsWith(' *') ? `<span class="ct-potential">${c}</span>` : `<span class="ct">${c}</span>`;
               }).join('')}
               ${b.clienti.length > 6 ? `<span style="font-size:10px;color:#aaa"> +${b.clienti.length-6}</span>` : ''}
@@ -4282,6 +4362,12 @@ function openAddBandoModal() {
   document.getElementById('nb-tipo-wrap').innerHTML = Object.entries(TIPO_CFG).map(([k,v]) =>
     `<label class="nb-tipo-label"><input type="checkbox" name="nb-tipo" value="${k}"> ${v.label}</label>`
   ).join('');
+  ['nb-ateco-inc','nb-ateco-exc','nb-eta-min','nb-eta-max'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.querySelectorAll('input[name="nb-dim"]').forEach(c => c.checked = false);
+  document.getElementById('nb-req-startup').checked  = false;
+  document.getElementById('nb-req-pmi-inn').checked  = false;
 
   document.getElementById('modal-new-bando').classList.add('open');
 }
@@ -4291,6 +4377,44 @@ function openAddBandoModal() {
 // Abbina automaticamente le aziende al bando in base alla regione.
 // Le aziende già nella regione → nome; le altre → nome + " *" (sede da aprire).
 // Bandi nazionali → tutte le aziende con P.IVA nota.
+// Controlla se un cliente soddisfa i requisiti di ammissibilità di un bando.
+// Restituisce { ok: bool, reasons: string[] }.
+// Se requisiti è vuoto o il campo cliente non è compilato → non blocca il match.
+function matchClienteBando(nomeCliente, bando) {
+  const d   = CLIENTI[nomeCliente] || {};
+  const req = (bando && bando.requisiti) || {};
+  const reasons = [];
+  const annoOggi = new Date().getFullYear();
+
+  if (req.dimensioni && req.dimensioni.length > 0 && d.dimensione)
+    if (!req.dimensioni.includes(d.dimensione))
+      reasons.push(`Dimensione: serve ${req.dimensioni.join('/')} (questa è ${d.dimensione})`);
+
+  if (req.startupInnovativa && !d.startupInnovativa)
+    reasons.push('Richiede iscrizione come Startup Innovativa');
+
+  if (req.pmiInnovativa && !d.pmiInnovativa)
+    reasons.push('Richiede iscrizione come PMI Innovativa');
+
+  if (req.atecoInclude && req.atecoInclude.length > 0 && d.ateco)
+    if (!req.atecoInclude.some(p => d.ateco.startsWith(p)))
+      reasons.push(`ATECO ${d.ateco} non tra i codici ammessi (${req.atecoInclude.join(', ')})`);
+
+  if (req.atecoExclude && req.atecoExclude.length > 0 && d.ateco)
+    if (req.atecoExclude.some(p => d.ateco.startsWith(p)))
+      reasons.push(`ATECO ${d.ateco} escluso dal bando`);
+
+  if (req.etaMinAnni != null && d.annoFondazione != null) {
+    const eta = annoOggi - d.annoFondazione;
+    if (eta < req.etaMinAnni) reasons.push(`Impresa troppo giovane: ${eta} anni (min ${req.etaMinAnni})`);
+  }
+  if (req.etaMaxAnni != null && d.annoFondazione != null) {
+    const eta = annoOggi - d.annoFondazione;
+    if (eta > req.etaMaxAnni) reasons.push(`Impresa troppo anziana: ${eta} anni (max ${req.etaMaxAnni})`);
+  }
+  return { ok: reasons.length === 0, reasons };
+}
+
 function autoMatchClienti(regione) {
   const r = (regione || '').toLowerCase();
 
@@ -4353,6 +4477,16 @@ function saveNewBando() {
     return;
   }
   const tipo = [...document.querySelectorAll('input[name="nb-tipo"]:checked')].map(c => c.value);
+  const parseAteco = s => (s || '').split(',').map(x => x.trim()).filter(Boolean);
+  const requisiti = {
+    dimensioni:        [...document.querySelectorAll('input[name="nb-dim"]:checked')].map(c => c.value),
+    startupInnovativa: document.getElementById('nb-req-startup').checked,
+    pmiInnovativa:     document.getElementById('nb-req-pmi-inn').checked,
+    atecoInclude:      parseAteco(document.getElementById('nb-ateco-inc').value),
+    atecoExclude:      parseAteco(document.getElementById('nb-ateco-exc').value),
+    etaMinAnni:        parseInt(document.getElementById('nb-eta-min').value) || null,
+    etaMaxAnni:        parseInt(document.getElementById('nb-eta-max').value) || null,
+  };
   const bando = {
     nome, ente, regione,
     tipo: tipo.length ? tipo : ['impresa'],
@@ -4364,6 +4498,7 @@ function saveNewBando() {
     altaRilevanza:    document.getElementById('nb-alta').checked,
     aperturaImminente:document.getElementById('nb-imminente').checked,
     descrizione: document.getElementById('nb-desc').value.trim(),
+    requisiti,
     clienti:     autoMatchClienti(document.getElementById('nb-regione').value.trim()),
     link:        document.getElementById('nb-link').value.trim(),
     _extra: true
@@ -4374,9 +4509,12 @@ function saveNewBando() {
   render();
   renderClienti();
   document.getElementById('modal-new-bando').classList.remove('open');
-  const nMatch = bando.clienti.filter(c=>!c.endsWith(' *')).length;
-  const nPot   = bando.clienti.filter(c=>c.endsWith(' *')).length;
-  showToast(`✅ Bando "${nome}" aggiunto · Match auto: ${nMatch} confermati, ${nPot} potenziali`, 'ok');
+  const nGeo  = bando.clienti.filter(c => !c.endsWith(' *')).length;
+  const nPot  = bando.clienti.filter(c => c.endsWith(' *')).length;
+  const nElig = bando.clienti.filter(c => matchClienteBando(c.replace(' *',''), bando).ok).length;
+  const reqMsg = (requisiti.dimensioni.length || requisiti.startupInnovativa || requisiti.pmiInnovativa || requisiti.atecoInclude.length || requisiti.etaMinAnni || requisiti.etaMaxAnni)
+    ? ` · Idonei ai requisiti: ${nElig}` : '';
+  showToast(`✅ Bando "${nome}" aggiunto · Match geo: ${nGeo} confermati, ${nPot} potenziali${reqMsg}`, 'ok');
 }
 
 // ─── CRUD CLIENTI ─────────────────────────────────────────────────────────
@@ -4385,13 +4523,18 @@ function openAddClienteModal() {
   document.getElementById('mc-title').textContent = '➕ Nuovo Cliente';
   document.getElementById('mc-editing-key').value = '';
   document.getElementById('mc-nome').value        = '';
-  document.getElementById('mc-nome').disabled     = false;
-  document.getElementById('mc-forma').value       = '';
-  document.getElementById('mc-piva').value        = '';
-  document.getElementById('mc-indirizzo').value   = '';
-  document.getElementById('mc-citta').value       = '';
-  document.getElementById('mc-aiuti').value       = '0';
+  document.getElementById('mc-nome').disabled       = false;
+  document.getElementById('mc-forma').value         = '';
+  document.getElementById('mc-piva').value          = '';
+  document.getElementById('mc-indirizzo').value     = '';
+  document.getElementById('mc-citta').value         = '';
+  document.getElementById('mc-aiuti').value         = '0';
   document.getElementById('mc-data-verifica').value = '';
+  document.getElementById('mc-anno-fond').value     = '';
+  document.getElementById('mc-dimensione').value    = '';
+  document.getElementById('mc-ateco').value         = '';
+  document.getElementById('mc-startup').checked     = false;
+  document.getElementById('mc-pmi-inn').checked     = false;
   document.getElementById('modal-cliente').classList.add('open');
 }
 
@@ -4401,12 +4544,17 @@ function openEditClienteModal(nome) {
   document.getElementById('mc-editing-key').value   = nome;
   document.getElementById('mc-nome').value          = nome;
   document.getElementById('mc-nome').disabled       = true;
-  document.getElementById('mc-forma').value         = d.formaGiur    || '';
-  document.getElementById('mc-piva').value          = d.piva         || '';
-  document.getElementById('mc-indirizzo').value     = d.indirizzo    || '';
-  document.getElementById('mc-citta').value         = d.citta        || '';
-  document.getElementById('mc-aiuti').value         = d.aiutiRicevuti ?? 0;
-  document.getElementById('mc-data-verifica').value = d.dataVerifica || '';
+  document.getElementById('mc-forma').value         = d.formaGiur          || '';
+  document.getElementById('mc-piva').value          = d.piva               || '';
+  document.getElementById('mc-indirizzo').value     = d.indirizzo          || '';
+  document.getElementById('mc-citta').value         = d.citta              || '';
+  document.getElementById('mc-aiuti').value         = d.aiutiRicevuti      ?? 0;
+  document.getElementById('mc-data-verifica').value = d.dataVerifica       || '';
+  document.getElementById('mc-anno-fond').value     = d.annoFondazione     ?? '';
+  document.getElementById('mc-dimensione').value    = d.dimensione         || '';
+  document.getElementById('mc-ateco').value         = d.ateco              || '';
+  document.getElementById('mc-startup').checked     = !!d.startupInnovativa;
+  document.getElementById('mc-pmi-inn').checked     = !!d.pmiInnovativa;
   document.getElementById('modal-cliente').classList.add('open');
 }
 
@@ -4420,12 +4568,17 @@ function saveCliente() {
   if (!nome) { alert('Inserisci il nome del cliente.'); return; }
   if (!editingKey && CLIENTI[nome]) { alert(`Cliente "${nome}" già esistente.`); return; }
   CLIENTI[nome] = {
-    piva:          document.getElementById('mc-piva').value.trim(),
-    formaGiur:     document.getElementById('mc-forma').value.trim(),
-    indirizzo:     document.getElementById('mc-indirizzo').value.trim(),
-    citta:         document.getElementById('mc-citta').value.trim(),
-    aiutiRicevuti: parseFloat(document.getElementById('mc-aiuti').value) || 0,
-    dataVerifica:  document.getElementById('mc-data-verifica').value.trim(),
+    piva:              document.getElementById('mc-piva').value.trim(),
+    formaGiur:         document.getElementById('mc-forma').value.trim(),
+    indirizzo:         document.getElementById('mc-indirizzo').value.trim(),
+    citta:             document.getElementById('mc-citta').value.trim(),
+    aiutiRicevuti:     parseFloat(document.getElementById('mc-aiuti').value) || 0,
+    dataVerifica:      document.getElementById('mc-data-verifica').value.trim(),
+    annoFondazione:    parseInt(document.getElementById('mc-anno-fond').value) || null,
+    dimensione:        document.getElementById('mc-dimensione').value || '',
+    ateco:             document.getElementById('mc-ateco').value.trim(),
+    startupInnovativa: document.getElementById('mc-startup').checked,
+    pmiInnovativa:     document.getElementById('mc-pmi-inn').checked,
   };
   _saveClienti();
   closeClienteModal();
