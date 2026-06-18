@@ -775,6 +775,10 @@
   .btn-danger-sm:hover { background:#fecaca; }
   .btn-edit-sm { background:#eff6ff; border:1.5px solid #bfdbfe; border-radius:6px; padding:3px 8px; font-size:10px; font-weight:700; cursor:pointer; color:#1d4ed8; font-family:inherit; white-space:nowrap; }
   .btn-edit-sm:hover { background:#dbeafe; }
+  .btn-edit-b { background:#eff6ff; border:1.5px solid #bfdbfe; color:#1d4ed8; padding:6px 11px; border-radius:7px; font-size:11.5px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .btn-edit-b:hover { background:#dbeafe; }
+  .btn-del-b  { background:#fef2f2; border:1.5px solid #fecaca; color:#dc2626; padding:6px 11px; border-radius:7px; font-size:11.5px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .btn-del-b:hover { background:#fee2e2; }
   /* tag checkbox nel modal nuovo bando */
   .nb-tipo-label { display:flex; align-items:center; gap:5px; font-size:11px; cursor:pointer; background:#f1f5f9; border:1.5px solid #e2e8f0; border-radius:6px; padding:4px 8px; user-select:none; transition:border-color 0.12s,background 0.12s; }
   .nb-tipo-label:has(input:checked) { border-color:#1B3A6B; background:#eff6ff; color:#1B3A6B; font-weight:700; }
@@ -1507,7 +1511,8 @@
 <!-- MODAL NUOVO BANDO -->
 <div class="modal-overlay" id="modal-new-bando">
   <div class="modal-box" style="width:640px;max-height:90vh;overflow-y:auto">
-    <div class="modal-title">➕ Nuovo Bando</div>
+    <div class="modal-title" id="nb-modal-title">➕ Nuovo Bando</div>
+    <input type="hidden" id="nb-editing-idx" value="-1">
     <div class="modal-field">
       <label>Nome bando *</label>
       <input type="text" id="nb-nome" placeholder="es. Bando Innovazione PMI – Lazio">
@@ -1571,7 +1576,7 @@
     </div>
     <div class="modal-actions">
       <button class="btn-modal-cancel" onclick="document.getElementById('modal-new-bando').classList.remove('open')">Annulla</button>
-      <button class="btn-modal-save" onclick="saveNewBando()">💾 Salva bando</button>
+      <button class="btn-modal-save" id="nb-btn-save" onclick="saveNewBando()">💾 Salva bando</button>
     </div>
   </div>
 </div>
@@ -2371,6 +2376,15 @@ function isBandoSIMEST(bando) {
 const BANDI_BASE_LEN = BANDI.length;   // lunghezza array prima di aggiungere extra
 
 (function initDatiDinamici() {
+  // Overrides bandi hardcoded (modifiche salvate dall'utente)
+  try {
+    const ov = JSON.parse(localStorage.getItem('n4_bandi_overrides') || '{}');
+    Object.entries(ov).forEach(([nome, data]) => {
+      const idx = BANDI.findIndex(b => b.nome === nome);
+      if (idx >= 0) Object.assign(BANDI[idx], data);
+    });
+  } catch(e) {}
+
   // Bandi extra → aggiungi in coda a BANDI
   try {
     const extra = JSON.parse(localStorage.getItem('n4_bandi_extra') || '[]');
@@ -2412,6 +2426,11 @@ const BANDI_BASE_LEN = BANDI.length;   // lunghezza array prima di aggiungere ex
 
 function _saveBandiExtra() {
   localStorage.setItem('n4_bandi_extra', JSON.stringify(BANDI.slice(BANDI_BASE_LEN)));
+}
+function _saveBandiOverrides() {
+  const ov = {};
+  BANDI.slice(0, BANDI_BASE_LEN).forEach(b => { if (b._edited) ov[b.nome] = b; });
+  localStorage.setItem('n4_bandi_overrides', JSON.stringify(ov));
 }
 function _saveClienti() {
   localStorage.setItem('n4_clienti_data', JSON.stringify(CLIENTI));
@@ -3042,6 +3061,18 @@ function updatePipelineConc(id, val) {
   if (entry) { entry.contributoConc = parseFloat(val) || 0; savePipeline(pl); renderPipeline(); }
 }
 
+function deleteBando(idx) {
+  if (idx < BANDI_BASE_LEN) { alert('I bandi di sistema non possono essere eliminati. Puoi cambiarne lo stato in "Chiuso" tramite Modifica.'); return; }
+  const nome = BANDI[idx]?.nome || '';
+  if (!confirm(`Eliminare il bando "${nome}"? L'azione non è reversibile.`)) return;
+  BANDI.splice(idx, 1);
+  _saveBandiExtra();
+  _refreshFiltriSelects();
+  render(); renderClienti();
+  closePanel();
+  showToast(`🗑 Bando "${nome}" eliminato`, 'warn');
+}
+
 function deletePipeline(id) {
   if (!confirm('Eliminare questa voce dalla pipeline?')) return;
   const pl = getPipeline();
@@ -3562,6 +3593,7 @@ function switchTab(tab) {
 
 // ─── SIDE PANEL ──────────────────────────────────────────────────────────
 function openPanel(b) {
+  const bandoIdx = BANDI.indexOf(b);
   const sc = STATO_CFG[b.stato] || {label:b.stato, cls:''};
   const pRow = (lbl, val) => `<div class="panel-row"><span class="panel-lbl">${lbl}</span><span class="panel-val">${val}</span></div>`;
   document.getElementById('panel-content').innerHTML = `
@@ -3612,6 +3644,10 @@ function openPanel(b) {
       ${SCHEDE_MAP[b.nome] ? `<button class="btn-scheda" onclick="openScheda('${b.nome.replace(/'/g,"\\'")}')">📄 Scheda N4G</button>` : ''}
       <a href="${b.link}" target="_blank" class="btn-link">→ Pagina ufficiale</a>
       <button class="btn-copy" onclick="copyLink(this,'${b.link}')">🔗 Copia link</button>
+    </div>
+    <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn-edit-b" onclick="openEditBandoModal(${bandoIdx})">✏️ Modifica bando</button>
+      ${bandoIdx >= BANDI_BASE_LEN ? `<button class="btn-del-b" onclick="deleteBando(${bandoIdx})">🗑 Elimina</button>` : ''}
     </div>
   `;
   document.getElementById('side-panel').classList.add('open');
@@ -4311,20 +4347,55 @@ function printCliente(name) {
 
 // ─── CRUD BANDI ──────────────────────────────────────────────────────────
 
-function openAddBandoModal() {
+function _resetBandoForm() {
   ['nb-nome','nb-ente','nb-regione','nb-contributo','nb-scadenza','nb-desc','nb-link'].forEach(id => {
     document.getElementById(id).value = '';
   });
-  document.getElementById('nb-stato').value   = 'aperto';
-  document.getElementById('nb-proc').value    = 'Sportello';
+  document.getElementById('nb-stato').value       = 'aperto';
+  document.getElementById('nb-proc').value        = 'Sportello';
   document.getElementById('nb-urgente').checked   = false;
   document.getElementById('nb-alta').checked      = false;
   document.getElementById('nb-imminente').checked = false;
-
   document.getElementById('nb-tipo-wrap').innerHTML = Object.entries(TIPO_CFG).map(([k,v]) =>
     `<label class="nb-tipo-label"><input type="checkbox" name="nb-tipo" value="${k}"> ${v.label}</label>`
   ).join('');
+}
+
+function openAddBandoModal() {
+  _resetBandoForm();
+  document.getElementById('nb-editing-idx').value   = '-1';
+  document.getElementById('nb-modal-title').textContent = '➕ Nuovo Bando';
+  document.getElementById('nb-btn-save').textContent    = '💾 Salva bando';
   document.getElementById('modal-new-bando').classList.add('open');
+}
+
+function openEditBandoModal(idx) {
+  const b = BANDI[idx];
+  if (!b) return;
+  _resetBandoForm();
+  document.getElementById('nb-editing-idx').value   = idx;
+  document.getElementById('nb-modal-title').textContent = '✏️ Modifica Bando';
+  document.getElementById('nb-btn-save').textContent    = '💾 Aggiorna bando';
+  document.getElementById('nb-nome').value      = b.nome;
+  document.getElementById('nb-nome').disabled   = true;  // nome non modificabile (è la chiave)
+  document.getElementById('nb-ente').value      = b.ente      || '';
+  document.getElementById('nb-regione').value   = b.regione   || '';
+  document.getElementById('nb-contributo').value= b.contributo|| '';
+  document.getElementById('nb-scadenza').value  = b.scadenza  || '';
+  document.getElementById('nb-stato').value     = b.stato     || 'aperto';
+  document.getElementById('nb-proc').value      = b.proc      || 'Sportello';
+  document.getElementById('nb-urgente').checked     = !!b.urgente;
+  document.getElementById('nb-alta').checked        = !!b.altaRilevanza;
+  document.getElementById('nb-imminente').checked   = !!b.aperturaImminente;
+  document.getElementById('nb-desc').value      = b.descrizione || '';
+  document.getElementById('nb-link').value      = b.link       || '';
+  // Spunta i tipi
+  const tipi = b.tipo || [];
+  document.getElementById('nb-tipo-wrap').querySelectorAll('input[name="nb-tipo"]').forEach(chk => {
+    chk.checked = tipi.includes(chk.value);
+  });
+  document.getElementById('modal-new-bando').classList.add('open');
+  closePanel();
 }
 
 
@@ -4471,45 +4542,54 @@ function autoMatchClienti(regione) {
 }
 
 function saveNewBando() {
-  const nome    = document.getElementById('nb-nome').value.trim();
-  const ente    = document.getElementById('nb-ente').value.trim();
-  const regione = document.getElementById('nb-regione').value.trim();
-  if (!nome || !ente || !regione) {
-    alert('Compila i campi obbligatori: Nome, Ente, Regione.');
-    return;
-  }
-  const tipo = [...document.querySelectorAll('input[name="nb-tipo"]:checked')].map(c => c.value);
+  const editIdx   = parseInt(document.getElementById('nb-editing-idx').value);
+  const isEdit    = editIdx >= 0;
+  const nome      = isEdit ? BANDI[editIdx].nome : document.getElementById('nb-nome').value.trim();
+  const ente      = document.getElementById('nb-ente').value.trim();
+  const regione   = document.getElementById('nb-regione').value.trim();
+  if (!nome || !ente || !regione) { alert('Compila i campi obbligatori: Nome, Ente, Regione.'); return; }
+
+  const tipo        = [...document.querySelectorAll('input[name="nb-tipo"]:checked')].map(c => c.value);
   const descrizione = document.getElementById('nb-desc').value.trim();
   const requisiti   = parseRequisitiFromNote(descrizione);
-  const bando = {
+
+  const dati = {
     nome, ente, regione,
-    tipo: tipo.length ? tipo : ['impresa'],
-    contributo: document.getElementById('nb-contributo').value.trim() || '—',
-    scadenza:   document.getElementById('nb-scadenza').value.trim()   || '—',
-    proc:       document.getElementById('nb-proc').value,
-    stato:      document.getElementById('nb-stato').value,
-    urgente:          document.getElementById('nb-urgente').checked,
-    altaRilevanza:    document.getElementById('nb-alta').checked,
-    aperturaImminente:document.getElementById('nb-imminente').checked,
-    descrizione,
-    requisiti,
-    clienti:     autoMatchClienti(regione),
-    link:        document.getElementById('nb-link').value.trim(),
-    _extra: true
+    tipo:              tipo.length ? tipo : ['impresa'],
+    contributo:        document.getElementById('nb-contributo').value.trim() || '—',
+    scadenza:          document.getElementById('nb-scadenza').value.trim()   || '—',
+    proc:              document.getElementById('nb-proc').value,
+    stato:             document.getElementById('nb-stato').value,
+    urgente:           document.getElementById('nb-urgente').checked,
+    altaRilevanza:     document.getElementById('nb-alta').checked,
+    aperturaImminente: document.getElementById('nb-imminente').checked,
+    descrizione, requisiti,
+    link:              document.getElementById('nb-link').value.trim(),
   };
-  BANDI.push(bando);
-  _saveBandiExtra();
-  _refreshFiltriSelects();
-  render();
-  renderClienti();
+
+  document.getElementById('nb-nome').disabled = false;
   document.getElementById('modal-new-bando').classList.remove('open');
-  const nGeo  = bando.clienti.filter(c => !c.endsWith(' *')).length;
-  const nPot  = bando.clienti.filter(c => c.endsWith(' *')).length;
-  const nElig = bando.clienti.filter(c => matchClienteBando(c.replace(' *',''), bando).ok).length;
-  const hasReq = requisiti.dimensioni?.length || requisiti.startupInnovativa || requisiti.pmiInnovativa
-              || requisiti.atecoInclude?.length || requisiti.etaMinAnni || requisiti.etaMaxAnni;
-  const reqMsg = hasReq ? ` · Idonei ai requisiti: ${nElig}` : '';
-  showToast(`✅ Bando "${nome}" aggiunto · Match geo: ${nGeo} confermati, ${nPot} potenziali${reqMsg}`, 'ok');
+
+  if (isEdit) {
+    Object.assign(BANDI[editIdx], dati);
+    if (editIdx < BANDI_BASE_LEN) { BANDI[editIdx]._edited = true; _saveBandiOverrides(); }
+    else { _saveBandiExtra(); }
+    _refreshFiltriSelects();
+    render(); renderClienti();
+    showToast(`✅ Bando "${nome}" aggiornato`, 'ok');
+  } else {
+    const bando = { ...dati, clienti: autoMatchClienti(regione), _extra: true };
+    BANDI.push(bando);
+    _saveBandiExtra();
+    _refreshFiltriSelects();
+    render(); renderClienti();
+    const nGeo  = bando.clienti.filter(c => !c.endsWith(' *')).length;
+    const nPot  = bando.clienti.filter(c => c.endsWith(' *')).length;
+    const nElig = bando.clienti.filter(c => matchClienteBando(c.replace(' *',''), bando).ok).length;
+    const hasReq = requisiti.dimensioni?.length || requisiti.startupInnovativa || requisiti.pmiInnovativa
+                || requisiti.atecoInclude?.length || requisiti.etaMinAnni || requisiti.etaMaxAnni;
+    showToast(`✅ Bando "${nome}" aggiunto · Match: ${nGeo} confermati, ${nPot} potenziali${hasReq ? ' · Idonei: ' + nElig : ''}`, 'ok');
+  }
 }
 
 // ─── CRUD CLIENTI ─────────────────────────────────────────────────────────
