@@ -1791,7 +1791,7 @@ const BANDI = [
     tipo:["startup","innovazione"], contributo:"Fino a €1.500.000",
     scadenza:"Fino a esaurimento fondi (31/12/2029)", proc:"Sportello",
     stato:"aperto", urgente:false, altaRilevanza:true, aperturaImminente:false,
-    descrizione:"Startup innovative <60 mesi. ⚠ RIMOSSI per età: INTUOS (2019), Boss Tech (2020), Velion (2020), Messagenius (2014). Dati chiave: BrainoAI(MI,2022), Drop(RM,10/01/2023,41m), Ekore(PD,2022,48m), Fideliomed(TO,04/02/2022,52m), WinkSuite(MI,28/03/2023,38m), DestinoItalia(PA,15/07/2025,11m), AzuTech(RM,18/01/2024,29m), Yourease(BO,01/10/2024,20m). ⚠ OralTec(FI,28/09/2023,32m): ATECO 46.38 (commercio) – verificare se soddisfa requisito alta tecnologia.",
+    descrizione:"Startup innovative <60 mesi. ⚠ RIMOSSI per età: INTUOS (2019,PMI non startup), Boss Tech (2018, nessuna iscrizione), Messagenius (2014). Dati chiave: BrainoAI(MI,2023,36m), Velion(TS,2024,18m✅), Drop(RM,10/01/2023,41m), Ekore(UD,2022,48m), Fideliomed(TO,04/02/2022,52m), WinkSuite(MI,28/03/2023,38m), DestinoItalia(PA,15/07/2025,11m), AzuTech(RM,18/01/2024,29m), Yourease(BO,01/10/2024,20m), Spartan Tech(MI,2019,nessun aggiornamento dal 2019→verificare scadenza). ⚠ OralTec: ATECO 46.38 (commercio) – verificare.",
     clienti:["BrainoAI","Drop Digital Health","Ekore SRL","Fideliomed","Wink Suite SRL","Destino Italia","Azu Tech","Yourease","OralTec","Heres *","Assetia *"],
     link:"https://www.invitalia.it/incentivi-e-strumenti/smartstart-italia" },
 
@@ -2316,45 +2316,45 @@ const CLIENTI = {
   // piva, aiutiRicevuti, dataVerifica — dati de minimis
   // formaGiur, indirizzo, citta — precompilano il modal Action Plan (aggiungi quando disponibili)
   "Assetia":               { piva: "",             aiutiRicevuti: 0,         dataVerifica: "",           formaGiur: "",        indirizzo: "", citta: "" },
-  "Azu Tech":              { piva: "17458971003",  aiutiRicevuti: 216092.75, dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2024 },
-  "Azu Venture":           { piva: "02890350594",  aiutiRicevuti: 83819.63,  dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
-  "Boss Technologies SRL": { piva: "04961060268",  aiutiRicevuti: 21043.23,  dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "", citta: "", annoFondazione: 2020 },
-  "BrainoAI":              { piva: "13049530960",  aiutiRicevuti: 50000,     dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2022 },
-  "Casavo":                { piva: "10053290960",  aiutiRicevuti: 46514.27,  dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2017 },
-  "Citynews":              { piva: "10786801000",  aiutiRicevuti: 176437.38, dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
+  "Azu Tech":              { piva: "17458971003",  aiutiRicevuti: 216092.75, dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via degli Artisti 31",               citta: "00187 – Roma (RM)",              annoFondazione: 2024, ateco: "62.10.00", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "Azu Venture":           { piva: "02890350594",  aiutiRicevuti: 83819.63,  dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via degli Artisti 31",               citta: "00196 – Roma (RM)",              annoFondazione: 2016, ateco: "70.20.09", dimensione: "micro", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "Boss Technologies SRL": { piva: "04961060268",  aiutiRicevuti: 21043.23,  dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via Jacopo Linussio 51",              citta: "33100 – Udine (UD)",             annoFondazione: 2018, ateco: "28.42.00", dimensione: "micro", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "BrainoAI":              { piva: "13049530960",  aiutiRicevuti: 50000,     dataVerifica: "15/06/2026", formaGiur: "S.R.L. Società Benefit", indirizzo: "Via Ippodromo 56",    citta: "20151 – Milano (MI)",       annoFondazione: 2023, ateco: "62.10.00", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "Casavo":                { piva: "10053290960",  aiutiRicevuti: 46514.27,  dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via Porro Lambertenghi Luigi 7",      citta: "20159 – Milano (MI)",            annoFondazione: 2017, ateco: "68.32.01", dimensione: "piccola", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "Citynews":              { piva: "10786801000",  aiutiRicevuti: 176437.38, dataVerifica: "15/06/2026", formaGiur: "S.P.A.",  indirizzo: "Viale Stelvio 70",                   citta: "20159 – Milano (MI)",            annoFondazione: 2010, ateco: "58.12.00", dimensione: "grande", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "Consedin":              { piva: "01916241001",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
-  "Destino Italia":        { piva: "07332890826",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Piazza Virgilio, 4", citta: "90141 – Palermo (PA)", annoFondazione: 2025 },
-  "Digitalmens":           { piva: "05893970656",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2020 },
-  "Drop Digital Health":   { piva: "16989241001",  aiutiRicevuti: 283306.32, dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2023 },
+  "Destino Italia":        { piva: "07332890826",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "S.R.L. Società Benefit", indirizzo: "Piazza Virgilio 4",          citta: "90141 – Palermo (PA)",          annoFondazione: 2025, ateco: "62.10.00", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "Digitalmens":           { piva: "05893970656",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Corso Roma 51",                      citta: "80046 – San Giorgio a Cremano (NA)", annoFondazione: 2020, ateco: "62.10.00", dimensione: "micro", startupInnovativa: false, pmiInnovativa: true,  impresaFemminile: false, impresaGiovanile: false },
+  "Drop Digital Health":   { piva: "16989241001",  aiutiRicevuti: 283306.32, dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via Leon Pancaldo 26",               citta: "00147 – Roma (RM)",              annoFondazione: 2023, ateco: "63.91.00", dimensione: "micro", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "Drycor":                { piva: "",             aiutiRicevuti: 0,         dataVerifica: "",           formaGiur: "",        indirizzo: "", citta: "" },
   "EasyRFID":              { piva: "03358871204",  aiutiRicevuti: 161388.71, dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2014 },
   "Ecoter":                { piva: "01048061004",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
   "Ecubit":                { piva: "13753031007",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
-  "Ekore SRL":             { piva: "05493690282",  aiutiRicevuti: 178588.25, dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "", citta: "", annoFondazione: 2022 },
+  "Ekore SRL":             { piva: "05493690282",  aiutiRicevuti: 178588.25, dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via Ivrea 5",          citta: "33100 – Udine (UD)",        annoFondazione: 2022, ateco: "62.10.00", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "Fairtile":              { piva: "",             aiutiRicevuti: 0,         dataVerifica: "",           formaGiur: "",        indirizzo: "", citta: "" },
-  "Fideliomed":            { piva: "12645970018",  aiutiRicevuti: 54377.20,  dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2022 },
-  "Flex Packaging":        { piva: "02464370655",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
-  "GATIM SRL":             { piva: "02015210798",  aiutiRicevuti: 111736,    dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "", citta: "", annoFondazione: 1995 },
+  "Fideliomed":            { piva: "12645970018",  aiutiRicevuti: 54377.20,  dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Corso Re Umberto 8",                 citta: "10121 – Torino (TO)",            annoFondazione: 2022, ateco: "72.10.29", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "Flex Packaging":        { piva: "02464370655",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "S.P.A.",  indirizzo: "Via G. Vitale snc",                  citta: "84013 – Cava de' Tirreni (SA)", annoFondazione: 1988, ateco: "22.22.00", dimensione: "media", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "GATIM SRL":             { piva: "02015210798",  aiutiRicevuti: 111736,    dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Zona Industriale Papa Benedetto XVI C.14 snc", citta: "88046 – Lamezia Terme (CZ)", annoFondazione: 1995, ateco: "38.21.30", dimensione: "piccola", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "GGG":                   { piva: "",             aiutiRicevuti: 0,         dataVerifica: "",           formaGiur: "",        indirizzo: "", citta: "" },
   "Govtech":               { piva: "16143281000",  aiutiRicevuti: 52167.72,  dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
   "Heres":                 { piva: "03619031200",  aiutiRicevuti: 3849,      dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
-  "INTUOS SRL":            { piva: "15541901003",  aiutiRicevuti: 79639.71,  dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "", citta: "", annoFondazione: 2019 },
+  "INTUOS SRL":            { piva: "15541901003",  aiutiRicevuti: 79639.71,  dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Viale Gianluigi Bonelli 40",          citta: "00127 – Roma (RM)",             annoFondazione: 2019, ateco: "62.10.00", dimensione: "micro", startupInnovativa: false, pmiInnovativa: true,  impresaFemminile: true,  impresaGiovanile: false },
   "Ilios":                 { piva: "",             aiutiRicevuti: 0,         dataVerifica: "",           formaGiur: "",        indirizzo: "", citta: "" },
   "Kerr":                  { piva: "12598001001",  aiutiRicevuti: 87893,     dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
   "Leasy":                 { piva: "",             aiutiRicevuti: 0,         dataVerifica: "",           formaGiur: "",        indirizzo: "", citta: "" },
   "Leonardo formazione":   { piva: "11074611002",  aiutiRicevuti: 9600,      dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
-  "Messagenius":           { piva: "12973601003",  aiutiRicevuti: 55520,     dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2014 },
-  "Next4Production":       { piva: "02953440597",  aiutiRicevuti: 2002,      dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
+  "Messagenius":           { piva: "12973601003",  aiutiRicevuti: 55520,     dataVerifica: "15/06/2026", formaGiur: "S.R.L.S.", indirizzo: "Via Doberdo' 12",     citta: "00054 – Fiumicino (RM)",   annoFondazione: 2014, ateco: "61.90.90", dimensione: "micro", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "Next4Production":       { piva: "02953440597",  aiutiRicevuti: 2002,      dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via Sicilia 125",                    citta: "00187 – Roma (RM)",             annoFondazione: 2017, ateco: "64.21.00", dimensione: "micro", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "OralTec":               { piva: "07305330487",  aiutiRicevuti: 3000,      dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
   "ProGen SRL":            { piva: "04753140872",  aiutiRicevuti: 64009,     dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "", citta: "", annoFondazione: 2010 },
-  "Spartan Tech":          { piva: "11044930961",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
+  "Spartan Tech":          { piva: "11044930961",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Piazza Giuseppe Grandi 11",           citta: "20129 – Milano (MI)",            annoFondazione: 2019, ateco: "62.10.00", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
   "Speri":                 { piva: "01980341000",  aiutiRicevuti: 0,         dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
   "TLC Telecomunicazioni": { piva: "02268530595",  aiutiRicevuti: 8535,      dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2005 },
-  "Tod Systems":           { piva: "03665340794",  aiutiRicevuti: 30147,     dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2015 },
-  "Velion SRL":            { piva: "01421440320",  aiutiRicevuti: 51000,     dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "", citta: "", annoFondazione: 2020 },
-  "WDA":                   { piva: "15274611001",  aiutiRicevuti: 9940,      dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "" },
-  "Wink Suite SRL":        { piva: "12885490966",  aiutiRicevuti: 156467,    dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "", citta: "", annoFondazione: 2023 },
-  "Yourease":              { piva: "04239661202",  aiutiRicevuti: 153197,    dataVerifica: "15/06/2026", formaGiur: "",        indirizzo: "", citta: "", annoFondazione: 2024 },
+  "Tod Systems":           { piva: "03665340794",  aiutiRicevuti: 30147,     dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "I Traversa Viale Cassiodoro 6",       citta: "88060 – Davoli (CZ)",           annoFondazione: 2018, ateco: "62.10.00", dimensione: "micro", startupInnovativa: false, pmiInnovativa: true,  impresaFemminile: false, impresaGiovanile: false },
+  "Velion SRL":            { piva: "01421440320",  aiutiRicevuti: 51000,     dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via del Coroneo 19",  citta: "34133 – Trieste (TS)",     annoFondazione: 2024, ateco: "62.10.00", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "WDA":                   { piva: "15274611001",  aiutiRicevuti: 9940,      dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via Sicilia 125",                    citta: "00187 – Roma (RM)",             annoFondazione: 2019, ateco: "62.20.10", dimensione: "micro", startupInnovativa: false, pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
+  "Wink Suite SRL":        { piva: "12885490966",  aiutiRicevuti: 156467,    dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via Balilla 36",      citta: "20136 – Milano (MI)",      annoFondazione: 2023, ateco: "62.10.00", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: true,  impresaGiovanile: true  },
+  "Yourease":              { piva: "04239661202",  aiutiRicevuti: 153197,    dataVerifica: "15/06/2026", formaGiur: "S.R.L.",  indirizzo: "Via Antonio Zanolini 15/2",           citta: "40126 – Bologna (BO)",          annoFondazione: 2024, ateco: "62.10.00", dimensione: "micro", startupInnovativa: true,  pmiInnovativa: false, impresaFemminile: false, impresaGiovanile: false },
 };
 
 // ─── REQUISITI BANDO: COMPATIBILITÀ BILANCI ──────────────────────────────
@@ -2370,6 +2370,37 @@ function hasDueBilanci(nome) {
 function isBandoSIMEST(bando) {
   return bando && bando.ente && bando.ente.includes('SIMEST');
 }
+
+// ─── PROFILI CLIENTI DA VISURE CAMERALI ──────────────────────────────────
+// Dati estratti dalle visure. Migrazione one-shot: la versione cresce ad ogni
+// nuovo batch di visure lette. Sovrascrive i campi profilo nel localStorage.
+const CLIENTI_VISURE_VER = 2;
+const CLIENTI_VISURE = {
+  // Batch 1 (giugno 2026)
+  "BrainoAI":            { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2023, citta:"20151 – Milano (MI)",              indirizzo:"Via Ippodromo 56",                    formaGiur:"S.R.L. Società Benefit", piva:"13049530960" },
+  "Ekore SRL":           { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2022, citta:"33100 – Udine (UD)",               indirizzo:"Via Ivrea 5",                         formaGiur:"S.R.L.",                  piva:"05493690282" },
+  "Wink Suite SRL":      { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:true,  impresaGiovanile:true,  annoFondazione:2023, citta:"20136 – Milano (MI)",              indirizzo:"Via Balilla 36",                      formaGiur:"S.R.L.",                  piva:"12885490966" },
+  "Messagenius":         { ateco:"61.90.90", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2014, citta:"00054 – Fiumicino (RM)",           indirizzo:"Via Doberdo' 12",                     formaGiur:"S.R.L.S.",                piva:"12973601003" },
+  "Velion SRL":          { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2024, citta:"34133 – Trieste (TS)",             indirizzo:"Via del Coroneo 19",                  formaGiur:"S.R.L.",                  piva:"01421440320" },
+  // Batch 2 (giugno 2026)
+  "Azu Tech":            { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2024, citta:"00187 – Roma (RM)",               indirizzo:"Via degli Artisti 31",                formaGiur:"S.R.L.",                  piva:"17458971003" },
+  "Azu Venture":         { ateco:"70.20.09", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2016, citta:"00196 – Roma (RM)",               indirizzo:"Via degli Artisti 31",                formaGiur:"S.R.L.",                  piva:"02890350594" },
+  "Boss Technologies SRL":{ ateco:"28.42.00", dimensione:"micro",  startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2018, citta:"33100 – Udine (UD)",              indirizzo:"Via Jacopo Linussio 51",              formaGiur:"S.R.L.",                  piva:"04961060268" },
+  "Casavo":              { ateco:"68.32.01", dimensione:"piccola", startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2017, citta:"20159 – Milano (MI)",             indirizzo:"Via Porro Lambertenghi Luigi 7",      formaGiur:"S.R.L.",                  piva:"10053290960" },
+  "Citynews":            { ateco:"58.12.00", dimensione:"grande",  startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2010, citta:"20159 – Milano (MI)",             indirizzo:"Viale Stelvio 70",                    formaGiur:"S.P.A.",                  piva:"10786801000" },
+  "Destino Italia":      { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2025, citta:"90141 – Palermo (PA)",            indirizzo:"Piazza Virgilio 4",                   formaGiur:"S.R.L. Società Benefit",  piva:"07332890826" },
+  "Digitalmens":         { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:true,  impresaFemminile:false, impresaGiovanile:false, annoFondazione:2020, citta:"80046 – San Giorgio a Cremano (NA)", indirizzo:"Corso Roma 51",                   formaGiur:"S.R.L.",                  piva:"05893970656" },
+  "Drop Digital Health": { ateco:"63.91.00", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2023, citta:"00147 – Roma (RM)",               indirizzo:"Via Leon Pancaldo 26",                formaGiur:"S.R.L.",                  piva:"16989241001" },
+  "Fideliomed":          { ateco:"72.10.29", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2022, citta:"10121 – Torino (TO)",             indirizzo:"Corso Re Umberto 8",                  formaGiur:"S.R.L.",                  piva:"12645970018" },
+  "Flex Packaging":      { ateco:"22.22.00", dimensione:"media",   startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:1988, citta:"84013 – Cava de' Tirreni (SA)",   indirizzo:"Via G. Vitale snc",                   formaGiur:"S.P.A.",                  piva:"02464370655" },
+  "GATIM SRL":           { ateco:"38.21.30", dimensione:"piccola", startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:1995, citta:"88046 – Lamezia Terme (CZ)",      indirizzo:"Zona Industriale Papa Benedetto XVI C.14 snc", formaGiur:"S.R.L.", piva:"02015210798" },
+  "INTUOS SRL":          { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:true,  impresaFemminile:true,  impresaGiovanile:false, annoFondazione:2019, citta:"00127 – Roma (RM)",               indirizzo:"Viale Gianluigi Bonelli 40",          formaGiur:"S.R.L.",                  piva:"15541901003" },
+  "Next4Production":     { ateco:"64.21.00", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2017, citta:"00187 – Roma (RM)",               indirizzo:"Via Sicilia 125",                     formaGiur:"S.R.L.",                  piva:"02953440597" },
+  "Spartan Tech":        { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2019, citta:"20129 – Milano (MI)",             indirizzo:"Piazza Giuseppe Grandi 11",           formaGiur:"S.R.L.",                  piva:"11044930961" },
+  "Tod Systems":         { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:true,  impresaFemminile:false, impresaGiovanile:false, annoFondazione:2018, citta:"88060 – Davoli (CZ)",             indirizzo:"I Traversa Viale Cassiodoro 6",       formaGiur:"S.R.L.",                  piva:"03665340794" },
+  "WDA":                 { ateco:"62.20.10", dimensione:"micro",   startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2019, citta:"00187 – Roma (RM)",               indirizzo:"Via Sicilia 125",                     formaGiur:"S.R.L.",                  piva:"15274611001" },
+  "Yourease":            { ateco:"62.10.00", dimensione:"micro",   startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, annoFondazione:2024, citta:"40126 – Bologna (BO)",            indirizzo:"Via Antonio Zanolini 15/2",           formaGiur:"S.R.L.",                  piva:"04239661202" },
+};
 
 // ─── DATI DINAMICI (localStorage) ────────────────────────────────────────
 // I bandi aggiuntivi e i clienti modificati vengono salvati in localStorage.
@@ -2407,6 +2438,18 @@ const BANDI_BASE_LEN = BANDI.length;   // lunghezza array prima di aggiungere ex
     } else {
       // Prima visita: persisti i clienti di default
       localStorage.setItem('n4_clienti_data', JSON.stringify(CLIENTI));
+    }
+  } catch(e) {}
+
+  // Migrazione dati visure camerali (sovrascrive campi profilo con dati reali estratti)
+  try {
+    const verSalvata = parseInt(localStorage.getItem('n4_visure_ver') || '0');
+    if (verSalvata < CLIENTI_VISURE_VER) {
+      Object.entries(CLIENTI_VISURE).forEach(([nome, dati]) => {
+        if (CLIENTI[nome]) Object.assign(CLIENTI[nome], dati);
+      });
+      localStorage.setItem('n4_clienti_data', JSON.stringify(CLIENTI));
+      localStorage.setItem('n4_visure_ver', String(CLIENTI_VISURE_VER));
     }
   } catch(e) {}
 
@@ -4405,6 +4448,23 @@ function openEditBandoModal(idx) {
 // Abbina automaticamente le aziende al bando in base alla regione.
 // Le aziende già nella regione → nome; le altre → nome + " *" (sede da aprire).
 // Bandi nazionali → tutte le aziende con P.IVA nota.
+// Requisiti estratti dalle schede ufficiali Next4G — fonte: documenti Consulting N4G.
+// Usati come fallback se il bando non ha requisiti salvati e la descrizione non è parsabile.
+const BANDI_REQUISITI_MAP = {
+  "Calabria Startup – Consolidamento":       { dimensioni:["micro","piccola"],            startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:5  },
+  "ON – Oltre Nuove Imprese a Tasso Zero":   { dimensioni:["micro","piccola"],            startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:5  },
+  "Pre-Seed 3.0 – Regione Lazio":            { dimensioni:["micro","piccola"],            startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:3  },
+  "TecnoNidi Puglia":                        { dimensioni:["micro","piccola","media"],    startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:null },
+  "Innovazione Strategica STEP – Toscana":   { dimensioni:[],                            startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:null },
+  "Voucher Startup – Sardegna":              { dimensioni:["micro","piccola"],            startupInnovativa:true,  pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:4  },
+  "Investimenti Sostenibili 4.0 MIMIT":      { dimensioni:["micro","piccola","media"],    startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:2, etaMaxAnni:null },
+  "Brevetti+, Disegni+, Marchi+ e EUIPO SME Fund": { dimensioni:["micro","piccola","media"], startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:null },
+  "Brevetti+ 2025":                          { dimensioni:["micro","piccola","media"],    startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:null },
+  "Donne e Impresa Lazio 2026":              { dimensioni:["micro","piccola","media"],    startupInnovativa:false, pmiInnovativa:false, impresaFemminile:true,  impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:null },
+  "Accordi per l'Innovazione 2025":          { dimensioni:[],                            startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:2,    etaMaxAnni:null },
+  "Bando Internazionalizzazione Imprese FVG 2026": { dimensioni:[],                      startupInnovativa:false, pmiInnovativa:false, impresaFemminile:false, impresaGiovanile:false, atecoInclude:[], atecoExclude:[], etaMinAnni:null, etaMaxAnni:null },
+};
+
 // Estrae requisiti di ammissibilità da testo libero (campo note/descrizione del bando).
 function parseRequisitiFromNote(testo) {
   if (!testo) return {};
@@ -4461,7 +4521,10 @@ function parseRequisitiFromNote(testo) {
 function matchClienteBando(nomeCliente, bando) {
   const d   = CLIENTI[nomeCliente] || {};
   // Usa i requisiti salvati; se assenti, prova a parsarli dalla descrizione (bandi pre-esistenti)
-  const req = (bando && bando.requisiti) || parseRequisitiFromNote(bando && bando.descrizione) || {};
+  const req = (bando && bando.requisiti)
+           || (bando && BANDI_REQUISITI_MAP[bando.nome])
+           || parseRequisitiFromNote(bando && bando.descrizione)
+           || {};
   const reasons = [];
   const annoOggi = new Date().getFullYear();
 
