@@ -294,19 +294,27 @@
   .panel-actions { margin-top:18px; display:flex; gap:8px; flex-wrap:wrap; }
 
   /* ── VISTA CLIENTI ── */
-  .clienti-grid { padding:16px 32px 48px; display:grid; grid-template-columns:repeat(auto-fill,minmax(420px,1fr)); gap:18px; }
-  .client-card { background:white; border-radius:14px; box-shadow:0 2px 10px rgba(0,0,0,0.08); overflow:hidden; }
-  .client-card-header { background:#1B3A6B; color:white; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; cursor:pointer; user-select:none; transition:background 0.15s; }
-  .client-card-header:hover { background:#16336080; }
-  .client-chevron { font-size:14px; margin-left:4px; transition:transform 0.22s; flex-shrink:0; opacity:0.7; }
+  .clienti-grid { padding:16px 32px 48px; display:grid; grid-template-columns:repeat(auto-fill,minmax(420px,1fr)); gap:18px; align-items:start; }
+  .client-card { background:white; border-radius:14px; box-shadow:0 2px 10px rgba(0,0,0,0.08); overflow:hidden; display:flex; flex-direction:column; }
+  /* ZONA BLU — solo info, nessun bottone, altezza sempre fissa */
+  .client-card-header { background:#1B3A6B; color:white; padding:13px 16px; display:flex; align-items:center; gap:11px; cursor:pointer; user-select:none; transition:background 0.15s; flex-wrap:nowrap; }
+  .client-card-header:hover { background:#162f5e; }
+  .client-chevron { font-size:13px; margin-left:auto; transition:transform 0.22s; flex-shrink:0; opacity:0.65; }
   .client-chevron.open { transform:rotate(180deg); }
-  .client-name { font-size:14px; font-weight:700; }
-  .client-stats { display:flex; gap:5px; flex-wrap:wrap; margin-top:1px; }
-  .cs { font-size:10px; font-weight:700; padding:3px 9px; border-radius:10px; }
-  .cs-a { background:#dcfce7; color:#16a34a; }
-  .cs-u { background:#dc2626; color:white; }
-  .cs-i { background:#ccfbf1; color:#0f766e; }
-  .client-bandi { padding:6px 0; display:none; }
+  .client-name { font-size:13.5px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .client-stats { display:flex; gap:5px; flex-wrap:wrap; margin-top:2px; }
+  .cs { font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; }
+  .cs-a { background:rgba(220,252,231,0.25); color:#86efac; }
+  .cs-u { background:rgba(220,38,38,0.35); color:#fca5a5; }
+  .cs-i { background:rgba(204,251,241,0.2); color:#5eead4; }
+  /* BARRA AZIONI — riga bianca dedicata ai bottoni */
+  .client-actions-bar { display:flex; align-items:center; gap:5px; padding:8px 14px; background:#f8fafc; border-bottom:1px solid #eef2f7; flex-wrap:nowrap; overflow:hidden; }
+  .client-actions-sep { width:1px; height:16px; background:#e2e8f0; flex-shrink:0; margin:0 2px; }
+  /* RIGA ULTIMA INTERAZIONE */
+  .client-int-row { display:flex; align-items:center; gap:6px; padding:6px 16px; background:#eef4ff; border-bottom:1px solid #e0eafa; font-size:11px; color:#3b5a9a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .client-int-row .cli-tipo { font-size:12px; flex-shrink:0; }
+  .client-int-row .cli-int-text { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .client-bandi { padding:4px 0; display:none; }
   .client-bandi.open { display:block; }
   .client-bando-row { display:flex; align-items:center; gap:7px; padding:9px 16px; cursor:pointer; border-bottom:1px solid #f8fafc; transition:background 0.12s; }
   .client-bando-row:last-child { border-bottom:none; }
@@ -327,10 +335,9 @@
   .clienti-count { font-size:11px; color:#94a3b8; font-weight:600; white-space:nowrap; flex-shrink:0; }
 
   /* ── AVATAR + TOP BAND ── */
-  .client-card-top-band { height:5px; width:100%; flex-shrink:0; transition:opacity 0.2s; }
+  .client-card-top-band { height:5px; width:100%; flex-shrink:0; }
   .client-avatar { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:white; flex-shrink:0; letter-spacing:0.3px; border:2px solid rgba(255,255,255,0.25); }
-  .client-info { display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }
-  .client-actions { display:flex; align-items:center; gap:5px; flex-shrink:0; flex-wrap:wrap; justify-content:flex-end; }
+  .client-info { display:flex; flex-direction:column; gap:3px; flex:1; min-width:0; overflow:hidden; }
 
   /* ── PORTFOLIO BAR ── */
   .client-portfolio-bar { height:4px; width:100%; display:flex; background:#e9eef5; flex-shrink:0; }
@@ -691,7 +698,10 @@
   /* vista clienti */
   body.dark .client-card { background: #162035; box-shadow: 0 1px 6px rgba(0,0,0,0.4); }
   body.dark .client-card-header { background: #0d1f40; }
-  body.dark .client-card-header:hover { background: #162035; }
+  body.dark .client-card-header:hover { background: #102040; }
+  body.dark .client-actions-bar { background: #0f1928; border-bottom-color: #1e2d47; }
+  body.dark .client-actions-sep { background: #2d3f5e; }
+  body.dark .client-int-row { background: #101f3a; border-bottom-color: #1a2e50; color: #7baad4; }
   body.dark .client-bandi { }
   body.dark .client-bando-row { border-bottom-color: #0f1e35; }
   body.dark .client-bando-row:hover { background: #0f1e35; }
@@ -4501,6 +4511,8 @@ function renderClienti() {
 
     return `<div class="client-card${isEmpty?' client-card-empty':''}">
       <div class="client-card-top-band" style="background:${dominantColor}"></div>
+
+      <!-- ZONA BLU: solo info + chevron, altezza fissa -->
       <div class="client-card-header" onclick="this.querySelector('.client-chevron').classList.toggle('open');this.parentElement.querySelector('.client-bandi').classList.toggle('open')">
         <div class="client-avatar" style="background:${avatarColor}">${initials}</div>
         <div class="client-info">
@@ -4509,19 +4521,26 @@ function renderClienti() {
             ${aperti.length ? `<span class="cs cs-a">${aperti.length} aperti</span>` : ''}
             ${urgenti.length ? `<span class="cs cs-u">${urgenti.length} urgenti</span>` : ''}
             ${inAp.length ? `<span class="cs cs-i">${inAp.length} in apertura</span>` : ''}
-            ${isEmpty ? '<span class="cs" style="background:#f1f5f9;color:#94a3b8">no bandi</span>' : ''}
+            ${isEmpty ? '<span class="cs" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.5)">no bandi</span>' : ''}
           </span>
-          ${lastIntHTML}
         </div>
-        <div class="client-actions">
-          <button class="btn-edit-sm" onclick="event.stopPropagation();openEditClienteModal('${safeName}')" title="Modifica cliente">✏️</button>
-          ${inClienti ? `<button class="btn-danger-sm" onclick="event.stopPropagation();deleteCliente('${safeName}')" title="Elimina cliente">🗑</button>` : ''}
-          <button class="btn-log-sm" onclick="event.stopPropagation();openInterazioniPanel('${safeName}')" title="Log interazioni">📋 Log</button>
-          <button class="btn-print-cliente" onclick="event.stopPropagation();printCliente('${safeName}')">🖨 Stampa</button>
-          <button class="btn-ap${selCount>0?' ap-active':''}" id="btn-ap-${safeId}" ${selCount===0?'disabled':''} onclick="event.stopPropagation();openApModal('${safeName}')">${selCount>0?'📄 Action Plan ('+selCount+')':'📄 Action Plan'}</button>
-          <span class="client-chevron">▾</span>
-        </div>
+        <span class="client-chevron">▾</span>
       </div>
+
+      <!-- RIGA AZIONI: bottoni dedicati, sempre una sola linea -->
+      <div class="client-actions-bar">
+        <button class="btn-edit-sm" onclick="openEditClienteModal('${safeName}')" title="Modifica cliente">✏️</button>
+        ${inClienti ? `<button class="btn-danger-sm" onclick="deleteCliente('${safeName}')" title="Elimina cliente">🗑</button>` : ''}
+        <div class="client-actions-sep"></div>
+        <button class="btn-log-sm" onclick="openInterazioniPanel('${safeName}')">📋 Log</button>
+        <div class="client-actions-sep"></div>
+        <button class="btn-print-cliente" onclick="printCliente('${safeName}')">🖨</button>
+        <button class="btn-ap${selCount>0?' ap-active':''}" id="btn-ap-${safeId}" ${selCount===0?'disabled':''} onclick="openApModal('${safeName}')">${selCount>0?'📄 AP ('+selCount+')':'📄 Action Plan'}</button>
+      </div>
+
+      <!-- ULTIMA INTERAZIONE: riga azzurra, solo se presente -->
+      ${lastInt ? `<div class="client-int-row"><span class="cli-tipo">${(INT_TIPI[lastInt.tipo]||{icon:'📝'}).icon}</span><span class="cli-int-text">${lastInt.data}${lastInt.testo ? ' · ' + lastInt.testo.substring(0,45) + (lastInt.testo.length>45?'…':'') : ''}</span></div>` : ''}
+
       ${portfolioBar}
       ${dm}
       <div class="client-bandi">${emptyContent}</div>
