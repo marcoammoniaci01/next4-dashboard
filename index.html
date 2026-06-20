@@ -1401,6 +1401,40 @@
   body.dark .rq-title { color:#93c5fd; }
   body.dark .rq-ris-hdr { color:#93c5fd; }
 
+  /* ── RICERCA – risultati online ── */
+  .rq-online-sep { display:flex; align-items:center; gap:10px; margin:28px 0 14px; }
+  .rq-online-sep-line { flex:1; height:1px; background:#e2e8f0; }
+  .rq-online-sep-lbl { font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.07em; white-space:nowrap; }
+  .rq-online-hdr { font-size:15px; font-weight:800; color:#1B3A6B; margin-bottom:4px; }
+  .rq-online-sub { font-size:12.5px; color:#64748b; margin-bottom:14px; }
+  .rq-online-card { background:#f8faff; border:1.5px solid #c7deff; border-radius:12px; padding:13px 16px; margin-bottom:8px; display:flex; align-items:flex-start; gap:12px; transition:box-shadow .14s; }
+  .rq-online-card:hover { box-shadow:0 2px 12px rgba(27,58,107,.1); }
+  .rq-online-card-body { flex:1; min-width:0; }
+  .rq-online-card-nome { font-weight:700; color:#1B3A6B; font-size:13.5px; margin-bottom:2px; }
+  .rq-online-card-meta { font-size:12px; color:#64748b; margin-bottom:5px; }
+  .rq-online-card-note { font-size:11.5px; color:#475569; line-height:1.4; }
+  .rq-online-badges { display:flex; gap:5px; flex-wrap:wrap; margin-top:5px; }
+  .rq-online-badge-web { background:#dbeafe; color:#1d4ed8; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; }
+  .rq-online-badge-stato-aperto     { background:#dcfce7; color:#16a34a; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; }
+  .rq-online-badge-stato-inapertura { background:#fef9c3; color:#a16207; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; }
+  .rq-online-badge-stato-monitorare { background:#e0e7ff; color:#4338ca; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; }
+  .rq-online-card-btns { display:flex; flex-direction:column; gap:5px; flex-shrink:0; }
+  .rq-online-btn-link { background:#1B3A6B; color:#fff; border:none; border-radius:7px; padding:5px 11px; font-size:11px; font-weight:700; cursor:pointer; text-decoration:none; white-space:nowrap; display:inline-block; text-align:center; }
+  .rq-online-btn-link:hover { background:#14305a; }
+  .rq-online-btn-add { background:#fff; border:1.5px solid #c7deff; color:#1B3A6B; border-radius:7px; padding:5px 11px; font-size:11px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .rq-online-btn-add:hover { background:#eff6ff; }
+  .rq-online-empty { background:#f0f7ff; border:1.5px dashed #c7deff; border-radius:10px; padding:18px; text-align:center; color:#94a3b8; font-size:12.5px; }
+  .rq-online-loading { text-align:center; color:#94a3b8; padding:14px; font-size:12.5px; }
+  body.dark .rq-online-sep-line { background:#2d3f5e; }
+  body.dark .rq-online-sep-lbl { color:#4a6080; }
+  body.dark .rq-online-hdr { color:#93c5fd; }
+  body.dark .rq-online-sub { color:#4a6080; }
+  body.dark .rq-online-card { background:#0e1e35; border-color:#2d3f5e; }
+  body.dark .rq-online-card-nome { color:#dde4f0; }
+  body.dark .rq-online-card-meta { color:#4a6080; }
+  body.dark .rq-online-card-note { color:#4a6080; }
+  body.dark .rq-online-btn-add { background:#162035; border-color:#2d3f5e; }
+
   /* ─── INTERAZIONI PANEL ──────────────────────────────────────────────────── */
   .int-panel-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.22); z-index:699; }
   .int-panel-overlay.open { display:block; }
@@ -6224,6 +6258,96 @@ function _rqShowResults() {
   `;
 
   ris.scrollIntoView({ behavior:'smooth', block:'start' });
+
+  // Aggiungi sezione bandi online
+  _rqShowOnlineResults(ans);
+}
+
+async function _rqShowOnlineResults(ans) {
+  const ris = document.getElementById('rq-risultati');
+  // placeholder
+  const onlineDiv = document.createElement('div');
+  onlineDiv.id = 'rq-online-section';
+  onlineDiv.innerHTML = `
+    <div class="rq-online-sep"><div class="rq-online-sep-line"></div><div class="rq-online-sep-lbl">📡 Bandi online non ancora nel dashboard</div><div class="rq-online-sep-line"></div></div>
+    <div class="rq-online-loading">⟳ Cerco bandi online…</div>`;
+  ris.appendChild(onlineDiv);
+
+  // carica dati radar (cache locale o GitHub)
+  let radarData = getRadarData();
+  if (!radarData || !radarData.bandi) {
+    try {
+      const r = await fetch(RADAR_URL + '?t=' + Date.now());
+      if (r.ok) { radarData = await r.json(); saveRadarData(radarData); }
+    } catch(e) {}
+  }
+
+  const bandi = (radarData?.bandi || []).filter(b => b.stato !== 'chiuso' && b.nuovo !== false);
+
+  if (!bandi.length) {
+    onlineDiv.innerHTML = `
+      <div class="rq-online-sep"><div class="rq-online-sep-line"></div><div class="rq-online-sep-lbl">📡 Bandi online non ancora nel dashboard</div><div class="rq-online-sep-line"></div></div>
+      <div class="rq-online-empty">Nessun bando online nel Radar al momento.<br><small>L'agente aggiorna ogni mattina alle 9:00.</small></div>`;
+    return;
+  }
+
+  // Filtro leggero per regione
+  const userReg = ((ans.regione||'') + ' ' + (ans.sedi||'')).toLowerCase();
+  const regioniKw = ['lazio','piemonte','lombardia','calabria','toscana','puglia','sicilia','campania','sardegna','veneto','emilia','liguria','marche','umbria','abruzzo','molise','basilicata','friuli','valdaosta','trentino'];
+  const score = b => {
+    const txt = (b.nome + ' ' + (b.ente||'') + ' ' + (b.note||'')).toLowerCase();
+    if (regioniKw.some(r => userReg.includes(r) && txt.includes(r))) return 0; // in regione
+    if (!regioniKw.some(r => txt.includes(r))) return 1; // nazionale/non specificato
+    return 2; // altra regione
+  };
+  const sorted = [...bandi].sort((a,b) => score(a) - score(b));
+
+  const statoLbl = s => s === 'aperto' ? '🟢 Aperto' : s === 'inapertura' ? '🟡 In apertura' : '🔵 Monitorare';
+  const statoClass = s => 'rq-online-badge-stato-' + (s||'monitorare');
+
+  onlineDiv.innerHTML = `
+    <div class="rq-online-sep"><div class="rq-online-sep-line"></div><div class="rq-online-sep-lbl">📡 Bandi online non ancora nel dashboard</div><div class="rq-online-sep-line"></div></div>
+    <div class="rq-online-hdr">${bandi.length} bandi trovati online dal Radar</div>
+    <div class="rq-online-sub">Questi bandi non sono ancora nel dashboard. Verificali e aggiungili se pertinenti.</div>
+    ${sorted.map((b, i) => `
+      <div class="rq-online-card">
+        <div class="rq-online-card-body">
+          <div class="rq-online-card-nome">${b.nome}</div>
+          <div class="rq-online-card-meta">${b.ente||''}${b.scadenza ? ' · 📅 ' + b.scadenza : ''}</div>
+          ${b.note ? `<div class="rq-online-card-note">${b.note}</div>` : ''}
+          <div class="rq-online-badges">
+            <span class="rq-online-badge-web">🌐 Online</span>
+            <span class="${statoClass(b.stato)}">${statoLbl(b.stato)}</span>
+          </div>
+        </div>
+        <div class="rq-online-card-btns">
+          ${b.url ? `<a href="${b.url}" target="_blank" class="rq-online-btn-link">🔗 Apri</a>` : ''}
+          <button class="rq-online-btn-add" onclick="radarAddToDashboard_rq(${i})">+ Aggiungi</button>
+        </div>
+      </div>`).join('')}`;
+
+  // salva sorted per uso nel callback
+  onlineDiv._radarSorted = sorted;
+}
+
+function radarAddToDashboard_rq(idx) {
+  const onlineDiv = document.getElementById('rq-online-section');
+  const sorted = onlineDiv?._radarSorted;
+  if (!sorted) return;
+  const b = sorted[idx];
+  if (!b) return;
+  const extra = JSON.parse(localStorage.getItem('n4_bandi_extra') || '[]');
+  extra.push({
+    nome: b.nome, ente: b.ente || '', regione: b.regione || 'Nazionale',
+    tipo: ['impresa'], contributo: b.note || '', scadenza: b.scadenza || '',
+    proc: '', stato: b.stato || 'monitorare', urgente: false,
+    altaRilevanza: false, aperturaImminente: b.stato === 'inapertura',
+    descrizione: b.note || '', domande: [], clienti: [], link: b.url || ''
+  });
+  localStorage.setItem('n4_bandi_extra', JSON.stringify(extra));
+  showToast('Bando aggiunto al dashboard!', 'ok');
+  const card = onlineDiv.querySelector(`.rq-online-card:nth-child(${idx + 4})`);
+  if (card) { card.style.opacity = '.4'; card.style.pointerEvents = 'none'; }
 }
 
 // ─── INTERAZIONI ─────────────────────────────────────────────────────────────
