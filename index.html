@@ -1023,6 +1023,102 @@
   body.dark .hub-trust-item { color: #3d5572; }
   body.dark .hub-trust-sep  { background: #1e2d47; }
 
+  /* ── CONTABILITÀ ── */
+  .cont-tabs { display:flex; gap:0; padding:0 32px; border-bottom:1.5px solid #e2e8f0; background:#fff; }
+  .cont-tab { padding:10px 18px; font-size:12.5px; font-weight:600; color:#94a3b8; cursor:pointer; border-bottom:2.5px solid transparent; margin-bottom:-1.5px; transition:all .14s; border-top:none; border-left:none; border-right:none; background:none; font-family:inherit; }
+  .cont-tab:hover { color:#1B3A6B; }
+  .cont-tab.active { color:#1B3A6B; border-bottom-color:#1B3A6B; }
+  .cont-inner { padding:20px 32px 60px; }
+  .cont-kpi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:12px; margin-bottom:22px; }
+  .cont-kpi { background:white; border-radius:12px; padding:16px 18px; box-shadow:0 1px 4px rgba(0,0,0,.07); border-top:3px solid #e2e8f0; }
+  .cont-kpi.k-total { border-top-color:#1B3A6B; }
+  .cont-kpi.k-green { border-top-color:#16a34a; }
+  .cont-kpi.k-blue  { border-top-color:#2563eb; }
+  .cont-kpi.k-purple{ border-top-color:#7c3aed; }
+  .cont-kpi.k-red   { border-top-color:#dc2626; }
+  .cont-kpi.k-amber { border-top-color:#d97706; }
+  .cont-kpi-ico { font-size:18px; margin-bottom:6px; }
+  .cont-kpi-val { font-size:20px; font-weight:800; color:#1B3A6B; font-family:'Plus Jakarta Sans',sans-serif; line-height:1.1; }
+  .cont-kpi-val.green  { color:#16a34a; }
+  .cont-kpi-val.blue   { color:#2563eb; }
+  .cont-kpi-val.purple { color:#7c3aed; }
+  .cont-kpi-val.red    { color:#dc2626; }
+  .cont-kpi-val.amber  { color:#d97706; }
+  .cont-kpi-lbl { font-size:11px; color:#94a3b8; margin-top:4px; }
+  /* fatture */
+  .fatt-toolbar { display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+  .fatt-search { border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 12px; font-size:12.5px; font-family:inherit; outline:none; background:#f8fafc; flex:1; min-width:180px; transition:border-color .15s; }
+  .fatt-search:focus { border-color:#1B3A6B; background:white; }
+  .fatt-filter { border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 10px; font-size:12px; font-family:inherit; background:white; outline:none; cursor:pointer; }
+  .fatt-table-wrap { overflow-x:auto; border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,.07); }
+  .fatt-table { width:100%; border-collapse:collapse; background:white; font-size:12.5px; }
+  .fatt-table th { text-align:left; padding:10px 14px; font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:.06em; border-bottom:1.5px solid #f1f5f9; white-space:nowrap; }
+  .fatt-table td { padding:11px 14px; border-bottom:1px solid #f8fafc; vertical-align:middle; }
+  .fatt-table tr:last-child td { border-bottom:none; }
+  .fatt-table tr:hover td { background:#fafbfc; }
+  .fatt-num { font-weight:700; color:#1B3A6B; font-size:12px; }
+  .fatt-cliente { font-weight:600; color:#1a1a2e; }
+  .fatt-desc { color:#64748b; font-size:11.5px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .fatt-importo { font-weight:700; color:#1B3A6B; white-space:nowrap; }
+  .fatt-chip { display:inline-block; padding:2px 9px; border-radius:10px; font-size:10.5px; font-weight:700; white-space:nowrap; }
+  .fatt-chip-bozza   { background:#f1f5f9; color:#64748b; }
+  .fatt-chip-emessa  { background:#dbeafe; color:#1d4ed8; }
+  .fatt-chip-pagata  { background:#dcfce7; color:#15803d; }
+  .fatt-chip-scaduta { background:#fee2e2; color:#dc2626; }
+  .fatt-btn-sm { background:#f1f5f9; border:1.5px solid #e2e8f0; border-radius:6px; padding:3px 8px; font-size:11px; font-weight:600; color:#64748b; cursor:pointer; font-family:inherit; transition:all .13s; }
+  .fatt-btn-sm:hover { background:#e2e8f0; color:#1B3A6B; }
+  .fatt-btn-del { background:#fee2e2; border-color:#fca5a5; color:#dc2626; }
+  .fatt-btn-del:hover { background:#fecaca; }
+  .fatt-empty { text-align:center; padding:48px 20px; color:#94a3b8; font-size:13px; line-height:2; }
+  /* flusso cassa */
+  .flusso-area { background:white; border-radius:14px; padding:22px 24px; box-shadow:0 1px 4px rgba(0,0,0,.07); margin-bottom:16px; }
+  .flusso-title { font-size:13px; font-weight:700; color:#1B3A6B; margin-bottom:2px; }
+  .flusso-sub { font-size:11px; color:#94a3b8; margin-bottom:20px; }
+  .flusso-bars-wrap { display:flex; gap:6px; align-items:flex-end; height:110px; padding-bottom:28px; position:relative; }
+  .flusso-col { flex:1; display:flex; flex-direction:column; align-items:center; position:relative; }
+  .flusso-col-stack { display:flex; flex-direction:column; justify-content:flex-end; width:100%; }
+  .flusso-seg { width:100%; min-height:2px; }
+  .flusso-seg-pag { background:#16a34a; border-radius:3px 3px 0 0; }
+  .flusso-seg-att { background:#2563eb; opacity:.7; }
+  .flusso-seg-pip { background:#d97706; opacity:.5; border-radius:3px 3px 0 0; }
+  .flusso-col-lbl { font-size:9.5px; color:#94a3b8; position:absolute; bottom:-20px; white-space:nowrap; text-align:center; }
+  .flusso-col-tot { font-size:9.5px; color:#64748b; font-weight:700; position:absolute; top:-15px; white-space:nowrap; }
+  .flusso-legend { display:flex; gap:16px; margin-top:32px; flex-wrap:wrap; }
+  .flusso-leg { display:flex; align-items:center; gap:5px; font-size:11px; color:#64748b; }
+  .flusso-leg-dot { width:10px; height:10px; border-radius:2px; }
+  /* fattura modal */
+  .fatt-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.25); z-index:800; display:flex; align-items:center; justify-content:center; }
+  .fatt-modal { background:white; border-radius:16px; padding:28px; width:100%; max-width:500px; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.18); }
+  .fatt-modal-title { font-size:15px; font-weight:800; color:#1B3A6B; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; }
+  .fatt-modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .fatt-modal-field { display:flex; flex-direction:column; gap:4px; }
+  .fatt-modal-field.full { grid-column:1/-1; }
+  .fatt-modal-lbl { font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:.06em; }
+  .fatt-modal-input { border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 10px; font-size:12.5px; font-family:inherit; outline:none; background:#f8fafc; transition:border-color .15s; }
+  .fatt-modal-input:focus { border-color:#1B3A6B; background:white; }
+  .fatt-modal-actions { display:flex; gap:8px; margin-top:22px; justify-content:flex-end; }
+  .fatt-modal-cancel { background:#f1f5f9; border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 16px; font-size:12.5px; font-weight:600; color:#64748b; cursor:pointer; font-family:inherit; }
+  .fatt-modal-save { background:#1B3A6B; border:none; border-radius:8px; padding:8px 22px; font-size:12.5px; font-weight:700; color:white; cursor:pointer; font-family:inherit; }
+  .fatt-modal-save:hover { background:#162f5e; }
+  /* dark mode contabilità */
+  body.dark .cont-tabs { background:#0f1e35; border-bottom-color:#1e3050; }
+  body.dark .cont-tab { color:#4a6080; }
+  body.dark .cont-tab.active { color:#93c5fd; border-bottom-color:#93c5fd; }
+  body.dark .cont-kpi { background:#162035; }
+  body.dark .cont-kpi-val { color:#93c5fd; }
+  body.dark .fatt-search,.cont-inner body.dark .fatt-filter { background:#0f1e35; border-color:#2d3f5e; color:#dde4f0; }
+  body.dark .fatt-filter { background:#0f1e35; border-color:#2d3f5e; color:#dde4f0; }
+  body.dark .fatt-table-wrap,.body.dark .fatt-table { background:#162035; }
+  body.dark .fatt-table { background:#162035; }
+  body.dark .fatt-table th { color:#4a6080; border-bottom-color:#1e3050; }
+  body.dark .fatt-table td { border-bottom-color:#1e3050; }
+  body.dark .fatt-table tr:hover td { background:#1a2540; }
+  body.dark .fatt-cliente { color:#dde4f0; }
+  body.dark .flusso-area { background:#162035; }
+  body.dark .fatt-modal { background:#162035; }
+  body.dark .fatt-modal-input { background:#0f1e35; border-color:#2d3f5e; color:#dde4f0; }
+  body.dark .fatt-btn-sm { background:#1e2d45; border-color:#2d3f5e; color:#94a3b8; }
+
   /* ── SECTION NAV (breadcrumb) ── */
   .section-nav { display: flex; align-items: center; gap: 10px; padding: 12px 32px 0; }
   .btn-home { background: none; border: none; cursor: pointer; font-size: 12px; font-weight: 700; color: #94a3b8; font-family: inherit; padding: 4px 0; transition: color 0.15s; display: flex; align-items: center; gap: 5px; }
@@ -1731,6 +1827,9 @@
     <span class="sidebar-item-ico">✅</span> Task
     <span class="sidebar-badge" id="sb-badge-task" style="display:none"></span>
   </button>
+  <button class="sidebar-item" id="sb-contabilita" onclick="sbEnter('riservata','contabilita')">
+    <span class="sidebar-item-ico">📒</span> Contabilità
+  </button>
 
   <div class="sidebar-footer">© 2026 Next4 International</div>
 </div>
@@ -1989,6 +2088,101 @@
     </div>
     <div id="task-stats" style="margin-bottom:20px;"></div>
     <div id="task-list"></div>
+  </div>
+</div>
+
+<!-- ── CONTABILITÀ ── -->
+<div id="view-contabilita" style="display:none;">
+  <div class="cont-tabs">
+    <button class="cont-tab active" id="ctab-cruscotto" onclick="contTab('cruscotto')">📊 Cruscotto</button>
+    <button class="cont-tab" id="ctab-fatture"   onclick="contTab('fatture')">🧾 Fatture</button>
+    <button class="cont-tab" id="ctab-flusso"    onclick="contTab('flusso')">💰 Flusso di Cassa</button>
+  </div>
+
+  <!-- CRUSCOTTO -->
+  <div id="cont-view-cruscotto" class="cont-inner"></div>
+
+  <!-- FATTURE -->
+  <div id="cont-view-fatture" class="cont-inner" style="display:none;">
+    <div class="cont-kpi-grid" id="fatt-kpi-grid"></div>
+    <div class="fatt-toolbar">
+      <input class="fatt-search" id="fatt-q" placeholder="Cerca per cliente, numero, descrizione…" oninput="renderFattureList()">
+      <select class="fatt-filter" id="fatt-f-stato" onchange="renderFattureList()">
+        <option value="">Tutti gli stati</option>
+        <option value="bozza">Bozza</option>
+        <option value="emessa">Emessa</option>
+        <option value="pagata">Pagata</option>
+        <option value="scaduta">Scaduta</option>
+      </select>
+      <button class="btn-data-primary" onclick="openFatturaModal()">+ Nuova Fattura</button>
+    </div>
+    <div class="fatt-table-wrap">
+      <table class="fatt-table">
+        <thead><tr>
+          <th>Numero</th><th>Cliente</th><th>Descrizione</th>
+          <th>Imponibile</th><th>IVA</th><th>Totale</th>
+          <th>Emessa</th><th>Scadenza</th><th>Stato</th><th></th>
+        </tr></thead>
+        <tbody id="fatt-tbody"></tbody>
+      </table>
+    </div>
+    <div id="fatt-empty" class="fatt-empty" style="display:none;">🧾 Nessuna fattura ancora.<br>Clicca <strong>"+ Nuova Fattura"</strong> per iniziare.</div>
+  </div>
+
+  <!-- FLUSSO DI CASSA -->
+  <div id="cont-view-flusso" class="cont-inner" style="display:none;"></div>
+</div>
+
+<!-- Modal fattura -->
+<div id="fatt-modal-overlay" class="fatt-modal-overlay" style="display:none;" onclick="if(event.target===this)closeFatturaModal()">
+  <div class="fatt-modal">
+    <div class="fatt-modal-title">
+      <span id="fatt-modal-title-txt">Nuova Fattura</span>
+      <button onclick="closeFatturaModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#94a3b8;line-height:1;">×</button>
+    </div>
+    <div class="fatt-modal-grid">
+      <div class="fatt-modal-field"><div class="fatt-modal-lbl">Numero</div><input class="fatt-modal-input" id="fm-numero" placeholder="2026/001"></div>
+      <div class="fatt-modal-field"><div class="fatt-modal-lbl">Stato</div>
+        <select class="fatt-modal-input" id="fm-stato">
+          <option value="bozza">Bozza</option>
+          <option value="emessa" selected>Emessa</option>
+          <option value="pagata">Pagata</option>
+          <option value="scaduta">Scaduta</option>
+        </select>
+      </div>
+      <div class="fatt-modal-field full"><div class="fatt-modal-lbl">Cliente</div>
+        <input class="fatt-modal-input" id="fm-cliente" list="fm-clienti-dl" placeholder="Nome cliente">
+        <datalist id="fm-clienti-dl"></datalist>
+      </div>
+      <div class="fatt-modal-field full"><div class="fatt-modal-lbl">Descrizione</div><input class="fatt-modal-input" id="fm-desc" placeholder="es. Retainer consulenza – Gennaio 2026"></div>
+      <div class="fatt-modal-field"><div class="fatt-modal-lbl">Imponibile (€)</div><input class="fatt-modal-input" id="fm-importo" type="number" min="0" step="0.01" placeholder="5000.00"></div>
+      <div class="fatt-modal-field"><div class="fatt-modal-lbl">IVA (%)</div>
+        <select class="fatt-modal-input" id="fm-iva">
+          <option value="0">0% – Regime forfettario / esente</option>
+          <option value="4">4%</option>
+          <option value="10">10%</option>
+          <option value="22" selected>22%</option>
+        </select>
+      </div>
+      <div class="fatt-modal-field"><div class="fatt-modal-lbl">Data emissione</div><input class="fatt-modal-input" id="fm-data-em" type="date"></div>
+      <div class="fatt-modal-field"><div class="fatt-modal-lbl">Data scadenza</div><input class="fatt-modal-input" id="fm-data-sc" type="date"></div>
+      <div class="fatt-modal-field"><div class="fatt-modal-lbl">Data pagamento</div><input class="fatt-modal-input" id="fm-data-pag" type="date"></div>
+      <div class="fatt-modal-field"><div class="fatt-modal-lbl">Categoria</div>
+        <select class="fatt-modal-input" id="fm-categoria">
+          <option value="retainer">Retainer</option>
+          <option value="success_fee">Success fee</option>
+          <option value="consulenza">Consulenza</option>
+          <option value="rimborso">Rimborso spese</option>
+          <option value="altro">Altro</option>
+        </select>
+      </div>
+      <div class="fatt-modal-field full"><div class="fatt-modal-lbl">Note</div><input class="fatt-modal-input" id="fm-note" placeholder="Note aggiuntive…"></div>
+    </div>
+    <input type="hidden" id="fm-editing-id">
+    <div class="fatt-modal-actions">
+      <button class="fatt-modal-cancel" onclick="closeFatturaModal()">Annulla</button>
+      <button class="fatt-modal-save" onclick="saveFattura()">Salva fattura</button>
+    </div>
   </div>
 </div>
 
@@ -2448,7 +2642,7 @@ function showHub() {
   // nascondi sidebar sull'hub
   document.body.classList.add('hub-mode');
   // deseleziona tutti gli item della sidebar e attiva Home
-  const allSb = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task'];
+  const allSb = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task','sb-contabilita'];
   allSb.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
   const home = document.getElementById('sb-home');
   if (home) home.classList.add('active');
@@ -4498,12 +4692,12 @@ function sbEnter(section, tab) {
 }
 
 function updateSidebarActive(tab) {
-  const allIds = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task'];
+  const allIds = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task','sb-contabilita'];
   allIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
-  const map = { bandi:'sb-bandi', clienti:'sb-clienti', scadenzario:'sb-scadenzario', ricerca:'sb-ricerca', radar:'sb-radar', pipeline:'sb-pipeline', task:'sb-task' };
+  const map = { bandi:'sb-bandi', clienti:'sb-clienti', scadenzario:'sb-scadenzario', ricerca:'sb-ricerca', radar:'sb-radar', pipeline:'sb-pipeline', task:'sb-task', contabilita:'sb-contabilita' };
   if (map[tab]) {
     const el = document.getElementById(map[tab]);
     if (el) el.classList.add('active');
@@ -4528,7 +4722,7 @@ function switchTab(tab) {
 
   // aggiorna active nel gruppo tabs corretto (tabs sono hidden ma JS li usa ancora)
   const finanzaTabs = ['bandi','clienti','scadenzario','ricerca','radar'];
-  const riservTabs  = ['pipeline','task'];
+  const riservTabs  = ['pipeline','task','contabilita'];
   const groupId = finanzaTabs.includes(tab) ? 'tabs-finanza' : 'tabs-riservata';
   const groupTabs = finanzaTabs.includes(tab) ? finanzaTabs : riservTabs;
   document.querySelectorAll('#' + groupId + ' .tab').forEach((t, i) => {
@@ -4536,7 +4730,7 @@ function switchTab(tab) {
   });
 
   // mostra/nascondi views
-  ['bandi','clienti','scadenzario','ricerca','pipeline','task','radar'].forEach(v => {
+  ['bandi','clienti','scadenzario','ricerca','pipeline','task','radar','contabilita'].forEach(v => {
     const el = document.getElementById('view-' + v);
     if (!el) return;
     if (v === tab) {
@@ -4552,12 +4746,13 @@ function switchTab(tab) {
   // aggiorna sidebar active state
   updateSidebarActive(tab);
 
-  if (tab === 'clienti')     renderClienti();
-  if (tab === 'scadenzario') renderScadenzario();
-  if (tab === 'pipeline')    renderPipeline();
-  if (tab === 'task')        renderTask();
-  if (tab === 'ricerca')     _rqInit();
-  if (tab === 'radar')       renderRadar();
+  if (tab === 'clienti')      renderClienti();
+  if (tab === 'scadenzario')  renderScadenzario();
+  if (tab === 'pipeline')     renderPipeline();
+  if (tab === 'task')         renderTask();
+  if (tab === 'ricerca')      _rqInit();
+  if (tab === 'radar')        renderRadar();
+  if (tab === 'contabilita')  renderContabilita();
 }
 
 // ─── SIDE PANEL ──────────────────────────────────────────────────────────
@@ -6779,6 +6974,385 @@ function _rqToggleEsclusi() {
   wrap.style.display = open ? '' : 'none';
   if (btn) btn.textContent = open ? 'Nascondi bandi non idonei ↑' : btn.textContent.replace('Nascondi','Mostra').replace('↑','↓');
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ─── CONTABILITÀ ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
+
+function getFatture() {
+  try { return JSON.parse(localStorage.getItem('n4_fatture') || '[]'); } catch(e) { return []; }
+}
+function saveFatture(arr) { localStorage.setItem('n4_fatture', JSON.stringify(arr)); }
+
+let _contCurrentTab = 'cruscotto';
+
+function renderContabilita() {
+  contTab(_contCurrentTab);
+}
+
+function contTab(tab) {
+  _contCurrentTab = tab;
+  ['cruscotto','fatture','flusso'].forEach(t => {
+    const el = document.getElementById('cont-view-' + t);
+    if (el) el.style.display = t === tab ? '' : 'none';
+    const btn = document.getElementById('ctab-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+  if (tab === 'cruscotto') renderContCruscotto();
+  if (tab === 'fatture')   { renderFattureKPI(); renderFattureList(); }
+  if (tab === 'flusso')    renderFlussoCassa();
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────
+function fmtData(s) {
+  if (!s) return '—';
+  const [y,m,d] = s.split('-');
+  return d + '/' + m + '/' + y;
+}
+function fmtEurCont(n) { return '€' + (n||0).toLocaleString('it-IT',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+function totLordo(f) { return (f.importo||0) * (1 + (f.iva||0)/100); }
+function fmtChipFatt(stato) {
+  const map = { bozza:'bozza', emessa:'emessa', pagata:'pagata', scaduta:'scaduta' };
+  const lbl = { bozza:'📝 Bozza', emessa:'📤 Emessa', pagata:'✅ Pagata', scaduta:'⚠ Scaduta' };
+  return `<span class="fatt-chip fatt-chip-${map[stato]||'bozza'}">${lbl[stato]||stato}</span>`;
+}
+function nextFattNum() {
+  const fatture = getFatture();
+  const anno = new Date().getFullYear();
+  const nums = fatture.map(f => {
+    const m = (f.numero||'').match(/\d+\/(\d+)/);
+    return m ? parseInt(m[1]) : 0;
+  });
+  const next = (nums.length ? Math.max(...nums) : 0) + 1;
+  return anno + '/' + String(next).padStart(3,'0');
+}
+function isScaduta(f) {
+  if (f.stato === 'pagata' || f.stato === 'bozza') return false;
+  if (!f.dataScadenza) return false;
+  return new Date(f.dataScadenza) < new Date();
+}
+
+// ── CRUSCOTTO ─────────────────────────────────────────────────────────────
+function renderContCruscotto() {
+  const el = document.getElementById('cont-view-cruscotto');
+  if (!el) return;
+  const fatture  = getFatture();
+  const pipeline = getPipeline ? getPipeline() : [];
+  const oggi     = new Date();
+  const annoCorr = oggi.getFullYear();
+  const mesCorr  = oggi.getMonth();
+
+  // KPI fatture
+  const ytdPagate  = fatture.filter(f => f.stato === 'pagata' && (f.dataPagamento||'').startsWith(String(annoCorr)));
+  const ytdPagatoTot = ytdPagate.reduce((s,f) => s + totLordo(f), 0);
+  const emesse     = fatture.filter(f => f.stato === 'emessa');
+  const daIncass   = emesse.reduce((s,f) => s + totLordo(f), 0);
+  const scadute    = fatture.filter(f => f.stato === 'scaduta' || (f.stato === 'emessa' && isScaduta(f)));
+  const scaduteTot = scadute.reduce((s,f) => s + totLordo(f), 0);
+
+  // KPI pipeline (retainer + success fee incassati YTD)
+  let plRetYTD = 0, plFeeYTD = 0;
+  pipeline.forEach(p => {
+    const ir = incassoMeseAnno(p.dataIncassoRetainer);
+    if (ir && ir.y === annoCorr && p.retainerPagato) plRetYTD += p.retainer||0;
+    const ifee = incassoMeseAnno(p.dataIncassoFee);
+    if (ifee && ifee.y === annoCorr && p.successFeePagata) plFeeYTD += (p.contributoConc||0)*(p.successFeePerc||0)/100;
+  });
+
+  // Ultimi 7 mesi per grafico combinato
+  const mesi = [];
+  for (let i=6; i>=0; i--) {
+    const d = new Date(annoCorr, mesCorr-i, 1);
+    mesi.push({ y:d.getFullYear(), m:d.getMonth() });
+  }
+  const MESI_LBL = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+  const cols = mesi.map(({y,m}) => {
+    let pag=0, ret=0, fee=0;
+    fatture.forEach(f => {
+      if (f.stato==='pagata' && f.dataPagamento) {
+        const d = new Date(f.dataPagamento);
+        if (d.getFullYear()===y && d.getMonth()===m) pag += totLordo(f);
+      }
+    });
+    pipeline.forEach(p => {
+      const ir = incassoMeseAnno(p.dataIncassoRetainer);
+      if (ir && ir.y===y && ir.m===m && p.retainerPagato) ret += p.retainer||0;
+      const ifee = incassoMeseAnno(p.dataIncassoFee);
+      if (ifee && ifee.y===y && ifee.m===m && p.successFeePagata) fee += (p.contributoConc||0)*(p.successFeePerc||0)/100;
+    });
+    return { y, m, pag, ret, fee, tot: pag+ret+fee };
+  });
+  const maxTot = Math.max(...cols.map(c=>c.tot), 1);
+  const H = 90;
+  const hasData = cols.some(c=>c.tot>0);
+
+  el.innerHTML = `
+    <div class="cont-kpi-grid">
+      <div class="cont-kpi k-green"><div class="cont-kpi-ico">💶</div><div class="cont-kpi-val green">${fmtEurFull(ytdPagatoTot)}</div><div class="cont-kpi-lbl">Fatture pagate YTD ${annoCorr}</div></div>
+      <div class="cont-kpi k-blue"><div class="cont-kpi-ico">📤</div><div class="cont-kpi-val blue">${fmtEurFull(daIncass)}</div><div class="cont-kpi-lbl">Da incassare (emesse)</div></div>
+      ${scaduteTot > 0 ? `<div class="cont-kpi k-red"><div class="cont-kpi-ico">⚠</div><div class="cont-kpi-val red">${fmtEurFull(scaduteTot)}</div><div class="cont-kpi-lbl">Scadute non pagate</div></div>` : ''}
+      <div class="cont-kpi k-total"><div class="cont-kpi-ico">📊</div><div class="cont-kpi-val">${fmtEurFull(plRetYTD+plFeeYTD)}</div><div class="cont-kpi-lbl">Pipeline incassata YTD (retainer + fee)</div></div>
+      <div class="cont-kpi k-purple"><div class="cont-kpi-ico">💼</div><div class="cont-kpi-val purple">${fmtEurFull(plRetYTD)}</div><div class="cont-kpi-lbl">Retainer YTD</div></div>
+      <div class="cont-kpi k-amber"><div class="cont-kpi-ico">🏆</div><div class="cont-kpi-val amber">${fmtEurFull(plFeeYTD)}</div><div class="cont-kpi-lbl">Success fee YTD</div></div>
+    </div>
+    <div class="flusso-area">
+      <div class="flusso-title">Incassi mensili ${annoCorr}</div>
+      <div class="flusso-sub">Fatture pagate + incassi pipeline (retainer e success fee)</div>
+      ${hasData ? `
+      <div class="flusso-bars-wrap">
+        ${cols.map(c => {
+          const hPag = c.tot>0 ? Math.max(3, Math.round((c.pag/maxTot)*H)) : 0;
+          const hRet = c.tot>0 ? Math.max(3, Math.round((c.ret/maxTot)*H)) : 0;
+          const hFee = c.tot>0 ? Math.max(3, Math.round((c.fee/maxTot)*H)) : 0;
+          const isCurr = c.y===annoCorr && c.m===mesCorr;
+          return `<div class="flusso-col">
+            ${c.tot>0?`<div class="flusso-col-tot">${fmtEurK(c.tot)}</div>`:''}
+            <div class="flusso-col-stack">
+              ${hFee?`<div class="flusso-seg flusso-seg-pip" style="height:${hFee}px"></div>`:''}
+              ${hRet?`<div class="flusso-seg flusso-seg-att" style="height:${hRet}px"></div>`:''}
+              ${hPag?`<div class="flusso-seg flusso-seg-pag" style="height:${hPag}px"></div>`:''}
+              ${!c.tot?`<div style="height:3px;background:#f1f5f9;border-radius:3px;"></div>`:''}
+            </div>
+            <div class="flusso-col-lbl" style="${isCurr?'font-weight:800;color:#1B3A6B;':''}">${MESI_LBL[c.m]}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="flusso-legend">
+        <div class="flusso-leg"><div class="flusso-leg-dot" style="background:#16a34a"></div>Fatture pagate</div>
+        <div class="flusso-leg"><div class="flusso-leg-dot" style="background:#2563eb;opacity:.7"></div>Retainer pipeline</div>
+        <div class="flusso-leg"><div class="flusso-leg-dot" style="background:#d97706;opacity:.5"></div>Success fee pipeline</div>
+      </div>` : `<div style="text-align:center;padding:32px;color:#94a3b8;font-size:12px;">Nessun incasso registrato ancora.<br>Aggiungi fatture pagate o compila le date di incasso nella pipeline.</div>`}
+    </div>`;
+}
+
+// ── FATTURE ───────────────────────────────────────────────────────────────
+function renderFattureKPI() {
+  const el = document.getElementById('fatt-kpi-grid');
+  if (!el) return;
+  const fatture = getFatture();
+  const anno = new Date().getFullYear();
+  const pagate = fatture.filter(f => f.stato==='pagata');
+  const emesse = fatture.filter(f => f.stato==='emessa');
+  const scad   = fatture.filter(f => f.stato==='scaduta' || (f.stato==='emessa'&&isScaduta(f)));
+  const ytdPag = pagate.filter(f=>(f.dataPagamento||'').startsWith(String(anno)));
+  el.innerHTML = `
+    <div class="cont-kpi k-green"><div class="cont-kpi-ico">✅</div><div class="cont-kpi-val green">${fmtEurFull(ytdPag.reduce((s,f)=>s+totLordo(f),0))}</div><div class="cont-kpi-lbl">Pagate YTD ${anno}</div></div>
+    <div class="cont-kpi k-blue"><div class="cont-kpi-ico">📤</div><div class="cont-kpi-val blue">${fmtEurFull(emesse.reduce((s,f)=>s+totLordo(f),0))}</div><div class="cont-kpi-lbl">Emesse (da incassare)</div></div>
+    ${scad.length?`<div class="cont-kpi k-red"><div class="cont-kpi-ico">⚠</div><div class="cont-kpi-val red">${scad.length} – ${fmtEurFull(scad.reduce((s,f)=>s+totLordo(f),0))}</div><div class="cont-kpi-lbl">Scadute</div></div>`:''}
+    <div class="cont-kpi"><div class="cont-kpi-ico">🧾</div><div class="cont-kpi-val">${fatture.length}</div><div class="cont-kpi-lbl">Fatture totali</div></div>`;
+}
+
+function renderFattureList() {
+  const tbody = document.getElementById('fatt-tbody');
+  const empty = document.getElementById('fatt-empty');
+  if (!tbody) return;
+  const q     = (document.getElementById('fatt-q')?.value||'').toLowerCase();
+  const fStat = document.getElementById('fatt-f-stato')?.value||'';
+  let fatture = getFatture();
+  if (q) fatture = fatture.filter(f => [f.numero,f.cliente,f.descrizione].join(' ').toLowerCase().includes(q));
+  if (fStat) fatture = fatture.filter(f => f.stato===fStat || (fStat==='scaduta'&&isScaduta(f)));
+  // ordine: scadute prima, poi emesse, poi pagate, poi bozze
+  const ord = { scaduta:0, emessa:1, pagata:2, bozza:3 };
+  fatture.sort((a,b) => {
+    const sa = isScaduta(a)?'scaduta':a.stato, sb = isScaduta(b)?'scaduta':b.stato;
+    return (ord[sa]??9)-(ord[sb]??9) || (b.dataEmissione||'').localeCompare(a.dataEmissione||'');
+  });
+  if (empty) empty.style.display = fatture.length ? 'none' : '';
+  tbody.innerHTML = fatture.map(f => {
+    const imp = f.importo||0;
+    const lor = totLordo(f);
+    const stato = isScaduta(f) ? 'scaduta' : f.stato;
+    return `<tr>
+      <td><span class="fatt-num">${f.numero||'—'}</span></td>
+      <td><span class="fatt-cliente">${f.cliente||'—'}</span></td>
+      <td><span class="fatt-desc" title="${f.descrizione||''}">${f.descrizione||'—'}</span></td>
+      <td class="fatt-importo">${fmtEurFull(imp)}</td>
+      <td style="color:#64748b;font-size:11.5px">${f.iva||0}%</td>
+      <td class="fatt-importo">${fmtEurFull(lor)}</td>
+      <td style="font-size:11.5px;color:#64748b;">${fmtData(f.dataEmissione)}</td>
+      <td style="font-size:11.5px;${stato==='scaduta'?'color:#dc2626;font-weight:700;':''}">${fmtData(f.dataScadenza)}</td>
+      <td>${fmtChipFatt(stato)}</td>
+      <td style="white-space:nowrap;">
+        <button class="fatt-btn-sm" onclick="openFatturaModal('${f.id}')">✏ Modifica</button>
+        <button class="fatt-btn-sm fatt-btn-del" onclick="deleteFattura('${f.id}')" style="margin-left:4px">✕</button>
+      </td>
+    </tr>`;
+  }).join('') || '';
+}
+
+// ── FLUSSO DI CASSA ──────────────────────────────────────────────────────
+function renderFlussoCassa() {
+  const el = document.getElementById('cont-view-flusso');
+  if (!el) return;
+  const fatture  = getFatture();
+  const pipeline = getPipeline ? getPipeline() : [];
+  const oggi     = new Date();
+  const annoCorr = oggi.getFullYear();
+  const mesCorr  = oggi.getMonth();
+  const MESI_LBL = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+
+  // 8 mesi: -3 passati + corrente + 4 futuri
+  const mesi = [];
+  for (let i=-3; i<=4; i++) {
+    const d = new Date(annoCorr, mesCorr+i, 1);
+    mesi.push({ y:d.getFullYear(), m:d.getMonth(), futuro: i>0 });
+  }
+
+  const cols = mesi.map(({y,m,futuro}) => {
+    // effettivo: fatture pagate in quel mese
+    let effett = 0;
+    fatture.filter(f=>f.stato==='pagata'&&f.dataPagamento).forEach(f=>{
+      const d = new Date(f.dataPagamento);
+      if (d.getFullYear()===y && d.getMonth()===m) effett += totLordo(f);
+    });
+    // atteso: fatture emesse che scadono in quel mese (non pagate)
+    let atteso = 0;
+    fatture.filter(f=>f.stato==='emessa'&&f.dataScadenza).forEach(f=>{
+      const d = new Date(f.dataScadenza);
+      if (d.getFullYear()===y && d.getMonth()===m) atteso += totLordo(f);
+    });
+    // previsionale pipeline (retainer firmate/lavorazione non ancora pagate)
+    let prevPl = 0;
+    if (futuro) {
+      pipeline.filter(p=>['firmato','lavorazione'].includes(p.stato)&&!p.retainerPagato&&p.retainer).forEach(p=>{
+        prevPl += (p.retainer||0) / 3;
+      });
+    }
+    return { y, m, futuro, effett, atteso, prevPl, tot: effett+atteso+prevPl };
+  });
+  const maxTot = Math.max(...cols.map(c=>c.tot), 1);
+  const H = 90;
+
+  // KPI previsionale
+  const prossimiMesi = cols.filter(c=>c.futuro);
+  const prevTot = prossimiMesi.reduce((s,c)=>s+c.atteso+c.prevPl,0);
+  const ytdEff  = cols.filter(c=>!c.futuro).reduce((s,c)=>s+c.effett,0);
+  const scaduteN = fatture.filter(f=>f.stato==='emessa'&&isScaduta(f)).length;
+
+  el.innerHTML = `
+    <div class="cont-kpi-grid">
+      <div class="cont-kpi k-green"><div class="cont-kpi-ico">💶</div><div class="cont-kpi-val green">${fmtEurFull(ytdEff)}</div><div class="cont-kpi-lbl">Effettivo YTD (fatture pagate)</div></div>
+      <div class="cont-kpi k-blue"><div class="cont-kpi-ico">🔮</div><div class="cont-kpi-val blue">${fmtEurFull(prevTot)}</div><div class="cont-kpi-lbl">Atteso prossimi 4 mesi</div></div>
+      ${scaduteN?`<div class="cont-kpi k-red"><div class="cont-kpi-ico">⏰</div><div class="cont-kpi-val red">${scaduteN}</div><div class="cont-kpi-lbl">Fatture scadute da riscuotere</div></div>`:''}
+    </div>
+    <div class="flusso-area">
+      <div class="flusso-title">Flusso di cassa – 8 mesi</div>
+      <div class="flusso-sub">Effettivo (fatture pagate) · Atteso (fatture emesse in scadenza) · Previsionale pipeline</div>
+      <div class="flusso-bars-wrap">
+        ${cols.map(c => {
+          const hEff = c.effett>0 ? Math.max(3,Math.round((c.effett/maxTot)*H)) : 0;
+          const hAtt = c.atteso>0 ? Math.max(3,Math.round((c.atteso/maxTot)*H)) : 0;
+          const hPre = c.prevPl>0 ? Math.max(3,Math.round((c.prevPl/maxTot)*H)) : 0;
+          const isCurr = c.y===annoCorr && c.m===mesCorr;
+          const tot = c.effett+c.atteso+c.prevPl;
+          return `<div class="flusso-col">
+            ${tot>0?`<div class="flusso-col-tot">${fmtEurK(tot)}</div>`:''}
+            <div class="flusso-col-stack" style="border-bottom:${c.futuro?'2px dashed #e2e8f0':'2px solid #e2e8f0'};padding-bottom:2px;">
+              ${hPre?`<div class="flusso-seg flusso-seg-pip" style="height:${hPre}px;opacity:.45"></div>`:''}
+              ${hAtt?`<div class="flusso-seg flusso-seg-att" style="height:${hAtt}px;opacity:.7"></div>`:''}
+              ${hEff?`<div class="flusso-seg flusso-seg-pag" style="height:${hEff}px"></div>`:''}
+              ${!tot?`<div style="height:3px;background:#f1f5f9;border-radius:3px;"></div>`:''}
+            </div>
+            <div class="flusso-col-lbl" style="${isCurr?'font-weight:800;color:#1B3A6B;':''}${c.futuro?'opacity:.65':''}">${MESI_LBL[c.m]}<br><span style="font-size:8.5px">${c.y!==annoCorr?c.y:''}</span></div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="flusso-legend">
+        <div class="flusso-leg"><div class="flusso-leg-dot" style="background:#16a34a"></div>Effettivo (pagato)</div>
+        <div class="flusso-leg"><div class="flusso-leg-dot" style="background:#2563eb;opacity:.7"></div>Atteso (fatture emesse)</div>
+        <div class="flusso-leg"><div class="flusso-leg-dot" style="background:#d97706;opacity:.45"></div>Previsionale pipeline</div>
+        <div class="flusso-leg" style="margin-left:auto;font-style:italic">Colonne tratteggiate = mesi futuri</div>
+      </div>
+    </div>`;
+}
+
+// ── MODAL FATTURA ─────────────────────────────────────────────────────────
+function openFatturaModal(id) {
+  const overlay = document.getElementById('fatt-modal-overlay');
+  if (!overlay) return;
+  // popola datalist clienti
+  const dl = document.getElementById('fm-clienti-dl');
+  if (dl) dl.innerHTML = Object.keys(CLIENTI||{}).map(n=>`<option value="${n}">`).join('');
+  document.getElementById('fatt-modal-title-txt').textContent = id ? 'Modifica Fattura' : 'Nuova Fattura';
+  document.getElementById('fm-editing-id').value = id||'';
+  if (id) {
+    const f = getFatture().find(x=>x.id===id);
+    if (f) {
+      document.getElementById('fm-numero').value    = f.numero||'';
+      document.getElementById('fm-stato').value     = f.stato||'emessa';
+      document.getElementById('fm-cliente').value   = f.cliente||'';
+      document.getElementById('fm-desc').value      = f.descrizione||'';
+      document.getElementById('fm-importo').value   = f.importo||'';
+      document.getElementById('fm-iva').value       = String(f.iva??22);
+      document.getElementById('fm-data-em').value  = f.dataEmissione||'';
+      document.getElementById('fm-data-sc').value  = f.dataScadenza||'';
+      document.getElementById('fm-data-pag').value = f.dataPagamento||'';
+      document.getElementById('fm-categoria').value = f.categoria||'retainer';
+      document.getElementById('fm-note').value      = f.note||'';
+    }
+  } else {
+    // defaults per nuova fattura
+    document.getElementById('fm-numero').value    = nextFattNum();
+    document.getElementById('fm-stato').value     = 'emessa';
+    document.getElementById('fm-cliente').value   = '';
+    document.getElementById('fm-desc').value      = '';
+    document.getElementById('fm-importo').value   = '';
+    document.getElementById('fm-iva').value       = '22';
+    const oggi = new Date();
+    document.getElementById('fm-data-em').value  = oggi.toISOString().split('T')[0];
+    const sc = new Date(oggi); sc.setDate(sc.getDate()+30);
+    document.getElementById('fm-data-sc').value  = sc.toISOString().split('T')[0];
+    document.getElementById('fm-data-pag').value = '';
+    document.getElementById('fm-categoria').value = 'retainer';
+    document.getElementById('fm-note').value      = '';
+  }
+  overlay.style.display = 'flex';
+}
+
+function closeFatturaModal() {
+  const overlay = document.getElementById('fatt-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+function saveFattura() {
+  const id      = document.getElementById('fm-editing-id').value;
+  const numero  = document.getElementById('fm-numero').value.trim();
+  const stato   = document.getElementById('fm-stato').value;
+  const cliente = document.getElementById('fm-cliente').value.trim();
+  const desc    = document.getElementById('fm-desc').value.trim();
+  const importo = parseFloat(document.getElementById('fm-importo').value)||0;
+  const iva     = parseInt(document.getElementById('fm-iva').value)||0;
+  const dataEm  = document.getElementById('fm-data-em').value;
+  const dataSc  = document.getElementById('fm-data-sc').value;
+  const dataPag = document.getElementById('fm-data-pag').value;
+  const categ   = document.getElementById('fm-categoria').value;
+  const note    = document.getElementById('fm-note').value.trim();
+
+  if (!cliente) { showToast('Inserisci il nome del cliente.','err'); return; }
+  if (!importo) { showToast('Inserisci l\'importo.','err'); return; }
+
+  const fatture = getFatture();
+  if (id) {
+    const idx = fatture.findIndex(f=>f.id===id);
+    if (idx !== -1) fatture[idx] = { ...fatture[idx], numero, stato, cliente, descrizione:desc, importo, iva, dataEmissione:dataEm, dataScadenza:dataSc, dataPagamento:dataPag, categoria:categ, note };
+  } else {
+    fatture.push({ id:'f_'+Date.now(), numero, stato, cliente, descrizione:desc, importo, iva, dataEmissione:dataEm, dataScadenza:dataSc, dataPagamento:dataPag, categoria:categ, note });
+  }
+  saveFatture(fatture);
+  closeFatturaModal();
+  renderFattureKPI();
+  renderFattureList();
+  showToast(id ? 'Fattura aggiornata.' : 'Fattura salvata.', 'ok');
+}
+
+function deleteFattura(id) {
+  if (!confirm('Eliminare questa fattura?')) return;
+  saveFatture(getFatture().filter(f=>f.id!==id));
+  renderFattureKPI();
+  renderFattureList();
+  showToast('Fattura eliminata.','ok');
+}
+// ═══════════════════════════════════════════════════════════════════════════
 </script>
 </div><!-- /page-main -->
 </body>
