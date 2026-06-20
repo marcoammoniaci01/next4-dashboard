@@ -1362,38 +1362,6 @@
   body.dark .allerta-cat { color:#2d3f5e; }
   body.dark .allerte-title { color:#dde4f0; }
 
-  /* ── Cruscotto Finanziario ──────────────────────────────────────────────── */
-  #pipeline-cruscotto { margin-bottom:18px; background:#fff; border-radius:16px; box-shadow:0 1px 6px rgba(0,0,0,0.07); overflow:hidden; }
-  .cru-header { display:flex; align-items:center; justify-content:space-between; padding:14px 20px; cursor:pointer; user-select:none; border-bottom:1.5px solid #f1f5f9; }
-  .cru-title { font-size:13px; font-weight:800; color:#1a1a2e; display:flex; align-items:center; gap:8px; }
-  .cru-toggle { font-size:11px; color:#94a3b8; }
-  .cru-body { padding:16px 20px 20px; }
-  .cru-summary { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-bottom:20px; }
-  .cru-card { background:#f8fafc; border-radius:10px; padding:12px 14px; }
-  .cru-card-val { font-size:18px; font-weight:800; color:#1B3A6B; }
-  .cru-card-val.green { color:#16a34a; }
-  .cru-card-val.purple { color:#7c3aed; }
-  .cru-card-lbl { font-size:10px; color:#94a3b8; margin-top:3px; font-weight:600; }
-  .cru-chart-wrap { overflow-x:auto; padding-bottom:4px; }
-  .cru-chart { display:flex; align-items:flex-end; gap:8px; height:100px; min-width:360px; }
-  .cru-bar-col { display:flex; flex-direction:column; align-items:center; gap:3px; flex:1; min-width:40px; }
-  .cru-bar-stack { display:flex; flex-direction:column; justify-content:flex-end; width:100%; height:88px; gap:1px; }
-  .cru-bar-seg { border-radius:3px 3px 0 0; min-height:2px; transition:height 0.4s cubic-bezier(.25,.8,.25,1); }
-  .cru-bar-seg.ret  { background:#2563eb; border-radius:3px 3px 0 0; }
-  .cru-bar-seg.fee  { background:#16a34a; }
-  .cru-bar-seg.sa   { background:#7c3aed; }
-  .cru-bar-label { font-size:9px; color:#94a3b8; white-space:nowrap; }
-  .cru-bar-total { font-size:9px; font-weight:700; color:#1a1a2e; white-space:nowrap; margin-bottom:2px; }
-  .cru-legend { display:flex; gap:14px; flex-wrap:wrap; margin-top:12px; }
-  .cru-leg-item { display:flex; align-items:center; gap:5px; font-size:10px; color:#64748b; }
-  .cru-leg-dot { width:8px; height:8px; border-radius:2px; }
-  body.dark #pipeline-cruscotto { background:#162035; }
-  body.dark .cru-header { border-color:#1e2d47; }
-  body.dark .cru-title { color:#dde4f0; }
-  body.dark .cru-card { background:#1e2d47; }
-  body.dark .cru-bar-total { color:#dde4f0; }
-  body.dark .cru-bar-label { color:#4a6080; }
-
   /* ── Funnel di conversione ───────────────────────────────────────────────── */
   #pipeline-funnel { margin-bottom:18px; background:#fff; border-radius:16px; box-shadow:0 1px 6px rgba(0,0,0,0.07); padding:16px 20px; }
   .funnel-title { font-size:13px; font-weight:800; color:#1a1a2e; margin-bottom:14px; }
@@ -2047,7 +2015,6 @@
 
 <div id="view-pipeline" style="display:none;">
   <div class="pipeline-wrap">
-    <div id="pipeline-cruscotto" style="display:none;"></div>
     <div id="pipeline-funnel" style="display:none;"></div>
     <div class="pipeline-kpi" id="pipeline-kpi"></div>
     <div class="pipeline-toolbar">
@@ -3620,108 +3587,6 @@ function mesiLabel(y, m) {
   return ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'][m] + ' ' + String(y).slice(2);
 }
 
-// ── Cruscotto finanziario ─────────────────────────────────────────────────
-function renderCruscotto(pl) {
-  const el = document.getElementById('pipeline-cruscotto');
-  const oggi = new Date();
-  const annoCorrente = oggi.getFullYear();
-  const meseCorrente = oggi.getMonth();
-
-  // ultimi 6 mesi + mese corrente = 7 colonne
-  const mesi = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(annoCorrente, meseCorrente - i, 1);
-    mesi.push({ y: d.getFullYear(), m: d.getMonth() });
-  }
-
-  const colonne = mesi.map(({ y, m }) => {
-    let ret = 0, fee = 0, sa = 0;
-    pl.forEach(p => {
-      const ir = incassoMeseAnno(p.dataIncassoRetainer);
-      if (ir && ir.y === y && ir.m === m && p.retainerPagato) ret += p.retainer || 0;
-      const ifee = incassoMeseAnno(p.dataIncassoFee);
-      if (ifee && ifee.y === y && ifee.m === m && p.successFeePagata)
-        fee += (p.contributoConc || 0) * (p.successFeePerc || 0) / 100;
-    });
-    return { y, m, ret, fee, sa, tot: ret + fee + sa };
-  });
-
-  const maxTot = Math.max(...colonne.map(c => c.tot), 1);
-  const ytd = pl.reduce((s, p) => {
-    const ir = incassoMeseAnno(p.dataIncassoRetainer);
-    if (ir && ir.y === annoCorrente && p.retainerPagato) s.ret += p.retainer || 0;
-    const ifee = incassoMeseAnno(p.dataIncassoFee);
-    if (ifee && ifee.y === annoCorrente && p.successFeePagata)
-      s.fee += (p.contributoConc || 0) * (p.successFeePerc || 0) / 100;
-    return s;
-  }, { ret: 0, fee: 0 });
-  const ytdTot = ytd.ret + ytd.fee;
-  const meseCor = colonne[colonne.length - 1];
-  const hasData = colonne.some(c => c.tot > 0);
-
-  el.style.display = '';
-  el.innerHTML = `
-    <div class="cru-header" onclick="toggleCruscotto()">
-      <span class="cru-title">📊 Cruscotto Finanziario ${annoCorrente}</span>
-      <span class="cru-toggle" id="cru-toggle-ico">▾</span>
-    </div>
-    <div class="cru-body" id="cru-body">
-      <div class="cru-summary">
-        <div class="cru-card">
-          <div class="cru-card-val">${fmtEurFull(ytdTot)}</div>
-          <div class="cru-card-lbl">Incassato YTD ${annoCorrente}</div>
-        </div>
-        <div class="cru-card">
-          <div class="cru-card-val green">${fmtEurFull(meseCor.tot)}</div>
-          <div class="cru-card-lbl">Mese corrente</div>
-        </div>
-        <div class="cru-card">
-          <div class="cru-card-val">${fmtEurFull(ytd.ret)}</div>
-          <div class="cru-card-lbl">Retainer YTD</div>
-        </div>
-        <div class="cru-card">
-          <div class="cru-card-val purple">${fmtEurFull(ytd.fee)}</div>
-          <div class="cru-card-lbl">Success fee YTD</div>
-        </div>
-      </div>
-      ${hasData ? `
-      <div class="cru-chart-wrap">
-        <div class="cru-chart">
-          ${colonne.map(c => {
-            const hMax = 80;
-            const hRet = c.tot > 0 ? Math.max(2, Math.round((c.ret / maxTot) * hMax)) : 0;
-            const hFee = c.tot > 0 ? Math.max(2, Math.round((c.fee / maxTot) * hMax)) : 0;
-            const isCurrentMonth = c.y === annoCorrente && c.m === meseCorrente;
-            return `
-            <div class="cru-bar-col">
-              ${c.tot > 0 ? `<div class="cru-bar-total">${fmtEurK(c.tot)}</div>` : '<div class="cru-bar-total" style="color:#e2e8f0">–</div>'}
-              <div class="cru-bar-stack">
-                ${hFee ? `<div class="cru-bar-seg fee" style="height:${hFee}px"></div>` : ''}
-                ${hRet ? `<div class="cru-bar-seg ret" style="height:${hRet}px;${!hFee?'border-radius:3px 3px 0 0;':'border-radius:0;'}"></div>` : ''}
-                ${!c.tot ? `<div style="height:4px;background:#f1f5f9;border-radius:3px;margin-top:auto;"></div>` : ''}
-              </div>
-              <div class="cru-bar-label" style="${isCurrentMonth?'font-weight:800;color:#1B3A6B;':''}">${mesiLabel(c.y, c.m)}</div>
-            </div>`;
-          }).join('')}
-        </div>
-      </div>
-      <div class="cru-legend">
-        <div class="cru-leg-item"><div class="cru-leg-dot" style="background:#2563eb"></div>Retainer</div>
-        <div class="cru-leg-item"><div class="cru-leg-dot" style="background:#16a34a"></div>Success fee</div>
-      </div>
-      ` : '<div style="text-align:center;padding:24px;color:#94a3b8;font-size:12px;">Nessun incasso registrato ancora.<br>Compila le date di incasso nelle pratiche per visualizzare il grafico.</div>'}
-    </div>`;
-}
-
-function toggleCruscotto() {
-  const body = document.getElementById('cru-body');
-  const ico  = document.getElementById('cru-toggle-ico');
-  if (!body) return;
-  const hidden = body.style.display === 'none';
-  body.style.display = hidden ? '' : 'none';
-  ico.textContent = hidden ? '▾' : '▸';
-}
-
 // ── Funnel di conversione ─────────────────────────────────────────────────
 function renderFunnel(pl) {
   const el = document.getElementById('pipeline-funnel');
@@ -3921,7 +3786,6 @@ let _kDragId = null;
 function renderPipeline() {
   const pl = getPipeline();
 
-  renderCruscotto(pl);
   renderFunnel(pl);
 
   const fc = document.getElementById('pf-cliente').value;
