@@ -4764,7 +4764,7 @@ function render() {
           }
         </div>
         <div style="display:flex;gap:6px;flex-shrink:0">
-          ${SCHEDE_MAP[b.nome] ? `<button class="btn-scheda" onclick="openScheda('${b.nome.replace(/'/g,"\\'")}');event.stopPropagation()">📄 Scheda</button>` : ''}
+          ${SCHEDE_MAP[b.nome] ? `<a class="btn-scheda" href="${SCHEDE_MAP[b.nome].split('/').map(encodeURIComponent).join('/')}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📄 Scheda</a>` : ''}
           <button class="btn-copy" onclick="copyLink(this,'${b.link}');event.stopPropagation()">🔗 Copia</button>
           <a href="${b.link}" target="_blank" class="btn-link" onclick="event.stopPropagation()">→ Apri</a>
         </div>
@@ -4914,7 +4914,7 @@ function openPanel(b) {
          }).join('') : '<span style="color:#aaa;font-size:11px">Nessuno</span>'}</div>`
     }
     <div class="panel-actions">
-      ${SCHEDE_MAP[b.nome] ? `<button class="btn-scheda" onclick="openScheda('${b.nome.replace(/'/g,"\\'")}')">📄 Scheda N4G</button>` : ''}
+      ${SCHEDE_MAP[b.nome] ? `<a class="btn-scheda" href="${SCHEDE_MAP[b.nome].split('/').map(encodeURIComponent).join('/')}" target="_blank" rel="noopener">📄 Scheda N4G</a>` : ''}
       <a href="${b.link}" target="_blank" class="btn-link">→ Pagina ufficiale</a>
       <button class="btn-copy" onclick="copyLink(this,'${b.link}')">🔗 Copia link</button>
     </div>
