@@ -2672,7 +2672,11 @@ const _n4Timers = {};
 
 const n4Storage = {
   getItem(key) {
-    if (_CLOUD_KEYS.includes(key)) return _n4Cache[key] ?? null;
+    if (_CLOUD_KEYS.includes(key)) {
+      // Se il dato è in cache Firestore usalo; altrimenti fallback su localStorage (migrazione)
+      if (_n4Cache[key] !== undefined) return _n4Cache[key];
+      return localStorage.getItem(key);
+    }
     return localStorage.getItem(key);
   },
   setItem(key, val) {
@@ -3570,7 +3574,9 @@ function openScheda(nome) {
   const path = SCHEDE_MAP[nome];
   if (!path) return;
   const encoded = path.split('/').map(encodeURIComponent).join('/');
-  window.open(encoded, '_blank');
+  const a = document.createElement('a');
+  a.href = encoded; a.target = '_blank'; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
 // ─── DE MINIMIS – CLIENTI ────────────────────────────────────────────────
