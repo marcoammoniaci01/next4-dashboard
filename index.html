@@ -1839,6 +1839,9 @@
     <span class="sidebar-item-ico">📡</span> Radar
     <span class="sidebar-badge" id="sb-badge-radar" style="display:none"></span>
   </button>
+  <button class="sidebar-item" id="sb-previsioni" onclick="sbEnter('finanza','previsioni')">
+    <span class="sidebar-item-ico">🔮</span> Previsioni
+  </button>
 
   <div class="sidebar-divider"></div>
   <div class="sidebar-section-lbl">Area Riservata</div>
@@ -2682,7 +2685,7 @@ function showHub() {
   // nascondi sidebar sull'hub
   document.body.classList.add('hub-mode');
   // deseleziona tutti gli item della sidebar e attiva Home
-  const allSb = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task','sb-contabilita'];
+  const allSb = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task','sb-contabilita','sb-previsioni'];
   allSb.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
   const home = document.getElementById('sb-home');
   if (home) home.classList.add('active');
@@ -4697,12 +4700,12 @@ function sbEnter(section, tab) {
 }
 
 function updateSidebarActive(tab) {
-  const allIds = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task','sb-contabilita'];
+  const allIds = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task','sb-contabilita','sb-previsioni'];
   allIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
-  const map = { bandi:'sb-bandi', clienti:'sb-clienti', scadenzario:'sb-scadenzario', ricerca:'sb-ricerca', radar:'sb-radar', pipeline:'sb-pipeline', task:'sb-task', contabilita:'sb-contabilita' };
+  const map = { bandi:'sb-bandi', clienti:'sb-clienti', scadenzario:'sb-scadenzario', ricerca:'sb-ricerca', radar:'sb-radar', pipeline:'sb-pipeline', task:'sb-task', contabilita:'sb-contabilita', previsioni:'sb-previsioni' };
   if (map[tab]) {
     const el = document.getElementById(map[tab]);
     if (el) el.classList.add('active');
