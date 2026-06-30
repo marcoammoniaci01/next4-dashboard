@@ -1846,10 +1846,6 @@
   <button class="sidebar-item" id="sb-ricerca" onclick="sbEnter('finanza','ricerca')">
     <span class="sidebar-item-ico">🔍</span> Ricerca
   </button>
-  <button class="sidebar-item" id="sb-radar" onclick="sbEnter('finanza','radar')">
-    <span class="sidebar-item-ico">📡</span> Radar
-    <span class="sidebar-badge" id="sb-badge-radar" style="display:none"></span>
-  </button>
   <button class="sidebar-item" id="sb-previsioni" onclick="sbEnter('finanza','previsioni')">
     <span class="sidebar-item-ico">🔮</span> Previsioni
   </button>
@@ -1972,7 +1968,6 @@
   <button class="tab" onclick="switchTab('clienti')">🏢 Vista Clienti</button>
   <button class="tab" onclick="switchTab('scadenzario')">📅 Scadenzario</button>
   <button class="tab" onclick="switchTab('ricerca')">🔍 Ricerca</button>
-  <button class="tab" onclick="switchTab('radar')" id="tab-radar">📡 Radar</button>
   <button class="tab" onclick="switchTab('previsioni')">🔮 Previsioni</button>
 </div>
 <div class="tabs" id="tabs-riservata" style="display:none;">
@@ -2023,29 +2018,6 @@
 
 </div><!-- /view-bandi -->
 
-<!-- ── RADAR BANDI ── -->
-<div id="view-radar" style="display:none;">
-  <div class="radar-header">
-    <div class="radar-title">
-      <span class="radar-pulse"></span>
-      Radar Bandi
-    </div>
-    <div class="radar-meta">Aggiornamento automatico ogni mattina alle 9:00</div>
-  </div>
-
-  <div class="radar-status-bar">
-    <div class="radar-stat-pill">🤖 Agente attivo</div>
-    <div class="radar-stat-pill" id="radar-last-update">⏱ In attesa del primo aggiornamento</div>
-    <div class="radar-stat-pill" id="radar-count" style="display:none;"></div>
-    <button class="radar-refresh-btn" onclick="loadRadarData(true)">⟳ Aggiorna ora</button>
-    <a href="https://mail.google.com/mail/#drafts" target="_blank" class="radar-gmail-btn">📧 Gmail Drafts →</a>
-  </div>
-
-  <div class="radar-section-title">Bandi trovati online non ancora nel dashboard</div>
-  <div id="radar-list">
-    <div class="radar-loading">Caricamento in corso…</div>
-  </div>
-</div><!-- /view-radar -->
 
 <div id="view-clienti" style="display:none;">
   <div class="clienti-toolbar">
@@ -2783,7 +2755,7 @@ function showHub() {
   // nascondi sidebar sull'hub
   document.body.classList.add('hub-mode');
   // deseleziona tutti gli item della sidebar e attiva Home
-  const allSb = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task','sb-contabilita','sb-previsioni'];
+  const allSb = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-pipeline','sb-task','sb-contabilita','sb-previsioni'];
   allSb.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
   const home = document.getElementById('sb-home');
   if (home) home.classList.add('active');
@@ -4800,12 +4772,12 @@ function sbEnter(section, tab) {
 }
 
 function updateSidebarActive(tab) {
-  const allIds = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-radar','sb-pipeline','sb-task','sb-contabilita','sb-previsioni'];
+  const allIds = ['sb-home','sb-bandi','sb-clienti','sb-scadenzario','sb-ricerca','sb-pipeline','sb-task','sb-contabilita','sb-previsioni'];
   allIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
-  const map = { bandi:'sb-bandi', clienti:'sb-clienti', scadenzario:'sb-scadenzario', ricerca:'sb-ricerca', radar:'sb-radar', pipeline:'sb-pipeline', task:'sb-task', contabilita:'sb-contabilita', previsioni:'sb-previsioni' };
+  const map = { bandi:'sb-bandi', clienti:'sb-clienti', scadenzario:'sb-scadenzario', ricerca:'sb-ricerca', pipeline:'sb-pipeline', task:'sb-task', contabilita:'sb-contabilita', previsioni:'sb-previsioni' };
   if (map[tab]) {
     const el = document.getElementById(map[tab]);
     if (el) el.classList.add('active');
@@ -4819,17 +4791,13 @@ function updateSidebarBadges() {
   const nTask = getTasks ? getTasks().filter(t => !t.fatto).length : 0;
   const tbdg = document.getElementById('sb-badge-task');
   if (tbdg) { tbdg.textContent = nTask; tbdg.style.display = nTask ? '' : 'none'; }
-  const radar = getRadarData ? getRadarData() : null;
-  const nRadar = radar ? (radar.bandi || []).filter(b => b.nuovo !== false).length : 0;
-  const rbdg = document.getElementById('sb-badge-radar');
-  if (rbdg) { rbdg.textContent = nRadar; rbdg.style.display = nRadar ? '' : 'none'; }
 }
 
 function switchTab(tab) {
   closePanel();
 
   // aggiorna active nel gruppo tabs corretto (tabs sono hidden ma JS li usa ancora)
-  const finanzaTabs = ['bandi','clienti','scadenzario','ricerca','radar','previsioni'];
+  const finanzaTabs = ['bandi','clienti','scadenzario','ricerca','previsioni'];
   const riservTabs  = ['pipeline','task','contabilita'];
   const groupId = finanzaTabs.includes(tab) ? 'tabs-finanza' : 'tabs-riservata';
   const groupTabs = finanzaTabs.includes(tab) ? finanzaTabs : riservTabs;
@@ -4838,7 +4806,7 @@ function switchTab(tab) {
   });
 
   // mostra/nascondi views
-  ['bandi','clienti','scadenzario','ricerca','pipeline','task','radar','contabilita','previsioni'].forEach(v => {
+  ['bandi','clienti','scadenzario','ricerca','pipeline','task','contabilita','previsioni'].forEach(v => {
     const el = document.getElementById('view-' + v);
     if (!el) return;
     if (v === tab) {
@@ -4859,7 +4827,6 @@ function switchTab(tab) {
   if (tab === 'pipeline')     renderPipeline();
   if (tab === 'task')         renderTask();
   if (tab === 'ricerca')      _rqInit();
-  if (tab === 'radar')        renderRadar();
   if (tab === 'contabilita')  renderContabilita();
   if (tab === 'previsioni')   renderPrevisioni();
 }
