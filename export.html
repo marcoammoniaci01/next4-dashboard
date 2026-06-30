@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Export dati Next4</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 500px; margin: 80px auto; padding: 24px; background: #f8fafc; }
+  h2 { color: #1B3A6B; }
+  button { background: #1B3A6B; color: #fff; border: none; border-radius: 8px; padding: 14px 28px; font-size: 16px; cursor: pointer; margin-top: 24px; }
+  button:hover { background: #14305a; }
+  pre { background: #f1f5f9; border-radius: 8px; padding: 16px; font-size: 12px; max-height: 300px; overflow: auto; }
+  .ok { color: #16a34a; font-weight: 600; }
+  .miss { color: #94a3b8; }
+</style>
+</head>
+<body>
+<h2>📦 Export dati da localStorage</h2>
+<p>Questa pagina legge i tuoi dati salvati localmente su questo browser e li prepara per il download.</p>
+
+<div id="preview"></div>
+<button onclick="doExport()">⬇ Scarica backup</button>
+
+<script>
+const KEYS = {
+  pipeline:    'n4_pipeline',
+  tasks:       'n4_tasks',
+  fatture:     'n4_fatture',
+  interazioni: 'n4_interazioni',
+  clienti:     'n4_clienti_data',
+  bandiExtra:  'n4_bandi_extra'
+};
+
+function readAll() {
+  const result = {};
+  let html = '<p>Dati trovati in localStorage:</p><ul>';
+  for (const [k, lsKey] of Object.entries(KEYS)) {
+    const raw = localStorage.getItem(lsKey);
+    if (raw) {
+      try {
+        result[k] = JSON.parse(raw);
+        const count = Array.isArray(result[k]) ? result[k].length : (typeof result[k] === 'object' ? Object.keys(result[k]).length : 1);
+        html += `<li class="ok">✓ ${k}: ${count} elementi</li>`;
+      } catch(e) {
+        html += `<li class="miss">⚠ ${k}: errore parsing</li>`;
+      }
+    } else {
+      html += `<li class="miss">– ${k}: vuoto</li>`;
+    }
+  }
+  html += '</ul>';
+  document.getElementById('preview').innerHTML = html;
+  return result;
+}
+
+function doExport() {
+  const data = readAll();
+  const payload = { version: 2, exportDate: new Date().toISOString(), ...data };
+  const json = JSON.stringify(payload, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = `backup_next4_${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+readAll();
+</script>
+</body>
+</html>
